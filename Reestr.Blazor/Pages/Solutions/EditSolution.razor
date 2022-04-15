@@ -1,0 +1,69 @@
+﻿@page "/solutions/edit-solution/{IdSolution}"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.Solutions.EditSolutionComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Reestr.Database.Model
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenTemplateForm TItem="Solution" Data="@solution" Visible="@(solution != null)" Submit="@Form0Submit">
+                    <ChildContent>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Decision Number" Component="DecisionNumber" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox style="width: 100%" @bind-Value="@(solution.DecisionNumber)" Name="DecisionNumber">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Decision Date" Component="DecisionDate" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDatePicker DateFormat="MM/dd/yyyy" style="width: 100%" @bind-Value="@(solution.DecisionDate)" Name="DecisionDate">
+                                </RadzenDatePicker>
+                            </div>
+                        </div>
+                        @*<div style="margin-bottom: 1rem" class="row">
+                                <div class="col-md-3">
+                                    <RadzenLabel Text="Url Solution" Component="UrlSolution" style="width: 100%">
+                                    </RadzenLabel>
+                                </div>
+                                <div class="col-md-9">
+                                    <RadzenTextBox MaxLength="500" style="width: 100%" @bind-Value="@(solution.UrlSolution)" Name="UrlSolution">
+                                    </RadzenTextBox>
+                                </div>
+                            </div>*@
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Url Solution" Component="UrlSolution" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenUpload Url="upload/single" Style="margin-bottom: 20px; width: 100%" Progress="@((arge) => OnProgress(arge, "Single file Upload"))"></RadzenUpload>
+                                <RadzenCard Style="overflow: auto; height: 50px; width: 100%">
+                                    <RadzenProgressBar Value="@progress" Unit="@info" Visible="@(progress > 0)" Style="margin-bottom: 20px; width: 100%"></RadzenProgressBar>
+                                </RadzenCard>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col offset-sm-3">
+                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Primary">
+                                </RadzenButton>
+                                <RadzenButton ButtonStyle="ButtonStyle.Light" style="margin-left: 1rem" Text="Cancel" Click="@Button2Click">
+                                </RadzenButton>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </RadzenTemplateForm>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

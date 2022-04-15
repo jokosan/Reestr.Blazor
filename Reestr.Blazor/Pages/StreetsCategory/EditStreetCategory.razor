@@ -1,0 +1,68 @@
+﻿@page "/street-categories/edit-street-category/{IdStreetCategory}"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.StreetsCategory.EditStreetCategoriesComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Reestr.Database.Model
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenTemplateForm TItem="StreetCategory" Data="@streetcategory" Visible="@(streetcategory != null)" Submit="@Form0Submit">
+                    <ChildContent>
+                         <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Тип вулиць скорочений Ua" Component="NameCategoryUa" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="50" style="width: 100%" @bind-Value="@(streetcategory.NameCategoryUa)" Name="NameCategoryUa">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Тип вулиць Ua" Component="FullNameCategoryUa" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="50" style="width: 100%" @bind-Value="@(streetcategory.FullNameCategoryUa)" Name="FullNameCategoryUa">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Тип вулиць скорочений Ru" Component="NameCategoryRu" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="50" style="width: 100%" @bind-Value="@(streetcategory.NameCategoryRu)" Name="NameCategoryRu">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Тип вулиць Ru" Component="FullNameCategoryRu" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="50" style="width: 100%" @bind-Value="@(streetcategory.FullNameCategoryRu)" Name="FullNameCategoryRu">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col offset-sm-3">
+                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Зберегти" ButtonStyle="ButtonStyle.Primary">
+                                </RadzenButton>
+                                <RadzenButton ButtonStyle="ButtonStyle.Light" style="margin-left: 1rem" Text="Скасувати" Click="@Button2Click">
+                                </RadzenButton>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </RadzenTemplateForm>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

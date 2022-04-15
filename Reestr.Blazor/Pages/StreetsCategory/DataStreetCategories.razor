@@ -1,0 +1,40 @@
+﻿@page "/street-categories/data-street-categories"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.StreetsCategory.StreetCategoriesComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Reestr.Database.Model
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <RadzenHeading Size="H1" Text="Типи вулиць">
+        </RadzenHeading>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Додати" Click="@Button0Click">
+                </RadzenButton>             
+                <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="Radzen.FilterMode.Advanced" AllowPaging="true" AllowSorting="true" PageSize="15" Data="@getStreetCategoriesResult" TItem="StreetCategory" RowSelect="@Grid0RowSelect">
+                    <Columns>
+                        <RadzenDataGridColumn TItem="StreetCategory" Property="IdStreetCategory" Title="Id Street Category">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="StreetCategory" Property="NameCategoryUa" Title="Тип вулиць скорочений Ua">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="StreetCategory" Property="FullNameCategoryUa" Title="Тип вулиць Ua">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="StreetCategory" Property="NameCategoryRu" Title="Тип вулиць скорочений Ru">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="StreetCategory" Property="FullNameCategoryRu" Title="Тип вулиць Ru">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="StreetCategory" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                            <Template Context="testModelsReestrDbStreetCategory">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, testModelsReestrDbStreetCategory))" @onclick:stopPropagation="true">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </RadzenDataGrid>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

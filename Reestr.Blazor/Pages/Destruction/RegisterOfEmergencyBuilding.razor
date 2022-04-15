@@ -1,0 +1,51 @@
+﻿@page "/destruction/register-of-emergency-buildings"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.Destructions.RegisterOfEmergencyBuildingsComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Reestr.Database.Model
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <RadzenHeading Size="H1" Text="Register Of Emergency Buildings">
+        </RadzenHeading>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@Button0Click">
+                </RadzenButton>          
+                <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="Radzen.FilterMode.Advanced" AllowPaging="true" PageSize="15" AllowSorting="true" Data="@getRegisterOfEmergencyBuildingsResult" TItem="RegisterOfEmergencyBuildings" RowSelect="@Grid0RowSelect">
+                    <Columns>
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="IdRegisterOfEmergencyBuildings" Title="Id Register Of Emergency Buildings">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="AddressingId" SortProperty="Addressing.Number" GroupProperty="Addressing.Number" FilterProperty="Addressing.Number" Title="Addressing">
+                            <Template Context="data">
+                                @(data.Addressing?.Number)
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="TypeOfDestruction" Title="Type Of Destruction">
+                        </RadzenDataGridColumn>                                 
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="TypeBuildings" Title="Type Buildings">
+                        </RadzenDataGridColumn>                                 
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="Description" Title="Description">
+                        </RadzenDataGridColumn>                                 
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="JobDescription" Title="Job Description">
+                        </RadzenDataGridColumn>                                 
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="PhotographicFixationId" Title="Photographic Fixation Id">
+                        </RadzenDataGridColumn>                                 
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="PossibilityOfReconstructionId" Title="Possibility Of Reconstruction Id">
+                        </RadzenDataGridColumn>                                 
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="Note" Title="Note">
+                        </RadzenDataGridColumn>                                 
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                            <Template Context="testModelsReestrDbRegisterOfEmergencyBuilding">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, testModelsReestrDbRegisterOfEmergencyBuilding))" @onclick:stopPropagation="true">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </RadzenDataGrid>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

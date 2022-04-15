@@ -1,0 +1,125 @@
+﻿@page "/fetchdata"
+
+@using Reestr.Logics.Model
+@using Microsoft.EntityFrameworkCore
+@using Reestr.Logics.Infrastructure.Repositories
+@using Reestr.Database.Model
+@using AutoMapper
+@inject Reestr.Logics.Infrastructure.Repositories.DbRepository<Streets> dbContextStreets
+@inject Reestr.Logics.Infrastructure.Repositories.DbRepository<StreetCategory> dbContextStreetCategory
+@inject Reestr.Logics.Infrastructure.Repositories.DbRepository<Reestr.Database.Model.Addressing> dbContextAddressing
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+
+<RadzenDropDown TValue="int" @bind-Value="streetCategoriesId" Placeholder="Select street categores" AllowFiltering="true"
+                Data="@(streetCategories)" TextProperty="NameCategoryUa" ValueProperty="IdStreetCategory">
+
+</RadzenDropDown>
+<RadzenDropDown AllowClear="true" AllowFiltering="true" TValue="int" @bind-Value="streetId" Placeholder="Select street" Data="(streets?.Where(x => x.StreetCategoryId == streetCategoriesId))"
+                ValueProperty="IdStreets" TextProperty="NameStreetsUa" Name="StreetsId">
+    <Template>
+        @(((Streets)context).NameStreetsUa)
+    </Template>
+</RadzenDropDown>
+<RadzenDropDown AllowClear="true" AllowFiltering="true" TValue="int" Placeholder="Select Addressing" Data="(addressings?.Where(x => x.StreetsId == streetId))"
+                ValueProperty="IdAddressing" TextProperty="Number" Name="StreetsId">
+    <Template>
+        @(((Reestr.Database.Model.Addressing )context).Number)
+    </Template>
+</RadzenDropDown>
+
+<RadzenUpload Url="upload/single" Style="margin-bottom: 20px;" Progress="@((arge) => OnProgress(arge, "Single file Upload"))"></RadzenUpload>
+
+<div class="col-md-6>">
+
+    <RadzenCard Style="overflow:auto; height:50px;">
+        <RadzenProgressBar Value="@progress" Unit="@info" Visible="@(progress > 0)" Style="margin-bottom: 20px;"></RadzenProgressBar>
+    </RadzenCard>
+
+    <br />
+
+    <RadzenCard Style="overflow:auto; height:500px;">
+        <RadzenUpload Multiple="true" Url="upload/single" Style="margin-bottom:20px;" Progress="@((arge) => OnProgress(arge, "Single File Upload"))"></RadzenUpload>
+    </RadzenCard>
+
+    <br />
+
+    <RadzenCard Style="overflow:auto; height:500px;">
+        <RadzenUpload Multiple="true" Accept="image/*" Url="upload/single" Style="margin-bottom:20px;" Progress="@((arge) => OnProgress(arge, "Single File Upload"))"></RadzenUpload>
+    </RadzenCard>
+</div>
+
+
+
+
+
+
+@code {
+    IEnumerable<StreetCategory> streetCategories;
+    IEnumerable<Streets> streets;
+    IEnumerable<Reestr.Database.Model.Addressing> addressings;
+
+    int streetCategoriesId;
+    int streetId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var streetCategoriesResult = await dbContextStreetCategory.Get();
+        streetCategories = streetCategoriesResult.ToList();
+
+        var streetResult = await dbContextStreets.Get();
+        streets = streetResult.ToList();
+
+        var addressingsResult = await dbContextAddressing.Get();
+        addressings = addressingsResult.ToList();
+
+    }
+
+    // Upload
+
+    int progress;
+    string info;
+
+    void OnProgress(UploadProgressArgs args, string name)
+    {
+        this.info = $"% '{name}' / Loaded: {args.Loaded}, Total: {args.Total} b, File: {args.Files.Single()}, Progress: {args.Progress}";
+        this.progress = args.Progress;
+    }
+}
+
+
+
+
+
+
+
+@*<RadzenDropDown TValue="int" @bind-Value="streetCategoriesId" Placeholder="Select street categores" AllowFiltering="true"
+                    Data="@(streetCategories)" TextProperty="NameCategoryUa" ValueProperty="IdStreetCategory">
+
+    </RadzenDropDown>
+    <RadzenDropDown AllowClear="true" AllowFiltering="true" TValue="int" @bind-Value="streetId" Placeholder="Select street" Data="(streets?.Where(x => x.StreetCategoryId == streetCategoriesId))"
+                    ValueProperty="IdStreets"  TextProperty="NameStreetsUa" Name="StreetsId" >
+        <Template>
+            @(((Streets)context).NameStreetsUa)
+        </Template>
+    </RadzenDropDown>
+
+    @code {
+        IEnumerable<StreetCategory> streetCategories;
+        IEnumerable<Streets> streets;
+
+        int streetCategoriesId;
+        int streetId;
+
+        protected override async Task OnInitializedAsync()
+        {
+            var streetCategoriesResult = await dbContextStreetCategory.Get();
+            streetCategories = streetCategoriesResult.ToList();
+
+            var streetResult = await dbContextStreets.Get();
+            streets = streetResult.ToList();
+        }
+    }*@

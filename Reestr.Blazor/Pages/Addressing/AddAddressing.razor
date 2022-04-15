@@ -1,0 +1,145 @@
+﻿@page "/addressings/add-addressing"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.Addressings.AddAddressingComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Reestr.Database.Model
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenTemplateForm Data="@addressing" TItem="Addressing" Visible="@(addressing != null)" Submit="@Form0Submit">
+                    <ChildContent>
+
+                        @*<div style="margin-bottom: 1rem" class="row">
+                                <div class="col-md-3">
+                                    <RadzenLabel Component="StreetsId" style="width: 100%" Text="Street">
+                                    </RadzenLabel>
+                                </div>
+                                <div class="col-md-9">
+                                    <RadzenDropDown Data="@getStreetsResult" Placeholder="Choose Street" style="width: 100%" TextProperty="NameStreetsRu" @bind-Value="@(addressing.StreetsId)" ValueProperty="IdStreets" Name="StreetsId">
+                                    </RadzenDropDown>
+                                </div>
+                            </div>*@
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Street Categories" Component="AddressingId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown TValue="int" @bind-Value="streetCategoriesId" Data="@getStreetCategoriesResult" TextProperty="NameCategoryUa"
+                                                ValueProperty="IdStreetCategory" Placeholder="StreetCategories" AllowFiltering="true" style="width: 100%">
+                                </RadzenDropDown>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Street" Component="AddressingId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown AllowClear="true" AllowFiltering="true" Placeholder="Select street" Data="(getStreetsResult?.Where(x => x.StreetCategoryId == streetCategoriesId))"
+                                                ValueProperty="IdStreets" TextProperty="NameStreetsUa" Name="StreetsId" @bind-Value="@(addressing.StreetsId)" style="width: 100%">
+                                </RadzenDropDown>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Component="DistrictsId" style="width: 100%" Text="District">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown Data="@getDistrictsResult" Placeholder="Choose District" style="width: 100%" TextProperty="NameDistricts" @bind-Value="@(addressing.DistrictsId)" ValueProperty="IdDistricts" Name="DistrictsId">
+                                </RadzenDropDown>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Component="Number" style="width: 100%" Text="Number">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="50" style="width: 100%" @bind-Value="@(addressing.Number)" Name="Number">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Component="Frame" style="width: 100%" Text="Frame">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="10" style="width: 100%" @bind-Value="@(addressing.Frame)" Name="Frame">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Component="Letter" style="width: 100%" Text="Letter">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="200" style="width: 100%" @bind-Value="@(addressing.Letter)" Name="Letter">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Component="PostcodeId" style="width: 100%" Text="Postcode">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown Data="@getPostcodesResult" Placeholder="Choose Postcode" style="width: 100%" TextProperty="IdPostcode" @bind-Value="@(addressing.PostcodeId)" ValueProperty="IdPostcode" Name="PostcodeId">
+                                </RadzenDropDown>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Component="AddressTypeId" style="width: 100%" Text="Address Type">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown Data="@getAddressTypesResult" Placeholder="Choose AddressType" style="width: 100%" TextProperty="NameAddressType" @bind-Value="@(addressing.AddressTypeId)" ValueProperty="IdAddressType" Name="AddressTypeId">
+                                </RadzenDropDown>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Component="AddressingMapId" style="width: 100%" Text="Addressing Map Id">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenNumeric style="width: 100%" @bind-Value="@(addressing.AddressingMapId)" Name="AddressingMapId">
+                                </RadzenNumeric>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Component="Floor" style="width: 100%" Text="Floor">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenNumeric style="width: 100%" @bind-Value="@(addressing.Floor)" Name="Floor">
+                                </RadzenNumeric>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col offset-sm-3">
+                                <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="Save">
+                                </RadzenButton>
+                                <RadzenButton ButtonStyle="ButtonStyle.Light" style="margin-left: 1rem" Text="Cancel" Click="@Button2Click">
+                                </RadzenButton>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </RadzenTemplateForm>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

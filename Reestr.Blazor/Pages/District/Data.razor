@@ -1,0 +1,32 @@
+﻿@page "/district/data"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.DistrictsServices.DistrictsComponent
+
+@using Radzen
+@using Radzen.Blazor
+<RadzenContent Container="main">
+    <ChildContent>
+        <RadzenHeading Size="H1" Text="Districts">
+        </RadzenHeading>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@Button0Click">
+                </RadzenButton>
+                <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="Radzen.FilterMode.Advanced" AllowPaging="true" PageSize="15" AllowSorting="true" Data="@getDistrictsResult" TItem="Reestr.Database.Model.Districts" RowSelect="@Grid0RowSelect">
+                    <Columns>
+                        <RadzenDataGridColumn TItem="Reestr.Database.Model.Districts" Property="IdDistricts" Title="Id Districts">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Reestr.Database.Model.Districts" Property="NameDistricts" Title="Name Districts">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Reestr.Database.Model.Districts" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                            <Template Context="testModelsReestrDbDistrict">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, testModelsReestrDbDistrict))" @onclick:stopPropagation="true">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </RadzenDataGrid>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

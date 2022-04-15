@@ -1,0 +1,67 @@
+﻿@page "/addressings/data-addressing"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.Addressings.DataAddressingComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Reestr.Database.Model
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@Button0Click">
+                </RadzenButton>
+           
+                <RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowColumnResize="true"  FilterMode="Radzen.FilterMode.Advanced" AllowPaging="true"
+                                AllowSorting="true" PageSize="15" Data="@getAddressingsResult" TItem="Addressing" RowSelect="@Grid0RowSelect">
+                    <Columns>
+                        <RadzenDataGridColumn TItem="Addressing" Property="IdAddressing" Title="Id">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Addressing" FilterProperty="Street.StreetCategory.NameCategoryUa"  GroupProperty="Street.StreetCategory.NameCategoryUa" Property="Street?.StreetCategory.IdStreetCategory" SortProperty="Street.StreetCategory.NameCategoryUa" Title="Тип вулиць">
+                            <Template Context="data">
+                                @(data.Streets?.StreetCategory.NameCategoryUa)
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Addressing" Property="StreetsId" SortProperty="Street.NameStreetsRu" Width="200px"  GroupProperty="Street.NameStreetsRu" FilterProperty="Street.NameStreetsRu" Title="Назва вулиць">
+                            <Template Context="data">
+                                @(data.Streets?.NameStreetsRu)
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Addressing" Property="DistrictsId" SortProperty="District.NameDistricts" GroupProperty="District.NameDistricts" FilterProperty="District.NameDistricts" Title="Район">
+                            <Template Context="data">
+                                @(data.Districts?.NameDistricts)
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Addressing" Property="Number" Title="Номер">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Addressing" Property="Frame" Title="Корпус">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Addressing" Property="Letter" Title="Літера">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Addressing" Property="Floor" Title="Поверховість">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Addressing" Property="PostcodeId" SortProperty="Postcode.IdPostcode" GroupProperty="Postcode.IdPostcode" FilterProperty="Postcode.IdPostcode" Title="Індекс">
+                            <Template Context="data">
+                                @(data.Postcode?.IdPostcode)
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Addressing" Property="AddressTypeId" SortProperty="AddressType.NameAddressType" GroupProperty="AddressType.NameAddressType" FilterProperty="AddressType.NameAddressType" Title="Тип адреси">
+                            <Template Context="data">
+                                @(data.AddressType?.NameAddressType)
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Addressing" Property="AddressingMapId" Title="Map Id">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Addressing" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                            <Template Context="testModelsReestrDbAddressing">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, testModelsReestrDbAddressing))" @onclick:stopPropagation="true">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </RadzenDataGrid>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

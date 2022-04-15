@@ -1,0 +1,43 @@
+﻿@page "/solutions/solutions"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.Solutions.SolutionComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Reestr.Database.Model
+<RadzenContent Container="main">
+    <ChildContent>
+        <RadzenHeading Size="H1" Text="Solutions">
+        </RadzenHeading>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@Button0Click">
+                </RadzenButton>
+                <RadzenTextBox Placeholder="Search ..." style="display: block; margin-bottom: 10px; width: 100%" Name="Textbox0" @oninput="@(async(args) => {search = $"{args.Value}";await grid0.GoToPage(0);await Load();})">
+                </RadzenTextBox>
+                <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="Radzen.FilterMode.Advanced" AllowPaging="true" AllowSorting="true" 
+                                PageSize="15" Data="@getSolutionsResult" TItem="Solution" RowDoubleClick="@Grid0RowSelect">
+                    <Columns>
+                        <RadzenDataGridColumn TItem="Solution" Property="IdSolution" Title="Id Solution">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Solution" Property="DecisionNumber" Title="Decision Number">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Solution" Property="DecisionDate" FormatString="{0:MM/dd/yyyy}" Title="Decision Date">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Solution" Property="UrlSolution" Title="Url Solution">
+                            <Template Context="data">
+                                <RadzenLink Path="@data.UrlSolution" Text="Go to url" target="_blank" />
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Solution" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                            <Template Context="testModelsReestrDbSolution">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, testModelsReestrDbSolution))" @onclick:stopPropagation="true">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </RadzenDataGrid>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>
