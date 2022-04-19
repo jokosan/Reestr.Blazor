@@ -24,5 +24,11 @@ namespace Reestr.Logics.Infrastructure.UnitOfWorks
         DbRepository<Streets> StreetsUnitOfWork { get; set; }
         DbRepository<TargetLand> TargetLandUnitOfWork { get; set; }
         DbRepository<UrbanPlanningConditions> UrbanPlanningConditionsUnitOfWork { get; set; }
+        DbRepository<TypeOfOwnership> TypeOfOwnershipUnitOfWork { get; set; }
+        DbRepository<BuildingType> BuildingTypeUnitOfWork { get; set; }
+        DbRepository<Microdistrict> MicrodistrictUnitOfWork { get; set; }
+        DbRepository<PhotographicFixation> PhotographicFixationUnitOfWork { get; set; }
+        DbRepository<PossibilityOfReconstruction> PossibilityOfReconstructionUnitOfWork { get; set; }
+
     }
 }

@@ -7,24 +7,72 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Reestr.Logics.Model;
 using Reestr.Logics.Contract.ServiceContract;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Reestr.Database.Model;
+using Reestr.Database.Context;
+using Radzen;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace Reestr.Logics.Service
 {
     public class StreetsService : IStreets
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly DbContextReestr _dbContextReestr;
 
         public StreetsService(
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork, DbContextReestr dbContextReestr)
         {
             _unitOfWork = unitOfWork;
+            _dbContextReestr = dbContextReestr;
         }
 
-        public async Task<IEnumerable<Streets>> GetStreets()
+        public async Task<IQueryable<Streets>> GetStreets(Query query = null)
         {
-            var items = await _unitOfWork.StreetsUnitOfWork.GetInclude("StreetCategory", "Solution");
+            var items = _dbContextReestr.Streets.AsQueryable();
+
+            items = items.Include(i => i.StreetCategory);
+
+            items = items.Include(i => i.Solution);
+
+            if (query != null)
+            {
+                if (!string.IsNullOrEmpty(query.Expand))
+                {
+                    var propertiesToExpand = query.Expand.Split(',');
+                    foreach (var p in propertiesToExpand)
+                    {
+                        items = items.Include(p);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(query.Filter))
+                {
+                    if (query.FilterParameters != null)
+                    {
+                        items = items.Where(query.Filter, query.FilterParameters);
+                    }
+                    else
+                    {
+                        items = items.Where(query.Filter);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(query.OrderBy))
+                {
+                    items = items.OrderBy(query.OrderBy);
+                }
+
+                if (query.Skip.HasValue)
+                {
+                    items = items.Skip(query.Skip.Value);
+                }
+
+                if (query.Top.HasValue)
+                {
+                    items = items.Take(query.Top.Value);
+                }
+            }
 
             return await Task.FromResult(items);
         }

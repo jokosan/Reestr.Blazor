@@ -1,4 +1,4 @@
-﻿ @page "/destructions/add-register-of-emergency-building"
+﻿@page "/destructions/add-register-of-emergency-building"
 @layout MainLayout
 @inherits Reestr.Blazor.Component.Destructions.AddRegisterOfEmergencyBuildingsComponent
 
@@ -12,6 +12,52 @@
             <div class="col-md-12">
                 <RadzenTemplateForm TItem="RegisterOfEmergencyBuildings" Data="@registerofemergencybuilding" Visible="@(registerofemergencybuilding != null)" Submit="@Form0Submit">
                     <ChildContent>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Microdistrict" Component="MicrodistrictId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown AllowClear="true" AllowFiltering="true" @bind-Value="@(registerofemergencybuilding.MicrodistrictId)"
+                                                Placeholder="Choose Microdistrict" Data="@getMicrodistrictsForMicrodistrictIdResult"
+                                                TextProperty="NameMicrodistrict" ValueProperty="IdMicrodistrict" Name="MicrodistrictId" style="width: 100%">
+                                </RadzenDropDown>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Sector Number" Component="SectorNumber" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox style="width: 100%" @bind-Value="@(registerofemergencybuilding.SectorNumber)" Name="SectorNumber">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Building Type" Component="BuildingTypeId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown AllowClear="true" AllowFiltering="false" @bind-Value="@(registerofemergencybuilding.BuildingTypeId)"
+                                                Placeholder="Choose Microdistrict" Data="@getBuildingTypesForBuildingTypeIdResult"
+                                                TextProperty="NameBuildingType" ValueProperty="IdBuildingType" Name="BuildingTypeId" style="width: 100%">
+                                </RadzenDropDown>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Type Of Ownership" Component="TypeOfOwnershipId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown AllowClear="true" AllowFiltering="false" @bind-Value="@(registerofemergencybuilding.TypeOfOwnershipId)"
+                                                Placeholder="Choose Microdistrict" Data="@getTypeOfOwnershipsForTypeOfOwnershipIdResult"
+                                                TextProperty="NameTypeOfOwnership" ValueProperty="IdTypeOfOwnership" Name="TypeOfOwnershipId" style="width: 100%">
+                                </RadzenDropDown>
+                            </div>
+                        </div>
 
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
@@ -19,9 +65,10 @@
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
-                                <RadzenDropDown TValue="int"  @bind-Value="streetCategoriesId" Data="@getStreetCategoriesResult" TextProperty="NameCategoryUa" 
-                                                ValueProperty="IdStreetCategory" Placeholder="StreetCategories" AllowFiltering="true" style="width: 100%">
+                                <RadzenDropDown TValue="int" @bind-Value="streetCategoriesId" Placeholder="Select street categores" AllowFiltering="true"
+                                                Data="@(getStreetCategoriesResult)" TextProperty="NameCategoryUa" ValueProperty="IdStreetCategory" style="width: 100%">
                                 </RadzenDropDown>
+
                             </div>
                         </div>
 
@@ -30,25 +77,24 @@
                                 <RadzenLabel Text="Street" Component="AddressingId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
-                            <div class="col-md-9">                             
+                            <div class="col-md-9">
                                 <RadzenDropDown AllowClear="true" AllowFiltering="true" TValue="int" @bind-Value="streetId" Placeholder="Select street" Data="(getStreetResult?.Where(x => x.StreetCategoryId == streetCategoriesId))"
-                                                ValueProperty="IdStreets" TextProperty="NameStreetsUa" Name="StreetsId" style="width: 100%">                                  
+                                                ValueProperty="IdStreets" TextProperty="NameStreetsUa" Name="StreetsId" style="width: 100%">
                                 </RadzenDropDown>
                             </div>
                         </div>
-
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
                                 <RadzenLabel Text="Addressing" Component="AddressingId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
-                                <RadzenDropDown AllowClear="true" AllowFiltering="true" Placeholder="Select Addressing"  TextProperty="Number" ValueProperty="IdAddressing"
-                                                 Data="(getAddressingsResult?.Where(x => x.StreetsId == streetId))" Name="AddressingId"  @bind-Value="@(registerofemergencybuilding.AddressingId)" style="width: 100%">
+                                <RadzenDropDown AllowClear="true" AllowFiltering="true" @bind-Value="@(registerofemergencybuilding.AddressingId)"
+                                                Placeholder="Select Addressing" Data="(getAddressingsForAddressingIdResult?.Where(x => x.StreetsId == streetId))"
+                                                ValueProperty="IdAddressing" TextProperty="Number" Name="StreetsId" style="width: 100%">
                                 </RadzenDropDown>
                             </div>
                         </div>
-
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
                                 <RadzenLabel Text="Type Of Destruction" Component="TypeOfDestruction" style="width: 100%">
@@ -59,7 +105,6 @@
                                 </RadzenTextBox>
                             </div>
                         </div>
-
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
                                 <RadzenLabel Text="Type Buildings" Component="TypeBuildings" style="width: 100%">
@@ -70,7 +115,6 @@
                                 </RadzenTextBox>
                             </div>
                         </div>
-
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
                                 <RadzenLabel Text="Description" Component="Description" style="width: 100%">
@@ -81,7 +125,6 @@
                                 </RadzenTextBox>
                             </div>
                         </div>
-
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
                                 <RadzenLabel Text="Job Description" Component="JobDescription" style="width: 100%">
@@ -94,22 +137,14 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Photographic Fixation Id" Component="PhotographicFixationId" style="width: 100%">
+                                <RadzenLabel Text="Photographic Fixation" Component="PhotographicFixationId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
-                                <RadzenNumeric style="width: 100%" @bind-Value="@(registerofemergencybuilding.PhotographicFixationId)" Name="PhotographicFixationId">
-                                </RadzenNumeric>
-                            </div>
-                        </div>
-                        <div style="margin-bottom: 1rem" class="row">
-                            <div class="col-md-3">
-                                <RadzenLabel Text="Possibility Of Reconstruction Id" Component="PossibilityOfReconstructionId" style="width: 100%">
-                                </RadzenLabel>
-                            </div>
-                            <div class="col-md-9">
-                                <RadzenNumeric style="width: 100%" @bind-Value="@(registerofemergencybuilding.PossibilityOfReconstructionId)" Name="PossibilityOfReconstructionId">
-                                </RadzenNumeric>
+                                <RadzenUpload Url="upload/multiple" Style="margin-bottom: 20px; width: 100%" Progress="@((arge) => OnProgress(arge, "Single file Upload"))"></RadzenUpload>
+                                <RadzenCard Style="overflow: auto; height: 50px; width: 100%">
+                                    <RadzenProgressBar Value="@progress" Unit="@info" Visible="@(progress > 0)" Style="margin-bottom: 20px; width: 100%"></RadzenProgressBar>
+                                </RadzenCard>
                             </div>
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
@@ -118,8 +153,7 @@
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
-                                <RadzenTextBox MaxLength="2000" style="width: 100%" @bind-Value="@(registerofemergencybuilding.Note)" Name="Note">
-                                </RadzenTextBox>
+                                    <RadzenTextArea MaxLength="2000" style="width: 100%" @bind-Value="@(registerofemergencybuilding.Note)" Name="Note" />
                             </div>
                         </div>
                         <div class="row">

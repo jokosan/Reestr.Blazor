@@ -55,6 +55,26 @@ namespace Reestr.Blazor.Component.Destructions
         [Inject]
         protected RegisterOfEmergencyBuildingsServices RegisterOfEmergencyBuildingsSer { get; set; }
 
+        string _search;
+        protected string search
+        {
+            get
+            {
+                return _search;
+            }
+            set
+            {
+                if (!object.Equals(_search, value))
+                {
+                    var args = new PropertyChangedEventArgs() { Name = "search", NewValue = value, OldValue = _search };
+                    _search = value;
+                    OnPropertyChanged(args);
+                    Reload();
+                }
+            }
+        }
+
+
         IEnumerable<RegisterOfEmergencyBuildings> _getRegisterOfEmergencyBuildingsResult;
 
         protected IEnumerable<RegisterOfEmergencyBuildings> getRegisterOfEmergencyBuildingsResult
@@ -81,21 +101,21 @@ namespace Reestr.Blazor.Component.Destructions
         }
         protected async System.Threading.Tasks.Task Load()
         {
-            var reestrDbGetRegisterOfEmergencyBuildingsResult = await RegisterOfEmergencyBuildingsSer.GetRegisterOfEmergencyBuildings();
+            var reestrDbGetRegisterOfEmergencyBuildingsResult = await RegisterOfEmergencyBuildingsSer.GetRegisterOfEmergencyBuildings(new Query() { Filter = $@"i => i.SectorNumber.Contains(@0) || i.TypeOfDestruction.Contains(@1) || i.TypeBuildings.Contains(@2) || i.Description.Contains(@3) || i.JobDescription.Contains(@4) || i.Note.Contains(@5)", FilterParameters = new object[] { search, search, search, search, search, search }, Expand = "Microdistrict,BuildingType,TypeOfOwnership,Addressing,PhotographicFixation,PossibilityOfReconstruction" });
             getRegisterOfEmergencyBuildingsResult = reestrDbGetRegisterOfEmergencyBuildingsResult;
         }
 
         protected async System.Threading.Tasks.Task Button0Click(MouseEventArgs args)
         {
-            var dialogResult = await DialogService.OpenAsync<AddRegisterOfEmergencyBuilding>("Add Register Of Emergency Building", null);
+            var dialogResult = await DialogService.OpenAsync<AddRegisterOfEmergencyBuilding>("Додати в реєстр аварійних будівель та споруд", null);
             await grid0.Reload();
 
             await InvokeAsync(() => { StateHasChanged(); });
         }
 
-        protected async System.Threading.Tasks.Task Grid0RowSelect(RegisterOfEmergencyBuildings args)
+        protected async System.Threading.Tasks.Task Grid0RowSelect(DataGridRowMouseEventArgs<RegisterOfEmergencyBuildings> args)
         {
-            var dialogResult = await DialogService.OpenAsync<EditRegisterOfEmergencyBuilding>("Edit Register Of Emergency Building", new Dictionary<string, object>() { { "IdRegisterOfEmergencyBuildings", args.IdRegisterOfEmergencyBuildings } });
+            var dialogResult = await DialogService.OpenAsync<EditRegisterOfEmergencyBuilding>("Редагувати реєстр аварійних будівель та споруд", new Dictionary<string, object>() { { "IdRegisterOfEmergencyBuildings", args.Data.IdRegisterOfEmergencyBuildings } });
             await InvokeAsync(() => { StateHasChanged(); });
         }
 

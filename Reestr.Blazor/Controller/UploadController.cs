@@ -25,7 +25,7 @@ namespace Reestr.Blazor.Controller
         {
             try
             {
-               await UploadFile(file);
+               await UploadFile(file, "Solutions");
                 return StatusCode(200);
             }
             catch(Exception ex)
@@ -42,7 +42,7 @@ namespace Reestr.Blazor.Controller
             {
                 foreach (var item in files)
                 {
-                    await UploadFile(item);
+                    await UploadFile(item, "RegisterOfEmergencyBuildings");
                 }
 
                 return StatusCode(200);
@@ -54,11 +54,11 @@ namespace Reestr.Blazor.Controller
             }
         }
 
-        public async Task UploadFile(IFormFile file)
+        public async Task UploadFile(IFormFile file, string folderName)
         {
             if (file != null && file.Length > 0)
             {
-                var imagePath = @"\Upload";
+                var imagePath = @"\" + folderName;
                 var uploadPath = _environment.WebRootPath + imagePath;
 
                 if (!Directory.Exists(uploadPath))

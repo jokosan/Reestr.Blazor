@@ -31,6 +31,11 @@ namespace Reestr.Logics.Infrastructure.UnitOfWorks
         private DbRepository<Streets> StreetsUW { get; set; }
         private DbRepository<TargetLand> TargetLandUW { get; set; }
         private DbRepository<UrbanPlanningConditions> UrbanPlanningConditionsUW { get; set; }
+        private DbRepository<TypeOfOwnership> TypeOfOwnershipUW { get; set; }
+        private DbRepository<BuildingType> BuildingTypeUW { get; set; }
+        private DbRepository<Microdistrict> MicrodistrictUW { get; set; }
+        private DbRepository<PhotographicFixation> PhotographicFixationUW { get; set; }
+        private DbRepository<PossibilityOfReconstruction> PossibilityOfReconstructionUW { get; set; }
 
 
         public DbRepository<Addressing> AddressingUnitOfWork { get => AddressingUW ?? (AddressingUW = new DbRepository<Addressing>(_dbContextReestr)); set => AddressingUW = value; }
@@ -47,12 +52,17 @@ namespace Reestr.Logics.Infrastructure.UnitOfWorks
         public DbRepository<Streets> StreetsUnitOfWork { get => StreetsUW ?? (StreetsUW = new DbRepository<Streets>(_dbContextReestr)); set => StreetsUW = value; }
         public DbRepository<TargetLand> TargetLandUnitOfWork { get => TargetLandUW ?? (TargetLandUW = new DbRepository<TargetLand>(_dbContextReestr)); set => TargetLandUW = value; }
         public DbRepository<UrbanPlanningConditions> UrbanPlanningConditionsUnitOfWork { get => UrbanPlanningConditionsUW ?? (UrbanPlanningConditionsUW = new DbRepository<UrbanPlanningConditions>(_dbContextReestr)); set => UrbanPlanningConditionsUW = value; }
+        public DbRepository<TypeOfOwnership> TypeOfOwnershipUnitOfWork { get => TypeOfOwnershipUW ?? (TypeOfOwnershipUW = new DbRepository<TypeOfOwnership>(_dbContextReestr)); set => TypeOfOwnershipUW = value; }
+        public DbRepository<BuildingType> BuildingTypeUnitOfWork { get => BuildingTypeUW ?? (BuildingTypeUW = new DbRepository<BuildingType>(_dbContextReestr)); set => BuildingTypeUW = value; }
+        public DbRepository<Microdistrict> MicrodistrictUnitOfWork { get => MicrodistrictUW ?? (MicrodistrictUW = new DbRepository<Microdistrict>(_dbContextReestr)); set => MicrodistrictUW = value; }
+        public DbRepository<PhotographicFixation> PhotographicFixationUnitOfWork { get => PhotographicFixationUW ?? (PhotographicFixationUW = new DbRepository<PhotographicFixation>(_dbContextReestr)); set => PhotographicFixationUW = value; }
+        public DbRepository<PossibilityOfReconstruction> PossibilityOfReconstructionUnitOfWork { get => PossibilityOfReconstructionUW ?? (PossibilityOfReconstructionUW = new DbRepository<PossibilityOfReconstruction>(_dbContextReestr)); set => PossibilityOfReconstructionUW = value; }
 
 
         #region Dispose
         private bool disposed = false;
 
-      
+
         public void Dispose()
         {
             Dispose(true);

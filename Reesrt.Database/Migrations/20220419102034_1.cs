@@ -61,19 +61,6 @@ namespace Reestr.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PhotographicFixation",
-                columns: table => new
-                {
-                    IdPhotographicFixation = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Url = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PhotographicFixation", x => x.IdPhotographicFixation);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PlotAssignments",
                 columns: table => new
                 {
@@ -377,12 +364,6 @@ namespace Reestr.Database.Migrations
                         principalColumn: "IdMicrodistrict",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RegisterOfEmergencyBuildings_PhotographicFixation_PhotographicFixationId",
-                        column: x => x.PhotographicFixationId,
-                        principalTable: "PhotographicFixation",
-                        principalColumn: "IdPhotographicFixation",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_RegisterOfEmergencyBuildings_PossibilityOfReconstruction_PossibilityOfReconstructionId",
                         column: x => x.PossibilityOfReconstructionId,
                         principalTable: "PossibilityOfReconstruction",
@@ -434,6 +415,26 @@ namespace Reestr.Database.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PhotographicFixation",
+                columns: table => new
+                {
+                    IdPhotographicFixation = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisterOfEmergencyBuildingsId = table.Column<int>(type: "int", nullable: true),
+                    Url = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PhotographicFixation", x => x.IdPhotographicFixation);
+                    table.ForeignKey(
+                        name: "FK_PhotographicFixation_RegisterOfEmergencyBuildings_RegisterOfEmergencyBuildingsId",
+                        column: x => x.RegisterOfEmergencyBuildingsId,
+                        principalTable: "RegisterOfEmergencyBuildings",
+                        principalColumn: "IdRegisterOfEmergencyBuildings",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Addressings_AddressTypeId",
                 table: "Addressings",
@@ -475,6 +476,11 @@ namespace Reestr.Database.Migrations
                 column: "TargetLandId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PhotographicFixation_RegisterOfEmergencyBuildingsId",
+                table: "PhotographicFixation",
+                column: "RegisterOfEmergencyBuildingsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProjectArchives_AddressingId",
                 table: "ProjectArchives",
                 column: "AddressingId");
@@ -493,11 +499,6 @@ namespace Reestr.Database.Migrations
                 name: "IX_RegisterOfEmergencyBuildings_MicrodistrictId",
                 table: "RegisterOfEmergencyBuildings",
                 column: "MicrodistrictId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RegisterOfEmergencyBuildings_PhotographicFixationId",
-                table: "RegisterOfEmergencyBuildings",
-                column: "PhotographicFixationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RegisterOfEmergencyBuildings_PossibilityOfReconstructionId",
@@ -536,13 +537,22 @@ namespace Reestr.Database.Migrations
                 name: "ConstructionPassports");
 
             migrationBuilder.DropTable(
+                name: "PhotographicFixation");
+
+            migrationBuilder.DropTable(
                 name: "ProjectArchives");
+
+            migrationBuilder.DropTable(
+                name: "UrbanPlanningConditions");
 
             migrationBuilder.DropTable(
                 name: "RegisterOfEmergencyBuildings");
 
             migrationBuilder.DropTable(
-                name: "UrbanPlanningConditions");
+                name: "Lands");
+
+            migrationBuilder.DropTable(
+                name: "Addressings");
 
             migrationBuilder.DropTable(
                 name: "BuildingType");
@@ -551,19 +561,16 @@ namespace Reestr.Database.Migrations
                 name: "Microdistrict");
 
             migrationBuilder.DropTable(
-                name: "PhotographicFixation");
-
-            migrationBuilder.DropTable(
                 name: "PossibilityOfReconstruction");
 
             migrationBuilder.DropTable(
                 name: "TypeOfOwnership");
 
             migrationBuilder.DropTable(
-                name: "Addressings");
+                name: "PlotAssignments");
 
             migrationBuilder.DropTable(
-                name: "Lands");
+                name: "targetLands");
 
             migrationBuilder.DropTable(
                 name: "AddressTypes");
@@ -576,12 +583,6 @@ namespace Reestr.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "Streets");
-
-            migrationBuilder.DropTable(
-                name: "PlotAssignments");
-
-            migrationBuilder.DropTable(
-                name: "targetLands");
 
             migrationBuilder.DropTable(
                 name: "Solutions");

@@ -57,6 +57,25 @@ namespace Reestr.Blazor.Component.Urbanonymy
         protected DbRepository<Streets> ReestrDb { get; set; }
         protected RadzenDataGrid<Streets> grid0;
 
+        string _search;
+        protected string search
+        {
+            get
+            {
+                return _search;
+            }
+            set
+            {
+                if (!object.Equals(_search, value))
+                {
+                    var args = new PropertyChangedEventArgs() { Name = "search", NewValue = value, OldValue = _search };
+                    _search = value;
+                    OnPropertyChanged(args);
+                    Reload();
+                }
+            }
+        }
+
         IEnumerable<Streets> _getStreetsResult;
         protected IEnumerable<Streets> getStreetsResult
         {
@@ -82,7 +101,12 @@ namespace Reestr.Blazor.Component.Urbanonymy
         }
         protected async Task Load()
         {
-            var reestrDbGetStreetsResult = await _streetsService.GetStreets();
+            if (string.IsNullOrEmpty(search))
+            {
+                search = "";
+            }
+
+            var reestrDbGetStreetsResult = await _streetsService.GetStreets(new Query() { Filter = $@"i => i.NameStreetsRu.Contains(@0) || i.NameStreetsUa.Contains(@1)", FilterParameters = new object[] { search, search }, Expand = "StreetCategory,Solution" });
             getStreetsResult = reestrDbGetStreetsResult;
         }
 

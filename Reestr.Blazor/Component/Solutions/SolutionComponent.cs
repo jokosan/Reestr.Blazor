@@ -70,25 +70,6 @@ namespace Reestr.Blazor.Component.Solutions
             }
         }
 
-        string _search;
-        protected string search
-        {
-            get
-            {
-                return _search;
-            }
-            set
-            {
-                if (!object.Equals(_search, value))
-                {
-                    var args = new PropertyChangedEventArgs() { Name = "search", NewValue = value, OldValue = _search };
-                    _search = value;
-                    OnPropertyChanged(args);
-                    Reload();
-                }
-            }
-        }
-
         protected override async System.Threading.Tasks.Task OnInitializedAsync()
         {
             await Load();

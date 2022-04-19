@@ -233,11 +233,16 @@ namespace Reestr.Database.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("RegisterOfEmergencyBuildingsId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Url")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.HasKey("IdPhotographicFixation");
+
+                    b.HasIndex("RegisterOfEmergencyBuildingsId");
 
                     b.ToTable("PhotographicFixation");
                 });
@@ -391,8 +396,6 @@ namespace Reestr.Database.Migrations
                     b.HasIndex("BuildingTypeId");
 
                     b.HasIndex("MicrodistrictId");
-
-                    b.HasIndex("PhotographicFixationId");
 
                     b.HasIndex("PossibilityOfReconstructionId");
 
@@ -644,6 +647,15 @@ namespace Reestr.Database.Migrations
                     b.Navigation("TargetLand");
                 });
 
+            modelBuilder.Entity("Reestr.Database.Model.PhotographicFixation", b =>
+                {
+                    b.HasOne("Reestr.Database.Model.RegisterOfEmergencyBuildings", "RegisterOfEmergencyBuildings")
+                        .WithMany("PhotographicFixation")
+                        .HasForeignKey("RegisterOfEmergencyBuildingsId");
+
+                    b.Navigation("RegisterOfEmergencyBuildings");
+                });
+
             modelBuilder.Entity("Reestr.Database.Model.ProjectArchive", b =>
                 {
                     b.HasOne("Reestr.Database.Model.Addressing", "Addressing")
@@ -669,11 +681,7 @@ namespace Reestr.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Reestr.Database.Model.PhotographicFixation", null)
-                        .WithMany("RegisterOfEmergencyBuildings")
-                        .HasForeignKey("PhotographicFixationId");
-
-                    b.HasOne("Reestr.Database.Model.PossibilityOfReconstruction", null)
+                    b.HasOne("Reestr.Database.Model.PossibilityOfReconstruction", "PossibilityOfReconstruction")
                         .WithMany("RegisterOfEmergencyBuildings")
                         .HasForeignKey("PossibilityOfReconstructionId");
 
@@ -686,6 +694,8 @@ namespace Reestr.Database.Migrations
                     b.Navigation("BuildingType");
 
                     b.Navigation("Microdistrict");
+
+                    b.Navigation("PossibilityOfReconstruction");
 
                     b.Navigation("TypeOfOwnership");
                 });
@@ -758,11 +768,6 @@ namespace Reestr.Database.Migrations
                     b.Navigation("RegisterOfEmergencyBuildings");
                 });
 
-            modelBuilder.Entity("Reestr.Database.Model.PhotographicFixation", b =>
-                {
-                    b.Navigation("RegisterOfEmergencyBuildings");
-                });
-
             modelBuilder.Entity("Reestr.Database.Model.PlotAssignment", b =>
                 {
                     b.Navigation("Lands");
@@ -776,6 +781,11 @@ namespace Reestr.Database.Migrations
             modelBuilder.Entity("Reestr.Database.Model.Postcode", b =>
                 {
                     b.Navigation("Addressings");
+                });
+
+            modelBuilder.Entity("Reestr.Database.Model.RegisterOfEmergencyBuildings", b =>
+                {
+                    b.Navigation("PhotographicFixation");
                 });
 
             modelBuilder.Entity("Reestr.Database.Model.Solution", b =>

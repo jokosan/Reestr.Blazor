@@ -14,12 +14,54 @@
                     <ChildContent>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
+                                <RadzenLabel Text="Microdistrict" Component="MicrodistrictId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDownDataGrid Data="@getMicrodistrictsForMicrodistrictIdResult" TextProperty="NameMicrodistrict" ValueProperty="IdMicrodistrict" Placeholder="Choose Microdistrict" ShowSearch="false" style="display: block; width: 100%" @bind-Value="@(registerofemergencybuilding.MicrodistrictId)" Name="MicrodistrictId">
+                                </RadzenDropDownDataGrid>
+                                <RadzenRequiredValidator Component="MicrodistrictId" Text="MicrodistrictId is required" style="position: absolute" DefaultValue="0">
+                                </RadzenRequiredValidator>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Sector Number" Component="SectorNumber" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox style="width: 100%" @bind-Value="@(registerofemergencybuilding.SectorNumber)" Name="SectorNumber">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Building Type" Component="BuildingTypeId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDownDataGrid Data="@getBuildingTypesForBuildingTypeIdResult" TextProperty="NameBuildingType" ValueProperty="IdBuildingType" Placeholder="Choose BuildingType" ShowSearch="false" style="width: 100%" @bind-Value="@(registerofemergencybuilding.BuildingTypeId)" Name="BuildingTypeId">
+                                </RadzenDropDownDataGrid>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Type Of Ownership" Component="TypeOfOwnershipId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDownDataGrid Data="@getTypeOfOwnershipsForTypeOfOwnershipIdResult" TextProperty="NameTypeOfOwnership" ValueProperty="IdTypeOfOwnership" Placeholder="Choose TypeOfOwnership" ShowSearch="false" style="width: 100%" @bind-Value="@(registerofemergencybuilding.TypeOfOwnershipId)" Name="TypeOfOwnershipId">
+                                </RadzenDropDownDataGrid>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
                                 <RadzenLabel Text="Addressing" Component="AddressingId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
-                                <RadzenDropDown Data="@getAddressingsResult" TextProperty="Number" ValueProperty="IdAddressing" Placeholder="Choose Addressing" style="width: 100%" @bind-Value="@(registerofemergencybuilding.AddressingId)" Name="AddressingId">
-                                </RadzenDropDown>
+                                <RadzenDropDownDataGrid Data="@getAddressingsForAddressingIdResult" TextProperty="Number" ValueProperty="IdAddressing" Placeholder="Choose Addressing" ShowSearch="false" style="width: 100%" @bind-Value="@(registerofemergencybuilding.AddressingId)" Name="AddressingId">
+                                </RadzenDropDownDataGrid>
                             </div>
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
@@ -64,22 +106,22 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Photographic Fixation Id" Component="PhotographicFixationId" style="width: 100%">
+                                <RadzenLabel Text="Photographic Fixation" Component="PhotographicFixationId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
-                                <RadzenNumeric style="width: 100%" @bind-Value="@(registerofemergencybuilding.PhotographicFixationId)" Name="PhotographicFixationId">
-                                </RadzenNumeric>
+                                <RadzenDropDownDataGrid Data="@getPhotographicFixationsForPhotographicFixationIdResult" TextProperty="Url" ValueProperty="IdPhotographicFixation" Placeholder="Choose PhotographicFixation" ShowSearch="false" style="width: 100%" @bind-Value="@(registerofemergencybuilding.PhotographicFixationId)" Name="PhotographicFixationId">
+                                </RadzenDropDownDataGrid>
                             </div>
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Possibility Of Reconstruction Id" Component="PossibilityOfReconstructionId" style="width: 100%">
+                                <RadzenLabel Text="Possibility Of Reconstruction" Component="PossibilityOfReconstructionId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
-                                <RadzenNumeric style="width: 100%" @bind-Value="@(registerofemergencybuilding.PossibilityOfReconstructionId)" Name="PossibilityOfReconstructionId">
-                                </RadzenNumeric>
+                                <RadzenDropDownDataGrid Data="@getPossibilityOfReconstructionsForPossibilityOfReconstructionIdResult" TextProperty="ScanDoc" ValueProperty="IdPossibilityOfReconstruction" Placeholder="Choose PossibilityOfReconstruction" ShowSearch="false" style="width: 100%" @bind-Value="@(registerofemergencybuilding.PossibilityOfReconstructionId)" Name="PossibilityOfReconstructionId">
+                                </RadzenDropDownDataGrid>
                             </div>
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
@@ -96,7 +138,7 @@
                             <div class="col offset-sm-3">
                                 <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Primary">
                                 </RadzenButton>
-                                <RadzenButton ButtonStyle="ButtonStyle.Light" style="margin-left: 1rem" Text="Cancel" Click="@Button2Click">
+                                <RadzenButton ButtonStyle="ButtonStyle.Light" style="margin-left: 1rem" Text="Cancel" Click="@Button4Click">
                                 </RadzenButton>
                             </div>
                         </div>

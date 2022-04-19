@@ -12,9 +12,7 @@
         <div class="row">
             <div class="col-md-12">
                 <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@Button0Click">
-                </RadzenButton>
-                <RadzenTextBox Placeholder="Search ..." style="display: block; margin-bottom: 10px; width: 100%" Name="Textbox0" @oninput="@(async(args) => {search = $"{args.Value}";await grid0.GoToPage(0);await Load();})">
-                </RadzenTextBox>
+                </RadzenButton>              
                 <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="Radzen.FilterMode.Advanced" AllowPaging="true" AllowSorting="true" 
                                 PageSize="15" Data="@getSolutionsResult" TItem="Solution" RowDoubleClick="@Grid0RowSelect">
                     <Columns>
