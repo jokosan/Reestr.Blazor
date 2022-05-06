@@ -8,22 +8,26 @@
 
 <RadzenContent Container="main">
     <ChildContent>
-        <RadzenHeading Size="H1" Text="Реєстр аварійних будівель та споруд">
+        <RadzenHeading Size="H1" Text="Реєстр пошкоджених об'єктів будівництва">
         </RadzenHeading>
         <div class="row">
             <div class="col-md-12">
-                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@Button0Click">
-                </RadzenButton>          
-                <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="Radzen.FilterMode.Advanced" RowDoubleClick="@Grid0RowSelect"  AllowColumnResize="true"  AllowPaging="true" PageSize="15" AllowSorting="true" Data="@getRegisterOfEmergencyBuildingsResult" TItem="RegisterOfEmergencyBuildings">
+
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Додати" Click="@Button0Click">
+                </RadzenButton>
+                <RadzenButton Icon="announcement" style="margin-bottom: 10px" Text="Аналітичний звіт" Click="@ButtonSratisticClick" ButtonStyle="ButtonStyle.Info">
+                </RadzenButton>
+
+                <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="Radzen.FilterMode.Advanced" RowDoubleClick="@Grid0RowSelect" AllowColumnPicking="true" AllowColumnResize="true" AllowPaging="true" PageSize="15" AllowSorting="true" Data="@getRegisterOfEmergencyBuildingsResult" TItem="RegisterOfEmergencyBuildings">
                     <Columns>
-                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="IdRegisterOfEmergencyBuildings" Title="Id">
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Visible="false" Property="IdRegisterOfEmergencyBuildings" Title="Id">
                         </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="MicrodistrictId" SortProperty="Microdistrict.NameMicrodistrict" GroupProperty="Microdistrict.NameMicrodistrict" FilterProperty="Microdistrict.NameMicrodistrict" Title="Мікрорайон">
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Visible="false" Property="MicrodistrictId" SortProperty="Microdistrict.NameMicrodistrict" GroupProperty="Microdistrict.NameMicrodistrict" FilterProperty="Microdistrict.NameMicrodistrict" Title="Мікрорайон">
                             <Template Context="data">
                                 @(data.Microdistrict?.NameMicrodistrict)
                             </Template>
                         </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="SectorNumber" Title="Номер ділянки">
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Visible="false" Property="SectorNumber" Title="Номер ділянки">
                         </RadzenDataGridColumn>
                         <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="BuildingTypeId" SortProperty="BuildingType.NameBuildingType" GroupProperty="BuildingType.NameBuildingType" FilterProperty="BuildingType.NameBuildingType" Title="Тип будівлі">
                             <Template Context="data">
@@ -35,37 +39,52 @@
                                 @(data.TypeOfOwnership?.NameTypeOfOwnership)
                             </Template>
                         </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="AddressingId" SortProperty="Addressing.Streets.StreetCategory.NameCategoryUa" GroupProperty="Addressing.Streets.StreetCategory.NameCategoryUa" FilterProperty="Addressing.Streets.StreetCategory.NameCategoryUa" Title="Тип вулиць">
+                            <Template Context="data">
+                                @(data.Addressing?.Streets.StreetCategory.NameCategoryUa)
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="AddressingId" SortProperty="Addressing.Streets.NameStreetsUa" GroupProperty="Addressing.Streets.NameStreetsUa" FilterProperty="Addressing.Streets.NameStreetsUa" Title="Назва вулиць">
+                            <Template Context="data">
+                                @(data.Addressing?.Streets.NameStreetsUa)
+                            </Template>
+                        </RadzenDataGridColumn>
                         <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="AddressingId" SortProperty="Addressing.Number" GroupProperty="Addressing.Number" FilterProperty="Addressing.Number" Title="Адреса">
                             <Template Context="data">
-                                @(data.Addressing.Streets.StreetCategory.NameCategoryUa)
-                                @(data.Addressing.Streets.NameStreetsUa)
                                 @(data.Addressing?.Number)
                             </Template>
                         </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuilding" Property="TypeOfDestruction" Title="Тип руйнування">
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="TypeOfDestruction" Title="Характер руйнування">
                         </RadzenDataGridColumn>
-                        @*<RadzenDataGridColumn TItem="RegisterOfEmergencyBuilding" Property="TypeBuildings" Title="Type Buildings">
-                        </RadzenDataGridColumn>*@
-                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuilding" Property="Description" Title="Опис">
-                        </RadzenDataGridColumn> 
-                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuilding" Property="JobDescription" Title="Описання роботи">
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="TypeBuildings" Title="Функціонального використання">
                         </RadzenDataGridColumn>
-                        @*<RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="PhotographicFixationId" SortProperty="PhotographicFixation.Url" GroupProperty="PhotographicFixation.Url" FilterProperty="PhotographicFixation.Url" Title="Фотофіксація">
-                            <Template Context="data">
-                                @(data.PhotographicFixation?.Url)
-                            </Template>
-                        </RadzenDataGridColumn>*@
-                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="PossibilityOfReconstructionId" SortProperty="PossibilityOfReconstruction.ScanDoc" GroupProperty="PossibilityOfReconstruction.ScanDoc" FilterProperty="PossibilityOfReconstruction.ScanDoc" Title="Можливість реконструкції">
-                            <Template Context="data">
-                                @(data.PossibilityOfReconstruction?.ScanDoc)
-                            </Template>
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="Description" Title="Опис руйнування">
                         </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuilding" Property="Note" Title="Примітка">
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="JobDescription" Title="Опис роботи">
                         </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuilding" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                        @*<RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="PhotographicFixationId" Title="Photographic Fixation Id">
+                </RadzenDataGridColumn>*@
+                        @*<RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="PossibilityOfReconstructionId" SortProperty="PossibilityOfReconstruction.ScanDoc" GroupProperty="PossibilityOfReconstruction.ScanDoc" FilterProperty="PossibilityOfReconstruction.ScanDoc" Title="Possibility Of Reconstruction">
+                    <Template Context="data">
+                        @(data.PossibilityOfReconstruction?.ScanDoc)
+                    </Template>
+                </RadzenDataGridColumn>*@
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="Note" Title="Примітка">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Visible="false" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
                             <Template Context="demoRaszenModelsReestrDbDgaRegisterOfEmergencyBuilding">
+
                                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, demoRaszenModelsReestrDbDgaRegisterOfEmergencyBuilding))" @onclick:stopPropagation="true">
                                 </RadzenButton>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Visible="true" Filterable="false" Sortable="false" Width="50px" TextAlign="TextAlign.Center">
+                            <Template Context="RegisterOfEmergencyBuilding">
+                                @if (RegisterOfEmergencyBuilding.PhotographicFixation.FirstOrDefault() != null)
+                                {
+            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="pageview" Size="ButtonSize.Small" Click="@((args) =>ButtonClickImgPage(RegisterOfEmergencyBuilding.IdRegisterOfEmergencyBuildings))" @onclick:stopPropagation="true">
+            </RadzenButton>
+}
                             </Template>
                         </RadzenDataGridColumn>
                     </Columns>

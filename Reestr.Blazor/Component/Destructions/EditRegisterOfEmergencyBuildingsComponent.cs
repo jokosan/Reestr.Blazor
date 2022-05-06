@@ -10,6 +10,7 @@ using Reestr.Blazor.Services;
 using Reestr.Database.Model;
 using Reestr.Logics.Infrastructure.UnitOfWorks;
 using Reestr.Logics.Service;
+using Reestr.Logics.Modul.Upload;
 
 namespace Reestr.Blazor.Component.Destructions
 {
@@ -49,7 +50,12 @@ namespace Reestr.Blazor.Component.Destructions
         protected UnitOfWork ReestrDb { get; set; }
 
         [Inject]
+        protected PhotographicFixationServices PhotographicFixationService { get; set; }
+
+        [Inject]
         protected RegisterOfEmergencyBuildingsServices RegisterOfEmergencyBuildingsSer { get; set; }
+        [Inject]
+        protected AddressingServices AddressingService { get; set; }
 
         [Parameter]
         public dynamic IdRegisterOfEmergencyBuildings { get; set; }
@@ -171,24 +177,6 @@ namespace Reestr.Blazor.Component.Destructions
             }
         }
 
-        IEnumerable<PhotographicFixation> _getPhotographicFixationsForPhotographicFixationIdResult;
-        protected IEnumerable<PhotographicFixation> getPhotographicFixationsForPhotographicFixationIdResult
-        {
-            get
-            {
-                return _getPhotographicFixationsForPhotographicFixationIdResult;
-            }
-            set
-            {
-                if (!object.Equals(_getPhotographicFixationsForPhotographicFixationIdResult, value))
-                {
-                    var args = new PropertyChangedEventArgs() { Name = "getPhotographicFixationsForPhotographicFixationIdResult", NewValue = value, OldValue = _getPhotographicFixationsForPhotographicFixationIdResult };
-                    _getPhotographicFixationsForPhotographicFixationIdResult = value;
-                    OnPropertyChanged(args);
-                    Reload();
-                }
-            }
-        }
 
         IEnumerable<PossibilityOfReconstruction> _getPossibilityOfReconstructionsForPossibilityOfReconstructionIdResult;
         protected IEnumerable<PossibilityOfReconstruction> getPossibilityOfReconstructionsForPossibilityOfReconstructionIdResult
@@ -212,7 +200,7 @@ namespace Reestr.Blazor.Component.Destructions
         {
             await Load();
         }
-        protected async System.Threading.Tasks.Task Load()
+        protected async Task Load()
         {
             var reestrDbGetRegisterOfEmergencyBuildingByIdRegisterOfEmergencyBuildingsResult = await RegisterOfEmergencyBuildingsSer.GetRegisterOfEmergencyBuildingByIdRegisterOfEmergencyBuildings(IdRegisterOfEmergencyBuildings);
             registerofemergencybuilding = reestrDbGetRegisterOfEmergencyBuildingByIdRegisterOfEmergencyBuildingsResult;
@@ -226,11 +214,8 @@ namespace Reestr.Blazor.Component.Destructions
             var reestrDbDgaGetTypeOfOwnershipsResult = await ReestrDb.TypeOfOwnershipUnitOfWork.Get();
             getTypeOfOwnershipsForTypeOfOwnershipIdResult = reestrDbDgaGetTypeOfOwnershipsResult;
 
-            var reestrDbDgaGetAddressingsResult = await ReestrDb.AddressingUnitOfWork.Get();
+            var reestrDbDgaGetAddressingsResult = await AddressingService.GetAddressings();
             getAddressingsForAddressingIdResult = reestrDbDgaGetAddressingsResult;
-
-            var reestrDbDgaGetPhotographicFixationsResult = await ReestrDb.PhotographicFixationUnitOfWork.Get();
-            getPhotographicFixationsForPhotographicFixationIdResult = reestrDbDgaGetPhotographicFixationsResult;
 
             var reestrDbDgaGetPossibilityOfReconstructionsResult = await ReestrDb.PossibilityOfReconstructionUnitOfWork.Get();
             getPossibilityOfReconstructionsForPossibilityOfReconstructionIdResult = reestrDbDgaGetPossibilityOfReconstructionsResult;
@@ -241,6 +226,18 @@ namespace Reestr.Blazor.Component.Destructions
             try
             {
                 var reestrDbUpdateRegisterOfEmergencyBuildingResult = await RegisterOfEmergencyBuildingsSer.UpdateRegisterOfEmergencyBuilding(IdRegisterOfEmergencyBuildings, registerofemergencybuilding);
+
+                foreach (var item in UploadSaveModel.UploadList)
+                {
+                    PhotographicFixation photographicFixation = new PhotographicFixation();
+
+                    photographicFixation.RegisterOfEmergencyBuildingsId = reestrDbUpdateRegisterOfEmergencyBuildingResult.IdRegisterOfEmergencyBuildings;
+                    photographicFixation.Url = item;
+
+                    await PhotographicFixationService.CreateAddressing(photographicFixation);
+                }
+
+                UploadSaveModel.UploadList.Clear();
                 DialogService.Close(registerofemergencybuilding);
             }
             catch (System.Exception reestrDbUpdateRegisterOfEmergencyBuildingException)
@@ -257,6 +254,15 @@ namespace Reestr.Blazor.Component.Destructions
         protected async System.Threading.Tasks.Task Button4Click(MouseEventArgs args)
         {
             DialogService.Close(null);
+        }
+
+        protected int progress;
+        protected string info;
+
+        protected void OnProgress(UploadProgressArgs args, string name)
+        {
+            this.info = $"% '{name}' / Loaded: {args.Loaded},  of {args.Total} bytes.";
+            this.progress = args.Progress;
         }
     }
 }

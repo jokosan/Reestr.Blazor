@@ -10,25 +10,26 @@
     <ChildContent>
         <div class="row">
             <div class="col-md-12">
-                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@Button0Click">
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Додати" Click="@Button0Click">
                 </RadzenButton>
-           
-                <RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowColumnResize="true"  FilterMode="Radzen.FilterMode.Advanced" AllowPaging="true"
+                <RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowColumnPicking="true" AllowColumnResize="true" FilterMode="Radzen.FilterMode.Advanced" AllowPaging="true"
                                 AllowSorting="true" PageSize="15" Data="@getAddressingsResult" TItem="Addressing" RowSelect="@Grid0RowSelect">
                     <Columns>
-                        <RadzenDataGridColumn TItem="Addressing" Property="IdAddressing" Title="Id">
+                        <RadzenDataGridColumn TItem="Addressing" Visible="false" Property="IdAddressing" Title="Id">
                         </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Addressing" FilterProperty="Street.StreetCategory.NameCategoryUa"  GroupProperty="Street.StreetCategory.NameCategoryUa" Property="Street?.StreetCategory.IdStreetCategory" SortProperty="Street.StreetCategory.NameCategoryUa" Title="Тип вулиць">
+                        <RadzenDataGridColumn TItem="Addressing" FilterProperty="Streets.StreetCategory.NameCategoryUa" GroupProperty="Streets.StreetCategory.NameCategoryUa"
+                                              Property="Streets.StreetCategory.IdStreetCategory" SortProperty="Streets.StreetCategory.NameCategoryUa" Title="Тип вулиць">
                             <Template Context="data">
                                 @(data.Streets?.StreetCategory.NameCategoryUa)
                             </Template>
                         </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Addressing" Property="StreetsId" SortProperty="Street.NameStreetsRu" Width="200px"  GroupProperty="Street.NameStreetsRu" FilterProperty="Street.NameStreetsRu" Title="Назва вулиць">
+                        <RadzenDataGridColumn TItem="Addressing" Property="Streets.IdStreets" SortProperty="Streets.NameStreetsUa" Width="200px"
+                                              GroupProperty="Streets.NameStreetsUa" FilterProperty="Streets.NameStreetsUa" Title="Назва вулиць">
                             <Template Context="data">
-                                @(data.Streets?.NameStreetsRu)
+                                @(data.Streets?.NameStreetsUa)
                             </Template>
                         </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Addressing" Property="DistrictsId" SortProperty="District.NameDistricts" GroupProperty="District.NameDistricts" FilterProperty="District.NameDistricts" Title="Район">
+                        <RadzenDataGridColumn TItem="Addressing" Visible="false" Property="DistrictsId" SortProperty="District.NameDistricts" GroupProperty="District.NameDistricts" FilterProperty="District.NameDistricts" Title="Район">
                             <Template Context="data">
                                 @(data.Districts?.NameDistricts)
                             </Template>
@@ -41,12 +42,12 @@
                         </RadzenDataGridColumn>
                         <RadzenDataGridColumn TItem="Addressing" Property="Floor" Title="Поверховість">
                         </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Addressing" Property="PostcodeId" SortProperty="Postcode.IdPostcode" GroupProperty="Postcode.IdPostcode" FilterProperty="Postcode.IdPostcode" Title="Індекс">
+                        <RadzenDataGridColumn TItem="Addressing" Visible="false" Property="PostcodeId" SortProperty="Postcode.IdPostcode" GroupProperty="Postcode.IdPostcode" FilterProperty="Postcode.IdPostcode" Title="Індекс">
                             <Template Context="data">
                                 @(data.Postcode?.IdPostcode)
                             </Template>
                         </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Addressing" Property="AddressTypeId" SortProperty="AddressType.NameAddressType" GroupProperty="AddressType.NameAddressType" FilterProperty="AddressType.NameAddressType" Title="Тип адреси">
+                        <RadzenDataGridColumn TItem="Addressing" Visible="false" Property="AddressTypeId" SortProperty="AddressType.NameAddressType" GroupProperty="AddressType.NameAddressType" FilterProperty="AddressType.NameAddressType" Title="Тип адреси">
                             <Template Context="data">
                                 @(data.AddressType?.NameAddressType)
                             </Template>

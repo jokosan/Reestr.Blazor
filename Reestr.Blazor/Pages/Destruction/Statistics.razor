@@ -1,0 +1,103 @@
+﻿@page "/destruction/statistics"
+@layout MainLayout
+
+<style>
+    .rz-legend-right {
+        right: -15%;
+    }
+</style>
+
+@using Radzen
+@using Radzen.Blazor
+@using System.Globalization
+@using Reestr.Database.Model
+@inject Reestr.Logics.Infrastructure.Repositories.DbRepository<RegisterOfEmergencyBuildings> dbContext
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-lg-6 offset-lg-3 my-5">
+            <RadzenChart>
+                <RadzenDonutSeries Data="@items" CategoryProperty="Name" ValueProperty="AmountElements">
+                    <TitleTemplate>
+                        <div class="rz-donut-content">
+                            <div>Усього будівель</div>
+                            <div>@amountElements</div>
+                        </div>
+                    </TitleTemplate>
+                </RadzenDonutSeries>
+                <RadzenLegend Position="LegendPosition.Bottom" />
+            </RadzenChart>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-lg-6 offset-lg-3 my-5">
+            <RadzenChart>
+                <RadzenDonutSeries Data="@dataItemDistricts" CategoryProperty="Name" ValueProperty="DistrictsCount" 
+                                   Fills=@(new [] { "#ea5545", "#f46a9b", "#ef9b20", "#edbf33", "#ede15b", "#bdcf32", "#42d4f4", "#87bc45", "#27aeef"}) >
+                    <TitleTemplate>
+                        <div class="rz-donut-content">
+                            <div>Будівель без адресси </div>
+                            <div>@notAddressing </div>
+                        </div>
+                    </TitleTemplate>
+                </RadzenDonutSeries>             
+                <RadzenLegend Position="LegendPosition.Right"/>
+            </RadzenChart>
+        </div>
+    </div>
+</div>
+<hr/>
+<h3>Далі буде ... </h3>
+<h3>P.S приймаються побажання та пропозиції</h3>
+
+@code {
+    class DataItem
+    {
+        public string Name { get; set; }
+        public int AmountElements { get; set; }
+    }
+
+    class DataItemDistricts
+    {
+        public string Name { get; set; }
+        public int DistrictsCount { get; set; }
+    }
+
+    int amountElements { get; set; }
+    int notAddressing { get; set; }
+
+    List<DataItem> items = new List<DataItem>();
+    List<DataItemDistricts> dataItemDistricts = new List<DataItemDistricts>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // BuildingType
+
+        var resultRegisterOfEmergencyBuilding = await dbContext.GetInclude("BuildingType", "Addressing");
+
+        amountElements = resultRegisterOfEmergencyBuilding
+                        .Count();
+
+        items.Add(new DataItem { Name = "Житлове", AmountElements = resultRegisterOfEmergencyBuilding.Where(x => x.BuildingTypeId == 1).Count() });
+        items.Add(new DataItem { Name = "Нежитлове", AmountElements = resultRegisterOfEmergencyBuilding.Where(x => x.BuildingTypeId == 2).Count() });
+
+
+        // Districts
+
+        var notNullAddressingRegisterOfEmergencyBuilding = resultRegisterOfEmergencyBuilding.Where(x => x.AddressingId != null);
+        notAddressing = resultRegisterOfEmergencyBuilding.Where(x => x.AddressingId == null).Count();
+
+        dataItemDistricts.Add(new DataItemDistricts { Name = "Київський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 1).Count() });
+        dataItemDistricts.Add(new DataItemDistricts { Name = "Московський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 2).Count() });
+        dataItemDistricts.Add(new DataItemDistricts { Name = "Немишлянський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 3).Count() });
+        dataItemDistricts.Add(new DataItemDistricts { Name = "Новобаварський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 4).Count() });
+        dataItemDistricts.Add(new DataItemDistricts { Name = "Індустріальний", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 5).Count() });
+        dataItemDistricts.Add(new DataItemDistricts { Name = "Основ'янський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 6).Count() });
+        dataItemDistricts.Add(new DataItemDistricts { Name = "Слобідський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 7).Count() });
+        dataItemDistricts.Add(new DataItemDistricts { Name = "Холодногірський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 8).Count() });
+        dataItemDistricts.Add(new DataItemDistricts { Name = "Шевченківський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 9).Count() });
+    }
+}

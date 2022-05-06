@@ -22,24 +22,19 @@ namespace Reestr.Logics.Service
             _dbContextReestr = dbContextReestr;
         }
 
-        //public async Task<IQueryable<Addressing>> GetAddressings()
-        //{
-        //    var items = await _unitOfWork.AddressingUnitOfWork.GetInclude("District","Postcode","AddressType", "Streets", "Streets.StreetCategory");
-
-        //   // var items = await _unitOfWork.AddressingUnitOfWork.Include();
-
-        //    return await Task.FromResult(items.AsQueryable());
-        //}
-
         public async Task<IQueryable<Addressing>> GetAddressings(Query query = null)
         {
             var items = _dbContextReestr.Addressings.AsQueryable();
 
             items = items.Include(i => i.Streets);
-            items = items.Include(i => i.Districts);
-            items = items.Include(i => i.Postcode);
-            items = items.Include(i => i.AddressType);
+
             items = items.Include(i => i.Streets.StreetCategory);
+
+            items = items.Include(i => i.Districts);
+
+            items = items.Include(i => i.Postcode);
+
+            items = items.Include(i => i.AddressType);
 
             if (query != null)
             {

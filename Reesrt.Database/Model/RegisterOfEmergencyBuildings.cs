@@ -17,7 +17,7 @@ namespace Reestr.Database.Model
 
         public int IdRegisterOfEmergencyBuildings { get; set; } // id
         // микрорайон
-        public int MicrodistrictId { get; set; }
+        public int? MicrodistrictId { get; set; }
 
         // Номер участка ЖКС/ХБ
         public string SectorNumber { get; set; }

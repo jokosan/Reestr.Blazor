@@ -54,29 +54,10 @@ namespace Reestr.Blazor.Component.Destructions
 
         [Inject]
         protected RegisterOfEmergencyBuildingsServices RegisterOfEmergencyBuildingsSer { get; set; }
-
-        string _search;
-        protected string search
-        {
-            get
-            {
-                return _search;
-            }
-            set
-            {
-                if (!object.Equals(_search, value))
-                {
-                    var args = new PropertyChangedEventArgs() { Name = "search", NewValue = value, OldValue = _search };
-                    _search = value;
-                    OnPropertyChanged(args);
-                    Reload();
-                }
-            }
-        }
-
-
+   
         IEnumerable<RegisterOfEmergencyBuildings> _getRegisterOfEmergencyBuildingsResult;
 
+        protected int countRegisterOfEmergencyBuildings { get; set; }
         protected IEnumerable<RegisterOfEmergencyBuildings> getRegisterOfEmergencyBuildingsResult
         {
             get
@@ -99,13 +80,16 @@ namespace Reestr.Blazor.Component.Destructions
         {
             await Load();
         }
-        protected async System.Threading.Tasks.Task Load()
+
+        protected async Task Load()
         {
-            var reestrDbGetRegisterOfEmergencyBuildingsResult = await RegisterOfEmergencyBuildingsSer.GetRegisterOfEmergencyBuildings(new Query() { Filter = $@"i => i.SectorNumber.Contains(@0) || i.TypeOfDestruction.Contains(@1) || i.TypeBuildings.Contains(@2) || i.Description.Contains(@3) || i.JobDescription.Contains(@4) || i.Note.Contains(@5)", FilterParameters = new object[] { search, search, search, search, search, search }, Expand = "Microdistrict,BuildingType,TypeOfOwnership,Addressing,PhotographicFixation,PossibilityOfReconstruction" });
+            var reestrDbGetRegisterOfEmergencyBuildingsResult = await RegisterOfEmergencyBuildingsSer.GetRegisterOfEmergencyBuildings(new Query() { Expand = "Microdistrict,BuildingType,TypeOfOwnership,Addressing,Addressing.Streets,Addressing.Streets.StreetCategory,PossibilityOfReconstruction,PhotographicFixation" });
             getRegisterOfEmergencyBuildingsResult = reestrDbGetRegisterOfEmergencyBuildingsResult;
+
+            countRegisterOfEmergencyBuildings = getRegisterOfEmergencyBuildingsResult.Count();
         }
 
-        protected async System.Threading.Tasks.Task Button0Click(MouseEventArgs args)
+        protected async Task Button0Click(MouseEventArgs args)
         {
             var dialogResult = await DialogService.OpenAsync<AddRegisterOfEmergencyBuilding>("Додати в реєстр аварійних будівель та споруд", null);
             await grid0.Reload();
@@ -113,13 +97,34 @@ namespace Reestr.Blazor.Component.Destructions
             await InvokeAsync(() => { StateHasChanged(); });
         }
 
-        protected async System.Threading.Tasks.Task Grid0RowSelect(DataGridRowMouseEventArgs<RegisterOfEmergencyBuildings> args)
+        protected async Task Grid0RowSelect(DataGridRowMouseEventArgs<RegisterOfEmergencyBuildings> args)
         {
             var dialogResult = await DialogService.OpenAsync<EditRegisterOfEmergencyBuilding>("Редагувати реєстр аварійних будівель та споруд", new Dictionary<string, object>() { { "IdRegisterOfEmergencyBuildings", args.Data.IdRegisterOfEmergencyBuildings } });
             await InvokeAsync(() => { StateHasChanged(); });
         }
 
-        protected async System.Threading.Tasks.Task GridDeleteButtonClick(MouseEventArgs args, dynamic data)
+        //protected async Task ButtonClickImgPage( int data)
+        //{
+        //    UriHelper.NavigateTo($"/destruction/photographic-fixation/{data}");
+        //}
+
+        protected async Task ButtonClickImgPage(int data)
+        {
+            var dialogResult = await DialogService.OpenAsync<Pages.Destruction.PhotographicFixation>("", new Dictionary<string, object>() { { "Id", data } }, new DialogOptions() { Width = "800px" });
+            await grid0.Reload();
+
+            await InvokeAsync(() => { StateHasChanged(); });
+        }
+
+        protected async Task ButtonSratisticClick()
+        {
+            var dialogResult = await DialogService.OpenAsync<Pages.Destruction.Statistics>("Аналітичний звіт", null, new DialogOptions() { Width = "1000px" });
+            await grid0.Reload();
+
+            await InvokeAsync(() => { StateHasChanged(); });
+        }
+
+        protected async Task GridDeleteButtonClick(MouseEventArgs args, dynamic data)
         {
             //try
             //{

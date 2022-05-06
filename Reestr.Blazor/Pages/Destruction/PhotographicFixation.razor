@@ -1,0 +1,50 @@
+﻿@page "/destruction/photographic-fixation/{Id}"
+@layout MainLayout
+<link href="https://unpkg.com/swiper/swiper-bundle.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/modul/swiper/style-swiper.css">
+
+@using Radzen
+@using Radzen.Blazor
+@using Reestr.Database.Model
+
+@inherits Reestr.Blazor.Component.Destructions.PhotographicFixationComponent
+@inject IJSRuntime JSRuntime
+
+@code{
+    IJSObjectReference Swiper { get; set; }
+    IJSObjectReference test { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstTime)
+    {
+        Swiper = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/modul/swiper/swiper-bundle.js");
+        test = await JSRuntime.InvokeAsync<IJSObjectReference>("JsTest");
+    }
+
+    protected async void Add()
+    {
+        await test.InvokeVoidAsync("swiper", "Swiper");
+    }
+}
+
+<div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff"
+     class="swiper mySwiper">
+    <div class="swiper-wrapper">
+
+        @if (photographicFixations != null)
+        {
+            @foreach (var item in photographicFixations)
+            {
+                <div class="swiper-slide">
+                    <div class="swiper-zoom-container">
+                        <img src="@item.Url" />
+                    </div>
+                </div>
+            }
+        }
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
+
+

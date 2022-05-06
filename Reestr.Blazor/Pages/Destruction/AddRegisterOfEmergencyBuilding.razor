@@ -14,7 +14,7 @@
                     <ChildContent>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Microdistrict" Component="MicrodistrictId" style="width: 100%">
+                                <RadzenLabel Text="Мікрорайон" Component="MicrodistrictId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
@@ -26,7 +26,7 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Sector Number" Component="SectorNumber" style="width: 100%">
+                                <RadzenLabel Text="Номер ділянки ЖКС/ХБ" Component="SectorNumber" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
@@ -36,7 +36,7 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Building Type" Component="BuildingTypeId" style="width: 100%">
+                                <RadzenLabel Text="Тип будівлі" Component="BuildingTypeId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
@@ -48,7 +48,7 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Type Of Ownership" Component="TypeOfOwnershipId" style="width: 100%">
+                                <RadzenLabel Text="Тип власності" Component="TypeOfOwnershipId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
@@ -61,20 +61,19 @@
 
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Street Categories" Component="AddressingId" style="width: 100%">
+                                <RadzenLabel Text="Тип вулиць" Component="AddressingId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
                                 <RadzenDropDown TValue="int" @bind-Value="streetCategoriesId" Placeholder="Select street categores" AllowFiltering="true"
                                                 Data="@(getStreetCategoriesResult)" TextProperty="NameCategoryUa" ValueProperty="IdStreetCategory" style="width: 100%">
                                 </RadzenDropDown>
-
                             </div>
                         </div>
 
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Street" Component="AddressingId" style="width: 100%">
+                                <RadzenLabel Text="Назва вулиць" Component="AddressingId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
@@ -85,7 +84,7 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Addressing" Component="AddressingId" style="width: 100%">
+                                <RadzenLabel Text="Адреса" Component="AddressingId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
@@ -97,7 +96,7 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Type Of Destruction" Component="TypeOfDestruction" style="width: 100%">
+                                <RadzenLabel Text="Характер руйнування" Component="TypeOfDestruction" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
@@ -107,7 +106,7 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Type Buildings" Component="TypeBuildings" style="width: 100%">
+                                <RadzenLabel Text="Функціонального використання будівлі" Component="TypeBuildings" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
@@ -117,7 +116,7 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Description" Component="Description" style="width: 100%">
+                                <RadzenLabel Text="Опис руйнування" Component="Description" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
@@ -127,7 +126,7 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Job Description" Component="JobDescription" style="width: 100%">
+                                <RadzenLabel Text="Опис роботи" Component="JobDescription" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
@@ -137,11 +136,12 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Photographic Fixation" Component="PhotographicFixationId" style="width: 100%">
+                                <RadzenLabel Text="Фотофіксація" Component="PhotographicFixationId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
-                                <RadzenUpload Url="upload/multiple" Style="margin-bottom: 20px; width: 100%" Progress="@((arge) => OnProgress(arge, "Single file Upload"))"></RadzenUpload>
+                                <RadzenUpload Url="upload/multiple" Multiple="true" Accept="image/*" Style="margin-bottom: 20px; width: 100%" Progress="@((arge) => OnProgress(arge, "Single file Upload"))"></RadzenUpload>
+
                                 <RadzenCard Style="overflow: auto; height: 50px; width: 100%">
                                     <RadzenProgressBar Value="@progress" Unit="@info" Visible="@(progress > 0)" Style="margin-bottom: 20px; width: 100%"></RadzenProgressBar>
                                 </RadzenCard>
@@ -149,7 +149,7 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Note" Component="Note" style="width: 100%">
+                                <RadzenLabel Text="Примітка" Component="Note" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">

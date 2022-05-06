@@ -75,14 +75,14 @@ namespace Reestr.Blazor.Component.Addressings
             }
         }
 
-        protected override async System.Threading.Tasks.Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
             await Load();
         }
 
-        protected async System.Threading.Tasks.Task Load()
+        protected async Task Load()
         {
-            var reestrDbGetAddressingsResult = await AddressingS.GetAddressings(new Query() { Expand = "Streets,Districts,Postcode,AddressType,Streets.StreetCategory" });
+            var reestrDbGetAddressingsResult = await AddressingS.GetAddressings(new Query() { Expand = "Districts,Postcode,AddressType,Streets.StreetCategory" });
             getAddressingsResult = reestrDbGetAddressingsResult;
         }
 

@@ -34,9 +34,8 @@ namespace Reestr.Logics.Service
 
             items = items.Include(i => i.Addressing);
 
-            items = items.Include(i => i.PhotographicFixation);
-
             items = items.Include(i => i.PossibilityOfReconstruction);
+            items = items.Include(i => i.PhotographicFixation);
 
             if (query != null)
             {
@@ -77,29 +76,45 @@ namespace Reestr.Logics.Service
                 }
             }
 
-
             return await Task.FromResult(items);
         }
 
         public async Task<RegisterOfEmergencyBuildings> GetRegisterOfEmergencyBuildingByIdRegisterOfEmergencyBuildings(int? idRegisterOfEmergencyBuildings)
         {
-            var items = await _unitOfWork.RegisterOfEmergencyBuildingsUnitOfWork.QueryObjectGraph(i => i.IdRegisterOfEmergencyBuildings == idRegisterOfEmergencyBuildings, "Addressing", "Addressing.Streets", "Addressing.Streets.StreetCategory");
+            var items = _dbContextReestr.RegisterOfEmergencyBuildings
+                             .Where(i => i.IdRegisterOfEmergencyBuildings == idRegisterOfEmergencyBuildings);
+
+            items = items.Include(i => i.Microdistrict);
+
+            items = items.Include(i => i.BuildingType);
+
+            items = items.Include(i => i.TypeOfOwnership);
+
+            items = items.Include(i => i.Addressing);
+            items = items.Include(i => i.Addressing.Streets);
+
+            items = items.Include(i => i.PossibilityOfReconstruction);
+
             var itemToReturn = items.FirstOrDefault();
 
             return await Task.FromResult(itemToReturn);
         }
 
-        public async Task<RegisterOfEmergencyBuildings > UpdateRegisterOfEmergencyBuilding(int? idRegisterOfEmergencyBuildings, RegisterOfEmergencyBuildings registerOfEmergencyBuilding)
+        public async Task<RegisterOfEmergencyBuildings> UpdateRegisterOfEmergencyBuilding(int? idRegisterOfEmergencyBuildings, RegisterOfEmergencyBuildings registerOfEmergencyBuilding)
         {
             var itemToUpdate = await GetRegisterOfEmergencyBuildingByIdRegisterOfEmergencyBuildings(idRegisterOfEmergencyBuildings);
+
+            //var itemToUpdate = _dbContextReestr.RegisterOfEmergencyBuildings
+            //                 .Where(i => i.IdRegisterOfEmergencyBuildings == idRegisterOfEmergencyBuildings)
+            //                 .FirstOrDefault();
 
             if (itemToUpdate == null)
             {
                 throw new Exception("Item no longer available");
             }
 
-            _unitOfWork.RegisterOfEmergencyBuildingsUnitOfWork.Update(registerOfEmergencyBuilding);
-            await _unitOfWork.Save();
+            _unitOfWork.RegisterOfEmergencyBuildingsUnitOfWork.Update(registerOfEmergencyBuilding, itemToUpdate);
+         
 
             return registerOfEmergencyBuilding;
         }

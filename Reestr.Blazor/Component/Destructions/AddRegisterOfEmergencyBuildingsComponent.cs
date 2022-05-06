@@ -49,32 +49,15 @@ namespace Reestr.Blazor.Component.Destructions
         [Inject]
         protected RegisterOfEmergencyBuildingsServices RegisterOfEmergencyBuildingsSer { get; set; }
 
+
+        [Inject]
+        protected PhotographicFixationServices PhotographicFixationService { get; set; }
+
         [Inject]
         protected UnitOfWork ReestrDb { get; set; }
 
-
-        IEnumerable<Addressing> _getAddressingsResult;
-
-        protected IEnumerable<Addressing> getAddressingsResult
-        {
-            get
-            {
-                return _getAddressingsResult;
-            }
-            set
-            {
-                if (!object.Equals(_getAddressingsResult, value))
-                {
-                    var args = new PropertyChangedEventArgs() { Name = "getAddressingsResult", NewValue = value, OldValue = _getAddressingsResult };
-                    _getAddressingsResult = value;
-                    OnPropertyChanged(args);
-                    Reload();
-                }
-            }
-        }
-
-
         IEnumerable<Microdistrict> _getMicrodistrictsForMicrodistrictIdResult;
+
         protected IEnumerable<Microdistrict> getMicrodistrictsForMicrodistrictIdResult
         {
             get
@@ -94,6 +77,7 @@ namespace Reestr.Blazor.Component.Destructions
         }
 
         IEnumerable<BuildingType> _getBuildingTypesForBuildingTypeIdResult;
+
         protected IEnumerable<BuildingType> getBuildingTypesForBuildingTypeIdResult
         {
             get
@@ -113,6 +97,7 @@ namespace Reestr.Blazor.Component.Destructions
         }
 
         IEnumerable<TypeOfOwnership> _getTypeOfOwnershipsForTypeOfOwnershipIdResult;
+      
         protected IEnumerable<TypeOfOwnership> getTypeOfOwnershipsForTypeOfOwnershipIdResult
         {
             get
@@ -214,9 +199,6 @@ namespace Reestr.Blazor.Component.Destructions
         }
         protected async System.Threading.Tasks.Task Load()
         {
-            var reestrDbGetAddressingsResult = await ReestrDb.AddressingUnitOfWork.Get();
-            getAddressingsResult = reestrDbGetAddressingsResult;
-
             var reestrDbDgaGetMicrodistrictsResult = await ReestrDb.MicrodistrictUnitOfWork.Get();
             getMicrodistrictsForMicrodistrictIdResult = reestrDbDgaGetMicrodistrictsResult;
 
@@ -229,7 +211,7 @@ namespace Reestr.Blazor.Component.Destructions
             var reestrDbDgaGetTypeOfOwnershipsResult = await ReestrDb.TypeOfOwnershipUnitOfWork.Get();
             getTypeOfOwnershipsForTypeOfOwnershipIdResult = reestrDbDgaGetTypeOfOwnershipsResult;
 
-            var reestrDbDgaGetAddressingsResult = await ReestrDb.AddressingUnitOfWork.GetInclude("Streets", "Streets.StreetCategory");
+            var reestrDbDgaGetAddressingsResult = await ReestrDb.AddressingUnitOfWork.QueryObjectGraph(x => x.StreetsId != null, "Streets", "Streets.StreetCategory");
             getAddressingsForAddressingIdResult = reestrDbDgaGetAddressingsResult;
 
             var reestrDbDgaGetPhotographicFixationsResult = await ReestrDb.PhotographicFixationUnitOfWork.Get();
@@ -253,8 +235,11 @@ namespace Reestr.Blazor.Component.Destructions
 
                     photographicFixation.RegisterOfEmergencyBuildingsId = reestrDbCreateRegisterOfEmergencyBuildingResult.IdRegisterOfEmergencyBuildings;
                     photographicFixation.Url = item;
+
+                    await PhotographicFixationService.CreateAddressing(photographicFixation);
                 }
 
+                UploadSaveModel.UploadList.Clear();
                 DialogService.Close(registerofemergencybuilding);
             }
             catch (System.Exception reestrDbCreateRegisterOfEmergencyBuildingException)
@@ -269,7 +254,6 @@ namespace Reestr.Blazor.Component.Destructions
         }
 
         #region 
-
 
         public int streetCategoriesId;
         public int streetId;
@@ -287,7 +271,7 @@ namespace Reestr.Blazor.Component.Destructions
             }
             set
             {
-                if (!object.Equals(_getAddressingsResult, value))
+                if (!object.Equals(_getStreetCategoriesResult, value))
                 {
                     var args = new PropertyChangedEventArgs() { Name = "getStreetCategoriesResult", NewValue = value, OldValue = _getStreetCategoriesResult };
                     _getStreetCategoriesResult = value;
@@ -307,7 +291,7 @@ namespace Reestr.Blazor.Component.Destructions
             }
             set
             {
-                if (!object.Equals(_getAddressingsResult, value))
+                if (!object.Equals(_getStreetResult, value))
                 {
                     var args = new PropertyChangedEventArgs() { Name = "getStreetResult", NewValue = value, OldValue = _getStreetResult };
                     _getStreetResult = value;
@@ -322,7 +306,7 @@ namespace Reestr.Blazor.Component.Destructions
 
         protected void OnProgress(UploadProgressArgs args, string name)
         {
-            this.info = $"% '{name}' / Loaded: {args.Loaded}, Total: {args.Total} b, File: {args.Files.Single()}, Progress: {args.Progress}";
+            this.info = $"% '{name}' / Loaded: {args.Loaded},  of {args.Total} bytes.";
             this.progress = args.Progress;
         }
     }

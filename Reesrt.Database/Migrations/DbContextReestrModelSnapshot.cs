@@ -362,7 +362,7 @@ namespace Reestr.Database.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
-                    b.Property<int>("MicrodistrictId")
+                    b.Property<int?>("MicrodistrictId")
                         .HasColumnType("int");
 
                     b.Property<string>("Note")
@@ -677,9 +677,7 @@ namespace Reestr.Database.Migrations
 
                     b.HasOne("Reestr.Database.Model.Microdistrict", "Microdistrict")
                         .WithMany("RegisterOfEmergencyBuildings")
-                        .HasForeignKey("MicrodistrictId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MicrodistrictId");
 
                     b.HasOne("Reestr.Database.Model.PossibilityOfReconstruction", "PossibilityOfReconstruction")
                         .WithMany("RegisterOfEmergencyBuildings")

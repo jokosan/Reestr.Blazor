@@ -46,12 +46,22 @@ namespace Reestr.Logics.Infrastructure.Repositories
         public virtual void Update(T entityToUpdate)
         {
             var dbEntityEntry = _dbContextReestr.Entry(entityToUpdate);
+            dbEntityEntry.CurrentValues.SetValues(entityToUpdate);
+
             if (dbEntityEntry.State == EntityState.Detached)
             {
                 _dbContextReestr.Attach(entityToUpdate);
             }
+
             dbEntityEntry.State = EntityState.Modified;
-            //return dbEntityEntry;
+        }
+
+        public virtual void Update(T entityToUpdate, T getEntity)
+        {
+            var dbEntityEntry = _dbContextReestr.Entry(getEntity);            
+            dbEntityEntry.CurrentValues.SetValues(entityToUpdate);
+            dbEntityEntry.State = EntityState.Modified;
+            _dbContextReestr.SaveChanges();
         }
         #endregion
 
@@ -79,7 +89,10 @@ namespace Reestr.Logics.Infrastructure.Repositories
         {
             Lazy<T> lazy = new Lazy<T>();
 
-            var query = await _dbSet.AsEnumerable<T>().AsQueryable().AsNoTracking().ToListAsync();
+            var query = await _dbSet.AsEnumerable<T>()
+                                    .AsQueryable()
+                                    .AsNoTracking()
+                                    .ToListAsync();
 
             return query;
         }
@@ -123,19 +136,6 @@ namespace Reestr.Logics.Infrastructure.Repositories
         {
             return await _dbSet.Include(children).AsNoTracking().AsEnumerable<T>().AsQueryable().ToListAsync();
         }
-
-        //public async Task<IQueryable<Addressing>> Include()
-        //{
-        //    var items = _dbContextReestr.Addressings.AsQueryable();
-
-        //    items = items.Include(i => i.Streets);
-        //    items = items.Include(i => i.Districts);
-        //    items = items.Include(i => i.Postcode);
-        //    items = items.Include(i => i.AddressType);
-        //    items = items.Include(i => i.Streets.StreetCategory);
-
-        //    return await Task.FromResult(items.AsQueryable());
-        //}
 
         public async Task<IEnumerable<T>> GetInclude(string children, string childrenTwo)
         {
