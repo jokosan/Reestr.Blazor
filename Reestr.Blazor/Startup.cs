@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Reestr.Api.GeoPortal.Infrastructure.DependencyInjection;
 
 namespace Reestr.Blazor
 {
@@ -31,15 +32,16 @@ namespace Reestr.Blazor
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
-        {
-       
+        {            
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddAutoMapper(typeof(AppMappingProfile));
 
             DependencyInjectionLogics.Initialize(services);
+            DependencyInjectionLogicsGeoPortal.Initialize(services);
 
             DbContextServiceCollectionLogics.Initialize(services, Configuration.GetConnectionString("ReestrDb"));
+
             services.AddScoped<DialogService>();
             services.AddScoped<NotificationService>();
             services.AddScoped<TooltipService>();

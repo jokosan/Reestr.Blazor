@@ -1,0 +1,140 @@
+﻿@page "/demo-table-api"
+@using Reestr.Api.GeoPortal.Model
+
+
+@inject Reestr.Api.GeoPortal.Services.DistrictServises getDistricts
+@inject Reestr.Api.GeoPortal.Services.StreetsServises getStreets
+
+<h3>DemoTableApi</h3>
+
+<table>
+    <tr>
+        <th>
+            id
+        </th>
+        <th>
+            name_ru
+        </th>
+        <th>
+            name_ukr
+
+        </th>
+        <th>
+            name_ru_before
+        </th>
+        <th>
+            name_ukr_before
+        </th>
+    </tr>
+    @foreach (var item in districts)
+    {
+        <tr>
+            <td>
+                @item.id
+            </td>
+            <td>
+                @item.name_ru
+            </td>
+            <td>
+                @item.name_ukr
+            </td>
+            <td>
+                @item.name_ru_before
+            </td>
+            <td>
+                @item.name_ukr_before
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+<table>
+    <tr>
+        <th>
+            id
+        </th>
+        <th>
+            name_ru
+        </th>
+        <th>
+            name_ukr
+        </th>
+
+    </tr>
+    @foreach (var item in streetCategory.OrderBy(x =>x.IdStreetCategory))
+    {
+        <tr>
+            <td>
+                @item.IdStreetCategory
+            </td>
+            <td>
+                @item.NameCategoryRu
+            </td>
+            <td>
+                @item.NameCategoryUa
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+<table>
+    <tr>
+        <th>
+            id
+        </th>
+        <th>
+            name_ru
+        </th>
+        <th>
+            name_ukr
+        </th>
+
+    </tr>
+    @foreach (var item in streets)
+    {
+        <tr>
+            <td>
+                @item.id
+            </td>
+            <td>
+                @item.name_ru
+            </td>
+            <td>
+                @item.name_ukr
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+@code {
+    List<Api.GeoPortal.Model.DistrictModel> districts { get; set; }
+    IEnumerable<Api.GeoPortal.Model.StreetsModel> streets { get; set; }
+    IEnumerable<Reestr.Database.Model.StreetCategory> streetCategory { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var resultDistricts = await getDistricts.GetDistrict();
+        districts = resultDistricts;
+
+        var resultStreets = await getStreets.GetStreets();
+        streets = resultStreets;
+
+
+        var streetType = streets
+              .GroupBy(x => x.street_type_id)
+              .Select(s => new Reestr.Database.Model.StreetCategory
+              {
+                  IdStreetCategory = s.FirstOrDefault().street_type_id.Value,
+                  NameCategoryRu = s.FirstOrDefault().type_ru,
+                  NameCategoryUa = s.FirstOrDefault().type_ukr
+              });
+
+        streetCategory = streetType;
+    }
+}

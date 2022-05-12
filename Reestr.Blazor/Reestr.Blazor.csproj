@@ -22,12 +22,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="6.0.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Radzen.Blazor" Version="3.16.3" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Reesrt.Database\Reestr.Database.csproj" />
+    <ProjectReference Include="..\Reestr.Api.GeoPortal\Reestr.Api.GeoPortal.csproj" />
     <ProjectReference Include="..\Reestr.Logics\Reestr.Logics.csproj" />
   </ItemGroup>
 

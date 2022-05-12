@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reestr.Logics", "Reestr.Log
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reestr.Database", "Reesrt.Database\Reestr.Database.csproj", "{89397CB5-A808-4A48-826E-490A2F4110AA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reestr.Api.GeoPortal", "Reestr.Api.GeoPortal\Reestr.Api.GeoPortal.csproj", "{AF98FF24-647E-4A1E-BB12-BBF5D77C77E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{89397CB5-A808-4A48-826E-490A2F4110AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89397CB5-A808-4A48-826E-490A2F4110AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89397CB5-A808-4A48-826E-490A2F4110AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF98FF24-647E-4A1E-BB12-BBF5D77C77E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF98FF24-647E-4A1E-BB12-BBF5D77C77E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF98FF24-647E-4A1E-BB12-BBF5D77C77E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF98FF24-647E-4A1E-BB12-BBF5D77C77E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

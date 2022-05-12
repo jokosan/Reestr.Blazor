@@ -1,0 +1,78 @@
+﻿@page "/urbanonymy/HistoryStreets/{IdStreet}"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.ApiGeoPortal.Street.HistoryStreetComponent
+
+<style>
+    h6 {
+        font-weight: 100;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>@getHistoryStreet.FirstOrDefault().type_ukr @getHistoryStreet.FirstOrDefault().name_ukr</h2>
+                    <h6>обліковий номер @getHistoryStreet.FirstOrDefault().id</h6>
+                    <h6>зареєстровано @getHistoryStreet.FirstOrDefault().reg_date</h6>
+                </div>
+                <div class="col-md-6">
+                    @if (getHistoryStreet.FirstOrDefault().valid == "YES")
+                    {
+                        <div class="d-inline p-2 bg-success text-white float-end">Чинна</div>
+                    }
+                    else
+                    {
+                        <div class=" d-inline p-2 bg-danger text-white float-end">Скасована</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (getHistoryStreet.Count() > 1)
+    {
+        <hr />
+        <h2>Історія</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">обліковий номер</th>
+                    <th scope="col">назва вулиць</th>
+                    <th scope="col">статус</th>
+                    <th scope="col">зареєстровано</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in getHistoryStreet)
+                {
+                    <tr>
+                        <td>
+                            @item.id
+                        </td>
+                        <td>
+                            @item.type_ukr  @item.name_ukr
+                        </td>
+                        <td>
+                            @if (item.valid == "YES")
+                            {
+                                <span style="color: #32d296">Чинна</span>
+                            }
+                            else
+                            {
+                                <span style="color: #f0506e">Скасована</span>
+                            }
+                        </td>
+                        <td>
+                            @item.reg_date
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+</div>
+
