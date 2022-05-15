@@ -17,6 +17,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Reestr.Api.GeoPortal.Infrastructure.DependencyInjection;
+using Reestr.Blazor.Areas.Data;
+using Microsoft.AspNetCore.Components.Authorization;
+using WebApplication3.Areas.Identity;
 
 namespace Reestr.Blazor
 {
@@ -32,14 +35,21 @@ namespace Reestr.Blazor
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
-        {            
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+               options.UseSqlServer(
+                   Configuration.GetConnectionString("SecurityDb")));
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddAutoMapper(typeof(AppMappingProfile));
 
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+              .AddRoles<IdentityRole>()
+              .AddEntityFrameworkStores<ApplicationDbContext>();
+
             DependencyInjectionLogics.Initialize(services);
             DependencyInjectionLogicsGeoPortal.Initialize(services);
-
             DbContextServiceCollectionLogics.Initialize(services, Configuration.GetConnectionString("ReestrDb"));
 
             services.AddScoped<DialogService>();
@@ -47,6 +57,10 @@ namespace Reestr.Blazor
             services.AddScoped<TooltipService>();
             services.AddScoped<ContextMenuService>();
 
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
+            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+            services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddScoped<AddDistrictComponent>();
         }
 
@@ -68,6 +82,9 @@ namespace Reestr.Blazor
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

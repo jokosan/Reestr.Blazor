@@ -5,6 +5,9 @@
 @using Radzen
 @using Radzen.Blazor
 @using Reestr.Database.Model
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize(Roles = "Administrator")]
 
 <RadzenContent Container="main">
     <ChildContent>
@@ -63,12 +66,12 @@
                         <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="JobDescription" Title="Опис роботи">
                         </RadzenDataGridColumn>
                         @*<RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="PhotographicFixationId" Title="Photographic Fixation Id">
-                </RadzenDataGridColumn>*@
+                            </RadzenDataGridColumn>*@
                         @*<RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="PossibilityOfReconstructionId" SortProperty="PossibilityOfReconstruction.ScanDoc" GroupProperty="PossibilityOfReconstruction.ScanDoc" FilterProperty="PossibilityOfReconstruction.ScanDoc" Title="Possibility Of Reconstruction">
-                    <Template Context="data">
-                        @(data.PossibilityOfReconstruction?.ScanDoc)
-                    </Template>
-                </RadzenDataGridColumn>*@
+                                <Template Context="data">
+                                    @(data.PossibilityOfReconstruction?.ScanDoc)
+                                </Template>
+                            </RadzenDataGridColumn>*@
                         <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Property="Note" Title="Примітка">
                         </RadzenDataGridColumn>
                         <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Visible="false" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
@@ -82,8 +85,8 @@
                             <Template Context="RegisterOfEmergencyBuilding">
                                 @if (RegisterOfEmergencyBuilding.PhotographicFixation.FirstOrDefault() != null)
                                 {
-            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="pageview" Size="ButtonSize.Small" Click="@((args) =>ButtonClickImgPage(RegisterOfEmergencyBuilding.IdRegisterOfEmergencyBuildings))" @onclick:stopPropagation="true">
-            </RadzenButton>
+        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="pageview" Size="ButtonSize.Small" Click="@((args) =>ButtonClickImgPage(RegisterOfEmergencyBuilding.IdRegisterOfEmergencyBuildings))" @onclick:stopPropagation="true">
+        </RadzenButton>
 }
                             </Template>
                         </RadzenDataGridColumn>
