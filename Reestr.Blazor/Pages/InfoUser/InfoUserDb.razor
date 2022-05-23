@@ -1,0 +1,53 @@
+﻿@page "/info-user"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.InfoUser.InfoUserComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Database.Model
+
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <RadzenHeading Size="H1" Text="InfoUser">
+        </RadzenHeading>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@Button0Click">
+                </RadzenButton>
+                <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="Radzen.FilterMode.Advanced" AllowPaging="true" AllowSorting="true" Data="@getInfoUsersResult" TItem="InfoUser" RowSelect="@Grid0RowSelect">
+                    <Columns>
+                        <RadzenDataGridColumn TItem="InfoUser" Property="IdInfoUser" Title="Id Info User">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="InfoUser" Property="InfoUserId" Title="Info User Id">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="InfoUser" Property="Name" Title="Name">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="InfoUser" Property="Surname" Title="Surname">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="InfoUser" Property="Patronymic" Title="Patronymic">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="InfoUser" Property="Phone" Title="Phone">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="InfoUser" Property="Email" Title="Email">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="InfoUser" Property="Position" Title="Position">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="InfoUser" Property="PlaceOfWork" Title="Place Of Work">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="InfoUser" Property="Note" Title="Note">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="InfoUser" Property="DateOfRegistration" FormatString="{0:d}" Title="Date Of Registration">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="InfoUser" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                            <Template Context="testFormsModelsReestrInfoUser">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, testFormsModelsReestrInfoUser))" @onclick:stopPropagation="true">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </RadzenDataGrid>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

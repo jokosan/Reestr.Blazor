@@ -1,7 +1,7 @@
 ﻿@page "/urbanonymy/HistoryStreets/{IdStreet}"
 @layout MainLayout
 @inherits Reestr.Blazor.Component.ApiGeoPortal.Street.HistoryStreetComponent
-
+@attribute [Authorize(Roles = "Administrator, Editor full rights, Manager")]
 <style>
     h6 {
         font-weight: 100;

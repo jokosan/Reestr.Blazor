@@ -40,10 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\css\bootstrap\bootstrap.min.css.map" />
   </ItemGroup>
 

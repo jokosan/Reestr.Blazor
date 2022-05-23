@@ -31,9 +31,9 @@ namespace Reestr.Logics.Service
                 _unitOfWork.PhotographicFixationUnitOfWork.Insert(photographicFixation);
                 await _unitOfWork.Save();
             }
-            catch
+            catch(Exception e)
             {
-                throw;
+                throw new Exception($"Update photo Error: {e.Message}");
             }
 
             return photographicFixation;

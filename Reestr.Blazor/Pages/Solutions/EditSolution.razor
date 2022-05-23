@@ -5,6 +5,7 @@
 @using Radzen
 @using Radzen.Blazor
 @using Reestr.Database.Model
+@attribute [Authorize(Roles = "Administrator, Editor full rights, Manager")]
 <RadzenContent Container="main">
     <ChildContent>
         <div class="row">

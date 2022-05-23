@@ -1,0 +1,42 @@
+﻿@page "/user-list-page"
+@layout MainLayout
+
+@using Radzen
+@using Radzen.Blazor
+
+
+<div class="row px-3">
+    <div class="col-md-4 p-3">
+        <RadzenCard>
+            <h4 class="mb-3">Ролі</h4>
+            <RadzenLink Path="/application-roles" Text="Переглянути" />
+        </RadzenCard>
+    </div>
+    <div class="col-md-4 p-3">
+        <RadzenCard>
+            <h4 class="mb-3">Користувачі</h4>
+            <RadzenLink Path="/application-users" Text="Переглянути" />
+        </RadzenCard>
+    </div>
+    <div class="col-md-4 p-3">
+        <RadzenCard>
+            <h4 class="mb-3">Профіль</h4>
+            <RadzenLink Path="/profile" Text="Переглянути" />
+        </RadzenCard>
+    </div>
+    <div class="col-md-4 p-3">
+        <RadzenCard>
+            <h4 class="mb-3">Зареєструвати користувача</h4>
+            <RadzenLink Path="/register-application-user" Text="Переглянути" />
+        </RadzenCard>
+    </div>
+    <div class="col-md-4 p-3">
+        <RadzenCard>
+            <h4 class="mb-3">NewUser</h4>
+            <RadzenLink Path="/info-user" Text="Переглянути" />
+        </RadzenCard>
+    </div>
+
+</div>
+
+@code { }

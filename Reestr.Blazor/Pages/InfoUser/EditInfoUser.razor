@@ -1,0 +1,149 @@
+﻿@page "/edit-info-user/{IdInfoUser}"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.InfoUser.EditInfoUserComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Database.Model
+
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+            <div class="col-md-9">
+                <RadzenLabel style="font-weight: bold" Text="Item no longer available." Visible="@(!canEdit)">
+                </RadzenLabel>
+            </div>
+            <div class="col-md-3">
+                <RadzenButton ButtonStyle="ButtonStyle.Secondary" style="margin-bottom: 20px" Text="Close" Visible="@(!canEdit)" Click="@CloseButtonClick">
+                </RadzenButton>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+                <RadzenLabel style="font-weight: bold" Text="Another user has made conflicting changes to one or more of the fields you have modified. Please reload." Visible="@hasChanges">
+                </RadzenLabel>
+            </div>
+            @*<div class="col-md-3">
+                <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="autorenew" style="margin-bottom: 20px" Text="Reload" Visible="@hasChanges" Click="@Button0Click">
+                </RadzenButton>
+            </div>*@
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenTemplateForm TItem="InfoUser" Data="@infouser" Visible="@(infouser != null && canEdit)" Submit="@Form0Submit">
+                    <ChildContent>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Info User Id" Component="InfoUserId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="2000" style="width: 100%" @bind-Value="@(infouser.InfoUserId)" Name="InfoUserId">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Name" Component="Name" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="20" style="width: 100%" @bind-Value="@(infouser.Name)" Name="Name">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Surname" Component="Surname" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="20" style="width: 100%" @bind-Value="@(infouser.Surname)" Name="Surname">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Patronymic" Component="Patronymic" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="20" style="width: 100%" @bind-Value="@(infouser.Patronymic)" Name="Patronymic">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Phone" Component="Phone" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="15" style="width: 100%" @bind-Value="@(infouser.Phone)" Name="Phone">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Email" Component="Email" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="100" style="width: 100%" @bind-Value="@(infouser.Email)" Name="Email">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Position" Component="Position" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="300" style="width: 100%" @bind-Value="@(infouser.Position)" Name="Position">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Place Of Work" Component="PlaceOfWork" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="500" style="width: 100%" @bind-Value="@(infouser.PlaceOfWork)" Name="PlaceOfWork">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Note" Component="Note" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="500" style="width: 100%" @bind-Value="@(infouser.Note)" Name="Note">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Date Of Registration" Component="DateOfRegistration" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDatePicker style="width: 100%" @bind-Value="@(infouser.DateOfRegistration)" Name="DateOfRegistration">
+                                </RadzenDatePicker>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col offset-sm-3">
+                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Primary">
+                                </RadzenButton>
+                                <RadzenButton ButtonStyle="ButtonStyle.Light" style="margin-left: 1rem" Text="Cancel" Click="@Button4Click">
+                                </RadzenButton>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </RadzenTemplateForm>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

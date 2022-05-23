@@ -1,0 +1,121 @@
+﻿@page "/add-info-user"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.InfoUser.AddInfoUserComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Database.Model
+
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenTemplateForm Data="@infouser" Visible="@(infouser != null)" TItem="InfoUser" Submit="@Form0Submit">
+                    <ChildContent>
+                      
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Ім'я" Component="Name" style="width: 100%">
+                                </RadzenLabel>
+                     
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="20" style="width: 100%" @bind-Value="@(infouser.Name)" Name="Name">
+                                </RadzenTextBox>
+                                <RadzenRequiredValidator Component="Name" Text="Поле обов'язкове до заповнення" Popup=@popup Style="position: unset" />
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Прізвище" Component="Surname" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="20" style="width: 100%" @bind-Value="@(infouser.Surname)" Name="Surname">
+                                </RadzenTextBox>
+                                <RadzenRequiredValidator Component="Surname" Text="Поле обов'язкове до заповнення" Popup=@popup Style="position: unset" />
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="По батькові" Component="Patronymic" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="20" style="width: 100%" @bind-Value="@(infouser.Patronymic)" Name="Patronymic">
+                                </RadzenTextBox>
+                                <RadzenRequiredValidator Component="Patronymic" Text="Поле обов'язкове до заповнення" Popup=@popup Style="position: unset" />
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Телефон" Component="Phone" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                @*<RadzenTextBox MaxLength="15" style="width: 100%" @bind-Value="@(infouser.Phone)" Name="Phone">
+        </RadzenTextBox>*@
+                                <RadzenMask Mask="(***)***-****" CharacterPattern="[0-9]" Placeholder="(000)000-0000" Name="Phone" @bind-Value="@(infouser.Phone)" Style="width: 100%;" />
+                                <RadzenRequiredValidator Component="Phone" Text="Поле обов'язкове до заповнення" Popup=@popup Style="position: unset" />
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Email" Component="Email" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="100" style="width: 100%" @bind-Value="@(infouser.Email)" Name="Email">
+                                </RadzenTextBox>
+                                <RadzenRequiredValidator Component="Email" Text="Електронна адреса обов’язкова" Popup=@popup Style="position: unset" />
+                                <RadzenEmailValidator Component="Email" Text="Надайте дійсну адресу електронної пошти" Popup=@popup Style="position: unset" />
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Посада" Component="Position" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="300" style="width: 100%" @bind-Value="@(infouser.Position)" Name="Position">
+                                </RadzenTextBox>
+                                <RadzenRequiredValidator Component="Position" Text="Поле обов'язкове до заповнення" Popup=@popup Style="position: unset" />
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Місце роботи" Component="PlaceOfWork" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="500" style="width: 100%" @bind-Value="@(infouser.PlaceOfWork)" Name="PlaceOfWork">
+                                </RadzenTextBox>
+                                <RadzenRequiredValidator Component="Position" Text="Поле обов'язкове до заповнення" Popup=@popup Style="position: unset" />
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Примітки" Component="Note" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="500" style="width: 100%" @bind-Value="@(infouser.Note)" Name="Note">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                       
+                        <div class="row">
+                            <div class="col offset-sm-3">
+                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Primary">
+                                </RadzenButton>
+                                <RadzenButton ButtonStyle="ButtonStyle.Light" style="margin-left: 1rem" Text="Cancel" Click="@Button2Click">
+                                </RadzenButton>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </RadzenTemplateForm>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

@@ -5,7 +5,7 @@
 @using Radzen
 @using Radzen.Blazor
 @using Reestr.Database.Model
-
+@attribute [Authorize(Roles = "Administrator, Destruction table editor, Editor full rights, Manager")]
 <RadzenContent Container="main">
     <ChildContent>
         <div class="row">
@@ -153,7 +153,7 @@
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
-                                    <RadzenTextArea MaxLength="2000" style="width: 100%" @bind-Value="@(registerofemergencybuilding.Note)" Name="Note" />
+                                <RadzenTextArea MaxLength="2000" style="width: 100%" @bind-Value="@(registerofemergencybuilding.Note)" Name="Note" />
                             </div>
                         </div>
                         <div class="row">

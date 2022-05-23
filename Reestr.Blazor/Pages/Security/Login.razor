@@ -1,0 +1,46 @@
+﻿@page "/login"
+@layout LoginLayout
+@inherits Reestr.Blazor.Component.IdentityComponent.LoginComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Authorization
+<RadzenContent Container="main">
+
+    <ChildContent>
+
+        <RadzenHeading Size="H3" Text="Авторизація користувача">
+        </RadzenHeading>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenTemplateForm Action="@($"account/login?redirectUrl={redirectUrl}")" Data="@("login")" Method="post">
+                    <ChildContent>
+                        <RadzenLogin AllowResetPassword="false" AllowRegister="false" LoginText="Увійти" PasswordText="Пароль" UserText="E-mail" Register="@Login0Register">
+                        </RadzenLogin>
+                        <hr />
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-8 col-sm-8">
+                                <RadzenLabel Text="Для отримання доступу заповніть форму реєстрації" Component="InfoUserId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-4 col-sm-8">
+                                <div class="btn-wrapper-end">
+                                    <RadzenButton style="margin-bottom: 10px;" Text="Реєстрація" ButtonStyle="ButtonStyle.Light" Click="@Button0Click">
+                                    </RadzenButton>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div style="margin-bottom: 1rem;" class="row">
+                            <div class="alert alert-success" role="alert">
+                                <span class="mt-2"> Побажання, відгуки, а також скарги та пропозиції  <a href="mailto:mail@kharkov-portal.xyz">mail@kharkov-portal.xyz</a></span>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </RadzenTemplateForm>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

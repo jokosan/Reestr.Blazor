@@ -4,6 +4,7 @@
 
 @using Radzen
 @using Radzen.Blazor
+@attribute [Authorize(Roles = "Administrator, Destruction table editor, Editor full rights, Manager")]
 <RadzenContent Container="main">
     <ChildContent>
         <RadzenHeading Size="H1" Text="Districts">

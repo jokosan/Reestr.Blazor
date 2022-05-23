@@ -134,6 +134,8 @@ namespace Reestr.Database.Context
                 entiti.Property(p => p.TypeOfDestruction).HasMaxLength(100);
                 entiti.Property(p => p.JobDescription).HasMaxLength(2000);
                 entiti.Property(p => p.Note).HasMaxLength(2000);
+                entiti.Property(p => p.UserNameInsert).HasMaxLength(200);
+                entiti.Property(p => p.UserNameUpdate).HasMaxLength(200);
             });
 
             modelBuilder.Entity<Solution>(entiti => 
@@ -174,6 +176,20 @@ namespace Reestr.Database.Context
             {
                 entiti.HasKey(h => h.IdPossibilityOfReconstruction);
                 entiti.Property(h => h.ScanDoc).HasMaxLength(200);
+            });
+
+            modelBuilder.Entity<InfoUser>(entiti =>
+            {
+                entiti.HasKey(h => h.IdInfoUser);
+                entiti.Property(h => h.InfoUserId).HasMaxLength(2000);
+                entiti.Property(h => h.Name).HasMaxLength(20);
+                entiti.Property(h => h.Surname).HasMaxLength(20);
+                entiti.Property(h => h.Patronymic).HasMaxLength(20);
+                entiti.Property(h => h.Phone).HasMaxLength(15);
+                entiti.Property(h => h.Email).HasMaxLength(100);
+                entiti.Property(h => h.Position).HasMaxLength(300);
+                entiti.Property(h => h.PlaceOfWork).HasMaxLength(500);
+                entiti.Property(h => h.Note).HasMaxLength(500);
             });
         }
     }

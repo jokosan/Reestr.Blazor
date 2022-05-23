@@ -5,14 +5,14 @@
 @using Radzen
 @using Radzen.Blazor
 @using Reestr.Database.Model
-
+@attribute [Authorize(Roles = "Administrator, Editor full rights, Manager")]
 <RadzenContent Container="main">
     <ChildContent>
         <div class="row">
             <div class="col-md-12">
                 <RadzenTemplateForm TItem="StreetCategory" Data="@streetcategory" Visible="@(streetcategory != null)" Submit="@Form0Submit">
                     <ChildContent>
-                         <div style="margin-bottom: 1rem" class="row">
+                        <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
                                 <RadzenLabel Text="Тип вулиць скорочений Ua" Component="NameCategoryUa" style="width: 100%">
                                 </RadzenLabel>

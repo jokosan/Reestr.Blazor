@@ -29,6 +29,7 @@ namespace Reestr.Logics.Infrastructure.UnitOfWorks
         DbRepository<Microdistrict> MicrodistrictUnitOfWork { get; set; }
         DbRepository<PhotographicFixation> PhotographicFixationUnitOfWork { get; set; }
         DbRepository<PossibilityOfReconstruction> PossibilityOfReconstructionUnitOfWork { get; set; }
+        DbRepository<InfoUser> InfoUserUnitOfWork { get; set; }
 
     }
 }

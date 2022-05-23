@@ -180,6 +180,57 @@ namespace Reestr.Database.Migrations
                     b.ToTable("Districts");
                 });
 
+            modelBuilder.Entity("Reestr.Database.Model.InfoUser", b =>
+                {
+                    b.Property<int>("IdInfoUser")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("DateOfRegistration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("InfoUserId")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Patronymic")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("PlaceOfWork")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Position")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("Surname")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("IdInfoUser");
+
+                    b.ToTable("InfoUser");
+                });
+
             modelBuilder.Entity("Reestr.Database.Model.Land", b =>
                 {
                     b.Property<int>("IdLand")
@@ -354,6 +405,12 @@ namespace Reestr.Database.Migrations
                     b.Property<int?>("BuildingTypeId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("DateInsert")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
@@ -388,6 +445,14 @@ namespace Reestr.Database.Migrations
 
                     b.Property<int?>("TypeOfOwnershipId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserNameInsert")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("UserNameUpdate")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("IdRegisterOfEmergencyBuildings");
 

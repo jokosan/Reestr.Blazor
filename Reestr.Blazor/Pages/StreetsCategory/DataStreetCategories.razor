@@ -5,7 +5,7 @@
 @using Radzen
 @using Radzen.Blazor
 @using Reestr.Database.Model
-
+@attribute [Authorize(Roles = "Administrator, Editor full rights, Manager")]
 <RadzenContent Container="main">
     <ChildContent>
         <RadzenHeading Size="H1" Text="Типи вулиць">
@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-md-12">
                 <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Додати" Click="@Button0Click">
-                </RadzenButton>             
+                </RadzenButton>
                 <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="Radzen.FilterMode.Advanced" AllowPaging="true" AllowSorting="true" PageSize="15" Data="@getStreetCategoriesResult" TItem="StreetCategory" RowSelect="@Grid0RowSelect">
                     <Columns>
                         <RadzenDataGridColumn TItem="StreetCategory" Property="IdStreetCategory" Title="Id Street Category">

@@ -5,17 +5,17 @@
 @using Radzen
 @using Radzen.Blazor
 @using Reestr.Api.GeoPortal.Model
-
+@attribute [Authorize(Roles = "Administrator, Editor full rights, Manager, User")]
 <RadzenContent Container="main">
     <ChildContent>
         <RadzenHeading Size="H1" Text="Реєстр урбанонімів міста Харків" Style="text-align:center">
         </RadzenHeading>
         <div class="row">
-            <div class="col-md-12">          
+            <div class="col-md-12">
                 @*<RadzenTextBox Placeholder="Search ..." style="display: block; margin-bottom: 10px; width: 100%" Name="Textbox0" @oninput="@(async(args) => {search = $"{args.Value}";await grid0.GoToPage(0);await Load();})">
-                </RadzenTextBox>*@
-                <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="Radzen.FilterMode.Advanced" 
-                                PageSize="15" AllowPaging="true" AllowSorting="true" Data="@getStreetsResult" TItem="StreetsModel" RowDoubleClick="@SelectHistoryStreets" >
+                    </RadzenTextBox>*@
+                <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="Radzen.FilterMode.Advanced"
+                                PageSize="15" AllowPaging="true" AllowSorting="true" Data="@getStreetsResult" TItem="StreetsModel" RowDoubleClick="@SelectHistoryStreets">
                     <Columns>
                         <RadzenDataGridColumn TItem="StreetsModel" Property="id" Title="Обліковий номер">
                         </RadzenDataGridColumn>
@@ -27,10 +27,10 @@
                             <Template Context="data">
                                 @if (data.valid == "YES")
                                 {
-                                  <span style="color: #32d296">Чинна</span>
+                                    <span style="color: #32d296">Чинна</span>
                                 }
                                 else
-                                { 
+                                {
                                     <span style="color: #f0506e">Скасована</span>
                                 }
                             </Template>

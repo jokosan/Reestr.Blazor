@@ -11,6 +11,8 @@ using Reestr.Database.Model;
 using Reestr.Logics.Infrastructure.UnitOfWorks;
 using Reestr.Logics.Service;
 using Reestr.Logics.Modul.Upload;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Reestr.Blazor.Component.Destructions
 {
@@ -54,8 +56,12 @@ namespace Reestr.Blazor.Component.Destructions
 
         [Inject]
         protected RegisterOfEmergencyBuildingsServices RegisterOfEmergencyBuildingsSer { get; set; }
+      
         [Inject]
         protected AddressingServices AddressingService { get; set; }
+
+        [Inject]
+        protected IHttpContextAccessor _httpContextAccessor { get; set; }
 
         [Parameter]
         public dynamic IdRegisterOfEmergencyBuildings { get; set; }
@@ -225,16 +231,24 @@ namespace Reestr.Blazor.Component.Destructions
         {
             try
             {
+                var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+               
+                registerofemergencybuilding.DateUpdate = DateTime.Now;
+                registerofemergencybuilding.UserNameUpdate = userId;
+
                 var reestrDbUpdateRegisterOfEmergencyBuildingResult = await RegisterOfEmergencyBuildingsSer.UpdateRegisterOfEmergencyBuilding(IdRegisterOfEmergencyBuildings, registerofemergencybuilding);
 
-                foreach (var item in UploadSaveModel.UploadList)
+                if (UploadSaveModel.UploadList.Count != 0)
                 {
-                    PhotographicFixation photographicFixation = new PhotographicFixation();
+                    foreach (var item in UploadSaveModel.UploadList)
+                    {
+                        PhotographicFixation photographicFixation = new PhotographicFixation();
 
-                    photographicFixation.RegisterOfEmergencyBuildingsId = reestrDbUpdateRegisterOfEmergencyBuildingResult.IdRegisterOfEmergencyBuildings;
-                    photographicFixation.Url = item;
+                        photographicFixation.RegisterOfEmergencyBuildingsId = reestrDbUpdateRegisterOfEmergencyBuildingResult.IdRegisterOfEmergencyBuildings;
+                        photographicFixation.Url = item;
 
-                    await PhotographicFixationService.CreateAddressing(photographicFixation);
+                        await PhotographicFixationService.CreateAddressing(photographicFixation);
+                    }
                 }
 
                 UploadSaveModel.UploadList.Clear();

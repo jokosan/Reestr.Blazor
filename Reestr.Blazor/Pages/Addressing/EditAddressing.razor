@@ -5,7 +5,7 @@
 @using Radzen
 @using Radzen.Blazor
 @using Reestr.Database.Model
-
+@attribute [Authorize(Roles = "Administrator, Editor full rights, Manager")]
 <RadzenContent Container="main">
     <ChildContent>
         <div class="row">
@@ -34,7 +34,7 @@
                             </div>
                         </div>
 
-                        
+
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
                                 <RadzenLabel Text="District" Component="DistrictsId" style="width: 100%">

@@ -36,8 +36,9 @@ namespace Reestr.Logics.Infrastructure.UnitOfWorks
         private DbRepository<Microdistrict> MicrodistrictUW { get; set; }
         private DbRepository<PhotographicFixation> PhotographicFixationUW { get; set; }
         private DbRepository<PossibilityOfReconstruction> PossibilityOfReconstructionUW { get; set; }
+        private DbRepository<InfoUser> InfoUserUW { get; set; }
 
-
+        public DbRepository<InfoUser> InfoUserUnitOfWork { get => InfoUserUW ?? (InfoUserUW = new DbRepository<InfoUser>(_dbContextReestr)); set => InfoUserUW = value; }
         public DbRepository<Addressing> AddressingUnitOfWork { get => AddressingUW ?? (AddressingUW = new DbRepository<Addressing>(_dbContextReestr)); set => AddressingUW = value; }
         public DbRepository<AddressType> AddressTypeUnitOfWork { get => AddressTypeUW ?? (AddressTypeUW = new DbRepository<AddressType>(_dbContextReestr)); set => AddressTypeUW = value; }
         public DbRepository<ConstructionPassport> ConstructionPassportUnitOfWork { get => ConstructionPassportUW ?? (ConstructionPassportUW = new DbRepository<ConstructionPassport>(_dbContextReestr)); set => ConstructionPassportUW = value; }

@@ -11,6 +11,8 @@ using Reestr.Database.Model;
 using Reestr.Logics.Infrastructure.UnitOfWorks;
 using Reestr.Logics.Service;
 using Reestr.Logics.Modul.Upload;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Reestr.Blazor.Component.Destructions
 {
@@ -55,6 +57,9 @@ namespace Reestr.Blazor.Component.Destructions
 
         [Inject]
         protected UnitOfWork ReestrDb { get; set; }
+
+        [Inject]
+        protected IHttpContextAccessor _httpContextAccessor { get; set; }
 
         IEnumerable<Microdistrict> _getMicrodistrictsForMicrodistrictIdResult;
 
@@ -227,16 +232,24 @@ namespace Reestr.Blazor.Component.Destructions
         {
             try
             {
+                var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+
+                registerofemergencybuilding.DateInsert = DateTime.Now;
+                registerofemergencybuilding.UserNameInsert = userId;
+
                 var reestrDbCreateRegisterOfEmergencyBuildingResult = await RegisterOfEmergencyBuildingsSer.CreateRegisterOfEmergencyBuilding(registerofemergencybuilding);
 
-                foreach(var item in UploadSaveModel.UploadList)
+                if (UploadSaveModel.UploadList.Count != 0)
                 {
-                    PhotographicFixation photographicFixation = new PhotographicFixation();
+                    foreach (var item in UploadSaveModel.UploadList)
+                    {
+                        PhotographicFixation photographicFixation = new PhotographicFixation();
 
-                    photographicFixation.RegisterOfEmergencyBuildingsId = reestrDbCreateRegisterOfEmergencyBuildingResult.IdRegisterOfEmergencyBuildings;
-                    photographicFixation.Url = item;
+                        photographicFixation.RegisterOfEmergencyBuildingsId = reestrDbCreateRegisterOfEmergencyBuildingResult.IdRegisterOfEmergencyBuildings;
+                        photographicFixation.Url = item;
 
-                    await PhotographicFixationService.CreateAddressing(photographicFixation);
+                        await PhotographicFixationService.CreateAddressing(photographicFixation);
+                    }
                 }
 
                 UploadSaveModel.UploadList.Clear();

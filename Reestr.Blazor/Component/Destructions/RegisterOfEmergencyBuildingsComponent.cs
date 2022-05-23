@@ -12,6 +12,10 @@ using Reestr.Logics.Infrastructure.UnitOfWorks;
 using Reestr.Logics.Service;
 using Radzen.Blazor;
 using Reestr.Blazor.Pages.Destruction;
+using Reestr.Blazor.Areas.Data;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Reestr.Blazor.Component.Destructions
 {
@@ -50,11 +54,15 @@ namespace Reestr.Blazor.Component.Destructions
         [Inject]
         protected UnitOfWork ReestrDb { get; set; }
 
+        [Inject]
+        protected ApplicationDbContext dbContext { get; set; }
+
         protected RadzenDataGrid<RegisterOfEmergencyBuildings> grid0;
 
         [Inject]
         protected RegisterOfEmergencyBuildingsServices RegisterOfEmergencyBuildingsSer { get; set; }
-   
+
+
         IEnumerable<RegisterOfEmergencyBuildings> _getRegisterOfEmergencyBuildingsResult;
 
         protected int countRegisterOfEmergencyBuildings { get; set; }

@@ -5,7 +5,7 @@
 @using Radzen
 @using Radzen.Blazor
 @using Reestr.Database.Model
-
+@attribute [Authorize(Roles = "Administrator, Editor full rights, Manager")]
 <RadzenContent Container="main">
     <ChildContent>
         <div class="row">
@@ -21,7 +21,7 @@
                                 <RadzenDropDown AllowFiltering="true" AllowVirtualization="true" Data="@getStreetCategoriesResult"
                                                 FilterCaseSensitivity="FilterCaseSensitivity.Default" FilterOperator="StringFilterOperator.StartsWith" Placeholder="Choose StreetCategory" style="width: 100%"
                                                 TextProperty="NameCategoryUa" @bind-Value="@(street.StreetCategoryId)" ValueProperty="IdStreetCategory" Name="StreetCategoryId">
-                                </RadzenDropDown>                            
+                                </RadzenDropDown>
                             </div>
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
@@ -31,10 +31,10 @@
                             </div>
                             <div class="col-md-9">
                                 @*<RadzenDropDown AllowFiltering="true" AllowVirtualization="true" Data="@getSolutionsResult" Placeholder="Choose Solution" style="width: 100%"
-                                                TextProperty="DecisionNumber" @bind-Value="@(street.SolutionId)" ValueProperty="IdSolution" Name="SolutionId">
-                                </RadzenDropDown>*@
+                                                    TextProperty="DecisionNumber" @bind-Value="@(street.SolutionId)" ValueProperty="IdSolution" Name="SolutionId">
+                                    </RadzenDropDown>*@
 
-                                <RadzenDropDownDataGrid AllowClear="true" AllowFilteringByAllStringColumns="true" Data="@getSolutionsResult" style="width: 100%" TValue="int?"  TextProperty="DecisionNumber" @bind-Value="@(street.SolutionId)" ValueProperty="IdSolution" Name="SolutionId">
+                                <RadzenDropDownDataGrid AllowClear="true" AllowFilteringByAllStringColumns="true" Data="@getSolutionsResult" style="width: 100%" TValue="int?" TextProperty="DecisionNumber" @bind-Value="@(street.SolutionId)" ValueProperty="IdSolution" Name="SolutionId">
                                     <Columns>
                                         <RadzenDropDownDataGridColumn Property="DecisionNumber" Title="Decision Number">
                                         </RadzenDropDownDataGridColumn>

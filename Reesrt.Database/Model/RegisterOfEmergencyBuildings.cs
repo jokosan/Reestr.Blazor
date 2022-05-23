@@ -36,6 +36,10 @@ namespace Reestr.Database.Model
         public int? PhotographicFixationId { get; set; } // Фото
         public int? PossibilityOfReconstructionId { get; set; } // Результат обследования 
         public string Note { get; set; } // Примечание 
+        public string UserNameInsert { get; set; }
+        public DateTime? DateInsert { get; set; }
+        public string UserNameUpdate { get; set; }
+        public DateTime? DateUpdate { get; set; }
 
         public virtual Addressing Addressing { get; set; }
         public virtual TypeOfOwnership TypeOfOwnership { get; set; }

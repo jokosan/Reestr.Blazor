@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 using Reestr.Api.GeoPortal.Infrastructure.DependencyInjection;
 using Reestr.Blazor.Areas.Data;
 using Microsoft.AspNetCore.Components.Authorization;
-using WebApplication3.Areas.Identity;
+using Reestr.Blazor.Infrastructure.DependencyInjection;
 
 namespace Reestr.Blazor
 {
@@ -34,22 +34,22 @@ namespace Reestr.Blazor
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-               options.UseSqlServer(
-                   Configuration.GetConnectionString("SecurityDb")));
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("SecurityDb"));
+            }, ServiceLifetime.Transient);
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddAutoMapper(typeof(AppMappingProfile));
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-              .AddRoles<IdentityRole>()
-              .AddEntityFrameworkStores<ApplicationDbContext>();
-
             DependencyInjectionLogics.Initialize(services);
             DependencyInjectionLogicsGeoPortal.Initialize(services);
+            IdentityConfigureServices.Initialize(services);
+
             DbContextServiceCollectionLogics.Initialize(services, Configuration.GetConnectionString("ReestrDb"));
 
             services.AddScoped<DialogService>();
@@ -57,41 +57,43 @@ namespace Reestr.Blazor
             services.AddScoped<TooltipService>();
             services.AddScoped<ContextMenuService>();
 
-            services.AddRazorPages();
-            services.AddServerSideBlazor();
-            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+            //services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddScoped<AddDistrictComponent>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext identityDbContext)
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();          
+                Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
+                app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                app.Use((ctx, next) =>
+                {
+                    return next();
+                });
             }
-            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                  name: "default",
+                  pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllers();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
+            identityDbContext.Database.Migrate();
+
         }
     }
 }

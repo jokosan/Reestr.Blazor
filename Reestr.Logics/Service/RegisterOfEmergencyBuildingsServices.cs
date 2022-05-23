@@ -104,16 +104,21 @@ namespace Reestr.Logics.Service
         {
             var itemToUpdate = await GetRegisterOfEmergencyBuildingByIdRegisterOfEmergencyBuildings(idRegisterOfEmergencyBuildings);
 
-            //var itemToUpdate = _dbContextReestr.RegisterOfEmergencyBuildings
-            //                 .Where(i => i.IdRegisterOfEmergencyBuildings == idRegisterOfEmergencyBuildings)
-            //                 .FirstOrDefault();
-
             if (itemToUpdate == null)
             {
                 throw new Exception("Item no longer available");
             }
 
-            _unitOfWork.RegisterOfEmergencyBuildingsUnitOfWork.Update(registerOfEmergencyBuilding, itemToUpdate);
+            try
+            {
+                _unitOfWork.RegisterOfEmergencyBuildingsUnitOfWork.Update(registerOfEmergencyBuilding, itemToUpdate);
+                await _unitOfWork.Save();
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Update Error {e.Message}");
+            }
+    
          
 
             return registerOfEmergencyBuilding;
@@ -133,9 +138,9 @@ namespace Reestr.Logics.Service
                 _unitOfWork.RegisterOfEmergencyBuildingsUnitOfWork.Insert(registerOfEmergencyBuilding);
                 await _unitOfWork.Save();
             }
-            catch
+            catch(Exception ex)
             {
-                throw;
+                throw new Exception("Item already available");
             }
 
             return registerOfEmergencyBuilding;

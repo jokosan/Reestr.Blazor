@@ -6,7 +6,7 @@
 @using Radzen
 @using Radzen.Blazor
 @using Reestr.Database.Model
-
+@attribute [Authorize(Roles = "Administrator, Destruction table editor, Editor full rights, Manager")]
 @inherits Reestr.Blazor.Component.Destructions.PhotographicFixationComponent
 @inject IJSRuntime JSRuntime
 

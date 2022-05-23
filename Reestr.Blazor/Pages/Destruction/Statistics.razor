@@ -12,7 +12,7 @@
 @using System.Globalization
 @using Reestr.Database.Model
 @inject Reestr.Logics.Infrastructure.Repositories.DbRepository<RegisterOfEmergencyBuildings> dbContext
-
+@attribute [Authorize(Roles = "Administrator, Destruction table editor, Editor full rights, Manager")]
 <div class="container">
     <div class="row">
         <div class="col-sm-12 col-lg-6 offset-lg-3 my-5">
@@ -35,21 +35,21 @@
     <div class="row">
         <div class="col-sm-12 col-lg-6 offset-lg-3 my-5">
             <RadzenChart>
-                <RadzenDonutSeries Data="@dataItemDistricts" CategoryProperty="Name" ValueProperty="DistrictsCount" 
-                                   Fills=@(new [] { "#ea5545", "#f46a9b", "#ef9b20", "#edbf33", "#ede15b", "#bdcf32", "#42d4f4", "#87bc45", "#27aeef"}) >
+                <RadzenDonutSeries Data="@dataItemDistricts" CategoryProperty="Name" ValueProperty="DistrictsCount"
+                                   Fills=@(new [] { "#ea5545", "#f46a9b", "#ef9b20", "#edbf33", "#ede15b", "#bdcf32", "#42d4f4", "#87bc45", "#27aeef"})>
                     <TitleTemplate>
                         <div class="rz-donut-content">
                             <div>Будівель без адресси </div>
                             <div>@notAddressing </div>
                         </div>
                     </TitleTemplate>
-                </RadzenDonutSeries>             
-                <RadzenLegend Position="LegendPosition.Right"/>
+                </RadzenDonutSeries>
+                <RadzenLegend Position="LegendPosition.Right" />
             </RadzenChart>
         </div>
     </div>
 </div>
-<hr/>
+<hr />
 <h3>Далі буде ... </h3>
 <h3>P.S приймаються побажання та пропозиції</h3>
 
