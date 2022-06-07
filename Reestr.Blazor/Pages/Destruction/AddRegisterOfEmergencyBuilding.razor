@@ -61,36 +61,24 @@
 
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Тип вулиць" Component="AddressingId" style="width: 100%">
-                                </RadzenLabel>
-                            </div>
-                            <div class="col-md-9">
-                                <RadzenDropDown TValue="int" @bind-Value="streetCategoriesId" Placeholder="Select street categores" AllowFiltering="true"
-                                                Data="@(getStreetCategoriesResult)" TextProperty="NameCategoryUa" ValueProperty="IdStreetCategory" style="width: 100%">
-                                </RadzenDropDown>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: 1rem" class="row">
-                            <div class="col-md-3">
                                 <RadzenLabel Text="Назва вулиць" Component="AddressingId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
-                                <RadzenDropDown AllowClear="true" AllowFiltering="true" TValue="int" @bind-Value="streetId" Placeholder="Select street" Data="(getStreetResult?.Where(x => x.StreetCategoryId == streetCategoriesId))"
-                                                ValueProperty="IdStreets" TextProperty="NameStreetsUa" Name="StreetsId" style="width: 100%">
+                                <RadzenDropDown AllowClear="true" AllowFiltering="true" TValue="int" @bind-Value="streetId" Placeholder="Select street" Data="(getStreetResult)"
+                                                ValueProperty="id" TextProperty="name_ukr" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Change="@AddressingIdChange" Name="id" style="width: 100%">
                                 </RadzenDropDown>
                             </div>
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Адреса" Component="AddressingId" style="width: 100%">
+                                <RadzenLabel Text="Номер будинку" Component="AddressingId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
-                                <RadzenDropDown AllowClear="true" AllowFiltering="true" @bind-Value="@(registerofemergencybuilding.AddressingId)"
-                                                Placeholder="Select Addressing" Data="(getAddressingsForAddressingIdResult?.Where(x => x.StreetsId == streetId))"
-                                                ValueProperty="IdAddressing" TextProperty="Number" Name="StreetsId" style="width: 100%">
+                                <RadzenDropDown AllowClear="true" AllowFiltering="true" @bind-Value="@(registerofemergencybuilding.AddressesApiId)"
+                                                Placeholder="Select Addressing" Data="(getAddressingsForAddressingIdResult)"
+                                                ValueProperty="id" TextProperty="number" Change=@(args => SearchForDuplicates(args, registerofemergencybuilding.AddressesApiId.Value)) Name="id" style="width: 100%">
                                 </RadzenDropDown>
                             </div>
                         </div>
@@ -136,15 +124,21 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
+                                <RadzenLabel Text="Джерело даних" Component="DataSource" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="2000" style="width: 100%" @bind-Value="@(registerofemergencybuilding.DataSource)" Name="DataSource">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
                                 <RadzenLabel Text="Фотофіксація" Component="PhotographicFixationId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
-                                <RadzenUpload Url="upload/multiple" Multiple="true" Accept="image/*" Style="margin-bottom: 20px; width: 100%" Progress="@((arge) => OnProgress(arge, "Single file Upload"))"></RadzenUpload>
-
-                                <RadzenCard Style="overflow: auto; height: 50px; width: 100%">
-                                    <RadzenProgressBar Value="@progress" Unit="@info" Visible="@(progress > 0)" Style="margin-bottom: 20px; width: 100%"></RadzenProgressBar>
-                                </RadzenCard>
+                                <RadzenUpload Url="upload/multiple" Multiple="true" Accept="image/*" Style="margin-bottom: 20px; width: 100%" Progress="@((arge) => OnProgress(arge, "Завантаження зображень"))"></RadzenUpload>
                             </div>
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
@@ -158,7 +152,7 @@
                         </div>
                         <div class="row">
                             <div class="col offset-sm-3">
-                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Primary">
+                                <RadzenButton ButtonType="ButtonType.Submit" Disabled="@CheckingBool" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Primary">
                                 </RadzenButton>
                                 <RadzenButton ButtonStyle="ButtonStyle.Light" style="margin-left: 1rem" Text="Cancel" Click="@Button2Click">
                                 </RadzenButton>

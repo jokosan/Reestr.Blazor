@@ -20,6 +20,6 @@ namespace Reestr.Database.Model
         public DateTime? VarianceApprovalDate { get; set; }
         public bool Status { get; set; }
 
-        public virtual Addressing Addressing { get; set; }
+        public virtual AddressingApi Addressing { get; set; }
     }
 }

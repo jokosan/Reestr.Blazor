@@ -60,29 +60,27 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
-                                <RadzenLabel Text="Адреса" Component="AddressingId" style="width: 100%">
+                                <RadzenLabel Text="Назва вулиць" Component="AddressingId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
-                                <RadzenDropDownDataGrid AllowClear="true" AllowColumnResize="true" AllowFilteringByAllStringColumns="true"
-                                                        Data="@getAddressingsForAddressingIdResult" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                                        Placeholder="Choose Addressing" ShowSearch="false" style="width: 100%" TextProperty="Number"
-                                                        @bind-Value="@(registerofemergencybuilding.AddressingId)" ValueProperty="IdAddressing" Name="AddressingId">
-                                    <Columns>
-                                        <RadzenDropDownDataGridColumn FilterProperty="Streets.StreetCategory.NameCategoryUa" GroupProperty="Streets.StreetCategory.NameCategoryUa" Property="StreetsId" SortProperty="Streets.StreetCategory.NameCategoryUa" Title="StreetCategory">
-                                            <Template Context="data">
-                                                @(((Addressing)data).Streets?.StreetCategory.NameCategoryUa)
-                                            </Template>
-                                        </RadzenDropDownDataGridColumn>
-                                        <RadzenDropDownDataGridColumn FilterProperty="Streets.NameStreetsUa" GroupProperty="Streets.NameStreetsUa" Property="StreetsId" SortProperty="Streets.NameStreetsUa" Title="Streets">
-                                            <Template Context="data">
-                                                @(((Addressing)data).Streets?.NameStreetsUa)
-                                            </Template>
-                                        </RadzenDropDownDataGridColumn>
-                                        <RadzenDropDownDataGridColumn Property="Number" Title="Number">
-                                        </RadzenDropDownDataGridColumn>
-                                    </Columns>
-                                </RadzenDropDownDataGrid>
+                                <RadzenDropDown AllowClear="true" AllowFiltering="true" TValue="int" @bind-Value="streetId" Placeholder="Select street" Data="(getStreetResult)"
+                                                ValueProperty="id" TextProperty="name_ukr" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Change="@AddressingIdChange" Name="id" style="width: 100%">
+                                </RadzenDropDown>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Адреса" Component="AddressingId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+
+                            <div class="col-md-9">
+                                <RadzenDropDown AllowClear="true" AllowFiltering="true" @bind-Value="@(registerofemergencybuilding.AddressesApiId)"
+                                                Placeholder="Select Addressing" Data="(getAddressingsForAddressingIdResult)"
+                                                ValueProperty="id" TextProperty="number" Name="id" style="width: 100%">
+
+                                </RadzenDropDown>
                             </div>
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
@@ -127,27 +125,23 @@
                         </div>
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
+                                <RadzenLabel Text="Джерело даних" Component="DataSource" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="2000" style="width: 100%" @bind-Value="@(registerofemergencybuilding.DataSource)" Name="DataSource">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
                                 <RadzenLabel Text="Фотофіксація" Component="PhotographicFixationId" style="width: 100%">
                                 </RadzenLabel>
                             </div>
                             <div class="col-md-9">
-                                <RadzenUpload Url="upload/multiple" Multiple="true" Accept="image/*" Style="margin-bottom: 20px; width: 100%" Progress="@((arge) => OnProgress(arge, "Single file Upload"))"></RadzenUpload>
-
-                                <RadzenCard Style="overflow: auto; height: 50px; width: 100%">
-                                    <RadzenProgressBar Value="@progress" Unit="@info" Visible="@(progress > 0)" Style="margin-bottom: 20px; width: 100%"></RadzenProgressBar>
-                                </RadzenCard>
+                                <RadzenUpload Url="upload/multiple" Multiple="true" Accept="image/*" Style="margin-bottom: 20px; width: 100%" Progress="@((arge) => OnProgress(arge, "Завантаження зображень"))"></RadzenUpload>
                             </div>
                         </div>
-                        @*<div style="margin-bottom: 1rem" class="row">
-                                <div class="col-md-3">
-                                    <RadzenLabel Text="Possibility Of Reconstruction" Component="PossibilityOfReconstructionId" style="width: 100%">
-                                    </RadzenLabel>
-                                </div>
-                                <div class="col-md-9">
-                                    <RadzenDropDownDataGrid Data="@getPossibilityOfReconstructionsForPossibilityOfReconstructionIdResult" TextProperty="ScanDoc" ValueProperty="IdPossibilityOfReconstruction" Placeholder="Choose PossibilityOfReconstruction" ShowSearch="false" style="width: 100%" @bind-Value="@(registerofemergencybuilding.PossibilityOfReconstructionId)" Name="PossibilityOfReconstructionId">
-                                    </RadzenDropDownDataGrid>
-                                </div>
-                            </div>*@
                         <div style="margin-bottom: 1rem" class="row">
                             <div class="col-md-3">
                                 <RadzenLabel Text="Примітка" Component="Note" style="width: 100%">

@@ -22,6 +22,7 @@ namespace Reestr.Api.GeoPortal.Infrastructure.DependencyInjection
             services.AddScoped<DistrictServises>();
             services.AddScoped<AuthorizationToken>();       
             services.AddScoped<StreetsServises>();
+            services.AddScoped<AddressesServises>();
            
            services.AddScoped<IAddressRegistryApiService, AddressRegistryApiService>();
         }

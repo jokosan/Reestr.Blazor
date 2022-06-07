@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Reestr.Logics.Modul.GoeJson;
 
 namespace Reestr.Logics.Infrastructure.DependencyInjection
 {
@@ -21,9 +22,6 @@ namespace Reestr.Logics.Infrastructure.DependencyInjection
 
             //DbRepository
 
-            services.AddScoped<DbRepository<AddressType>>();
-            services.AddScoped<DbRepository<Streets>>();
-            services.AddScoped<DbRepository<Addressing>>();
             services.AddScoped<DbRepository<Districts>>();
             services.AddScoped<DbRepository<Land>>();
             services.AddScoped<DbRepository<StreetCategory>>();
@@ -34,12 +32,13 @@ namespace Reestr.Logics.Infrastructure.DependencyInjection
             // Servises
 
             services.AddScoped<DistrictsServises>();
-            services.AddScoped<StreetsService>();
             services.AddScoped<SolutionServises>();
             services.AddScoped<StreetCategoriesServises>();
-            services.AddScoped<AddressingServices>();
             services.AddScoped<RegisterOfEmergencyBuildingsServices>();
-            services.AddScoped<PhotographicFixationServices>();
+            services.AddScoped<AddressingApiServices>();
+            services.AddScoped<PhotographicFixationServises>();
+
+     
 
             // UnitOFWork
             services.AddScoped<UnitOfWork>();

@@ -13,6 +13,8 @@ using Reestr.Logics.Service;
 using Reestr.Logics.Modul.Upload;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Reestr.Api.GeoPortal.Services;
+using Reestr.Api.GeoPortal.Model;
 
 namespace Reestr.Blazor.Component.Destructions
 {
@@ -53,10 +55,19 @@ namespace Reestr.Blazor.Component.Destructions
 
 
         [Inject]
-        protected PhotographicFixationServices PhotographicFixationService { get; set; }
+        protected PhotographicFixationServises PhotographicFixationService { get; set; }
 
         [Inject]
         protected UnitOfWork ReestrDb { get; set; }
+
+        [Inject]
+        protected AddressingApiServices _addressingApiServices { get; set; }
+
+        [Inject]
+        protected StreetsServises _streetsServises { get; set; }
+
+        [Inject]
+        protected AddressesServises _addressesServises { get; set; }
 
         [Inject]
         protected IHttpContextAccessor _httpContextAccessor { get; set; }
@@ -121,8 +132,9 @@ namespace Reestr.Blazor.Component.Destructions
             }
         }
 
-        IEnumerable<Addressing> _getAddressingsForAddressingIdResult;
-        protected IEnumerable<Addressing> getAddressingsForAddressingIdResult
+        // Event
+        IEnumerable<AddressesModel> _getAddressingsForAddressingIdResult;
+        protected IEnumerable<AddressesModel> getAddressingsForAddressingIdResult
         {
             get
             {
@@ -178,6 +190,8 @@ namespace Reestr.Blazor.Component.Destructions
             }
         }
 
+        protected bool CheckingBool { get; set; }
+
         RegisterOfEmergencyBuildings _registerofemergencybuilding;
 
         public RegisterOfEmergencyBuildings registerofemergencybuilding
@@ -202,22 +216,19 @@ namespace Reestr.Blazor.Component.Destructions
         {
             await Load();
         }
+
         protected async System.Threading.Tasks.Task Load()
         {
             var reestrDbDgaGetMicrodistrictsResult = await ReestrDb.MicrodistrictUnitOfWork.Get();
             getMicrodistrictsForMicrodistrictIdResult = reestrDbDgaGetMicrodistrictsResult;
 
-            getStreetCategoriesResult = await ReestrDb.StreetCategoryUnitOfWork.Get();
-            getStreetResult = await ReestrDb.StreetsUnitOfWork.Get();
+            getStreetResult = await _streetsServises.GetOnlyValidStreetNames();       
 
             var reestrDbDgaGetBuildingTypesResult = await ReestrDb.BuildingTypeUnitOfWork.Get();
             getBuildingTypesForBuildingTypeIdResult = reestrDbDgaGetBuildingTypesResult;
 
             var reestrDbDgaGetTypeOfOwnershipsResult = await ReestrDb.TypeOfOwnershipUnitOfWork.Get();
             getTypeOfOwnershipsForTypeOfOwnershipIdResult = reestrDbDgaGetTypeOfOwnershipsResult;
-
-            var reestrDbDgaGetAddressingsResult = await ReestrDb.AddressingUnitOfWork.QueryObjectGraph(x => x.StreetsId != null, "Streets", "Streets.StreetCategory");
-            getAddressingsForAddressingIdResult = reestrDbDgaGetAddressingsResult;
 
             var reestrDbDgaGetPhotographicFixationsResult = await ReestrDb.PhotographicFixationUnitOfWork.Get();
             getPhotographicFixationsForPhotographicFixationIdResult = reestrDbDgaGetPhotographicFixationsResult;
@@ -227,11 +238,41 @@ namespace Reestr.Blazor.Component.Destructions
 
             registerofemergencybuilding = new RegisterOfEmergencyBuildings() { };
         }
+      
+        public async Task AddressingIdChange(dynamic args)
+        {         
+            getAddressingsForAddressingIdResult = null;
+
+            var reestrDbDgaGetAddressingsResult = await _addressesServises.AddressesAllByStreetsId(streetId);
+            getAddressingsForAddressingIdResult = reestrDbDgaGetAddressingsResult;
+
+            await InvokeAsync(StateHasChanged);
+        }
+
+        public async Task SearchForDuplicates(dynamic args, int id)
+        {
+            var сheckingForMatchesResultBool = await RegisterOfEmergencyBuildingsSer.CheckingForMatches(id);
+
+            if (сheckingForMatchesResultBool)
+            {
+                NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "Увага", Detail = "Дана адреса вже була раніше додана до бази", Duration = 10000 });
+            }
+
+            CheckingBool = сheckingForMatchesResultBool;
+        }
 
         public async System.Threading.Tasks.Task Form0Submit(RegisterOfEmergencyBuildings args)
         {
             try
             {
+                var resultGetAddressesApi = await _addressesServises.AddressesModelMap(registerofemergencybuilding.AddressesApiId.Value);
+                var itemBool = await _addressingApiServices.GetExistingItem(registerofemergencybuilding.AddressesApiId.Value);
+
+                if (itemBool)
+                {
+                    await _addressingApiServices.CreateAddressingApi(resultGetAddressesApi);
+                }
+
                 var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
 
                 registerofemergencybuilding.DateInsert = DateTime.Now;
@@ -257,7 +298,8 @@ namespace Reestr.Blazor.Component.Destructions
             }
             catch (System.Exception reestrDbCreateRegisterOfEmergencyBuildingException)
             {
-                NotificationService.Notify(new NotificationMessage() { Severity = NotificationSeverity.Error, Summary = $"Error", Detail = $"Unable to create new RegisterOfEmergencyBuilding!" });
+                UploadSaveModel.UploadList.Clear();
+                NotificationService.Notify(new NotificationMessage() { Severity = NotificationSeverity.Error, Summary = $"Error", Detail = $"Щось пішло не так, як треба!" });
             }
         }
 
@@ -274,9 +316,9 @@ namespace Reestr.Blazor.Component.Destructions
         #endregion
 
 
-        public IEnumerable<StreetCategory> _getStreetCategoriesResult;
+        public IEnumerable<TypeStreetsModel> _getStreetCategoriesResult;
 
-        protected IEnumerable<StreetCategory> getStreetCategoriesResult
+        protected IEnumerable<TypeStreetsModel> getStreetCategoriesResult
         {
             get
             {
@@ -294,9 +336,9 @@ namespace Reestr.Blazor.Component.Destructions
             }
         }
 
-        public IEnumerable<Streets> _getStreetResult;
+        public IEnumerable<StreetsModel> _getStreetResult;
 
-        protected IEnumerable<Streets> getStreetResult
+        protected IEnumerable<StreetsModel> getStreetResult
         {
             get
             {
@@ -319,8 +361,29 @@ namespace Reestr.Blazor.Component.Destructions
 
         protected void OnProgress(UploadProgressArgs args, string name)
         {
-            this.info = $"% '{name}' / Loaded: {args.Loaded},  of {args.Total} bytes.";
+            var kilobyteLoaded = ByteToKilobyteConverter(args.Loaded);
+            var kilobyteTotal = ByteToKilobyteConverter(args.Total);
+
+            this.info = $"'{name}': {kilobyteLoaded}, з {kilobyteTotal} Кбайт.";
             this.progress = args.Progress;
+
+            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = $"Завантаження {progress}%", Detail = this.info, Duration = 10000 });
+        }
+
+        private decimal ByteToKilobyteConverter(decimal meaning)
+        {
+            const int bytes = 1024;
+
+            if (Math.Round(meaning / bytes) >= 1)
+            {
+                var result = Math.Round(meaning / bytes);
+
+                return Math.Ceiling(result);
+            }
+            else
+            {
+                return meaning;
+            }
         }
     }
 }

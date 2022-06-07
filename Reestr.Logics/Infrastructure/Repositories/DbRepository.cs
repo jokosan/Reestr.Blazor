@@ -149,6 +149,5 @@ namespace Reestr.Logics.Infrastructure.Repositories
         {
             return await _dbSet.Include(children).Include(childrenTwo).Include(childrenThree).Include(childrenFour).AsNoTracking().AsEnumerable<T>().AsQueryable().ToListAsync();
         }
-
     }
 }

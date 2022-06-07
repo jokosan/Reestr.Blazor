@@ -20,6 +20,7 @@ using Reestr.Api.GeoPortal.Infrastructure.DependencyInjection;
 using Reestr.Blazor.Areas.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Reestr.Blazor.Infrastructure.DependencyInjection;
+using System.Net.Http;
 
 namespace Reestr.Blazor
 {
@@ -41,6 +42,22 @@ namespace Reestr.Blazor
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SecurityDb"));
             }, ServiceLifetime.Transient);
+
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<HttpClient>(serviceProvider =>
+            {
+
+                var uriHelper = serviceProvider.GetRequiredService<NavigationManager>();
+
+                return new HttpClient
+                {
+                    BaseAddress = new Uri(uriHelper.BaseUri)
+                };
+            });
+
+            services.AddHttpClient();
+
 
             services.AddRazorPages();
             services.AddServerSideBlazor();

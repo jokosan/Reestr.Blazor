@@ -13,6 +13,8 @@ using Reestr.Logics.Service;
 using Reestr.Logics.Modul.Upload;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Reestr.Api.GeoPortal.Services;
+using Reestr.Api.GeoPortal.Model;
 
 namespace Reestr.Blazor.Component.Destructions
 {
@@ -52,19 +54,27 @@ namespace Reestr.Blazor.Component.Destructions
         protected UnitOfWork ReestrDb { get; set; }
 
         [Inject]
-        protected PhotographicFixationServices PhotographicFixationService { get; set; }
+        protected PhotographicFixationServises PhotographicFixationService { get; set; }
 
         [Inject]
         protected RegisterOfEmergencyBuildingsServices RegisterOfEmergencyBuildingsSer { get; set; }
-      
-        [Inject]
-        protected AddressingServices AddressingService { get; set; }
 
         [Inject]
         protected IHttpContextAccessor _httpContextAccessor { get; set; }
 
         [Parameter]
         public dynamic IdRegisterOfEmergencyBuildings { get; set; }
+
+        [Inject]
+        protected AddressesServises _addressesServises { get; set; }
+
+        [Inject]
+        protected StreetsServises _streetsServises { get; set; }
+
+        [Inject]
+        protected AddressingApiServices _addressingApiServices { get; set; }
+
+        public int streetId;
 
         RegisterOfEmergencyBuildings _registerofemergencybuilding;
 
@@ -85,27 +95,6 @@ namespace Reestr.Blazor.Component.Destructions
                 }
             }
         }
-
-        IEnumerable<Addressing> _getAddressingsResult;
-
-        protected IEnumerable<Addressing> getAddressingsResult
-        {
-            get
-            {
-                return _getAddressingsResult;
-            }
-            set
-            {
-                if (!object.Equals(_getAddressingsResult, value))
-                {
-                    var args = new PropertyChangedEventArgs() { Name = "getAddressingsResult", NewValue = value, OldValue = _getAddressingsResult };
-                    _getAddressingsResult = value;
-                    OnPropertyChanged(args);
-                    Reload();
-                }
-            }
-        }
-
 
         IEnumerable<Microdistrict> _getMicrodistrictsForMicrodistrictIdResult;
         protected IEnumerable<Microdistrict> getMicrodistrictsForMicrodistrictIdResult
@@ -164,8 +153,8 @@ namespace Reestr.Blazor.Component.Destructions
             }
         }
 
-        IEnumerable<Addressing> _getAddressingsForAddressingIdResult;
-        protected IEnumerable<Addressing> getAddressingsForAddressingIdResult
+        IEnumerable<AddressesModel> _getAddressingsForAddressingIdResult;
+        protected IEnumerable<AddressesModel> getAddressingsForAddressingIdResult
         {
             get
             {
@@ -183,6 +172,24 @@ namespace Reestr.Blazor.Component.Destructions
             }
         }
 
+        public IEnumerable<StreetsModel> _getStreetResult;
+        protected IEnumerable<StreetsModel> getStreetResult
+        {
+            get
+            {
+                return _getStreetResult;
+            }
+            set
+            {
+                if (!object.Equals(_getStreetResult, value))
+                {
+                    var args = new PropertyChangedEventArgs() { Name = "getStreetResult", NewValue = value, OldValue = _getStreetResult };
+                    _getStreetResult = value;
+                    OnPropertyChanged(args);
+                    Reload();
+                }
+            }
+        }
 
         IEnumerable<PossibilityOfReconstruction> _getPossibilityOfReconstructionsForPossibilityOfReconstructionIdResult;
         protected IEnumerable<PossibilityOfReconstruction> getPossibilityOfReconstructionsForPossibilityOfReconstructionIdResult
@@ -211,6 +218,9 @@ namespace Reestr.Blazor.Component.Destructions
             var reestrDbGetRegisterOfEmergencyBuildingByIdRegisterOfEmergencyBuildingsResult = await RegisterOfEmergencyBuildingsSer.GetRegisterOfEmergencyBuildingByIdRegisterOfEmergencyBuildings(IdRegisterOfEmergencyBuildings);
             registerofemergencybuilding = reestrDbGetRegisterOfEmergencyBuildingByIdRegisterOfEmergencyBuildingsResult;
 
+
+            getStreetResult = await _streetsServises.GetOnlyValidStreetNames();
+
             var reestrDbDgaGetMicrodistrictsResult = await ReestrDb.MicrodistrictUnitOfWork.Get();
             getMicrodistrictsForMicrodistrictIdResult = reestrDbDgaGetMicrodistrictsResult;
 
@@ -220,19 +230,34 @@ namespace Reestr.Blazor.Component.Destructions
             var reestrDbDgaGetTypeOfOwnershipsResult = await ReestrDb.TypeOfOwnershipUnitOfWork.Get();
             getTypeOfOwnershipsForTypeOfOwnershipIdResult = reestrDbDgaGetTypeOfOwnershipsResult;
 
-            var reestrDbDgaGetAddressingsResult = await AddressingService.GetAddressings();
-            getAddressingsForAddressingIdResult = reestrDbDgaGetAddressingsResult;
-
             var reestrDbDgaGetPossibilityOfReconstructionsResult = await ReestrDb.PossibilityOfReconstructionUnitOfWork.Get();
             getPossibilityOfReconstructionsForPossibilityOfReconstructionIdResult = reestrDbDgaGetPossibilityOfReconstructionsResult;
         }
 
-        protected async System.Threading.Tasks.Task Form0Submit(RegisterOfEmergencyBuildings  args)
+        public async Task AddressingIdChange(dynamic args)
+        {
+            getAddressingsForAddressingIdResult = null;
+
+            var reestrDbDgaGetAddressingsResult = await _addressesServises.AddressesAllByStreetsId(streetId);
+            getAddressingsForAddressingIdResult = reestrDbDgaGetAddressingsResult;
+
+            await InvokeAsync(StateHasChanged);
+        }
+
+        protected async System.Threading.Tasks.Task Form0Submit(RegisterOfEmergencyBuildings args)
         {
             try
             {
+                var resultGetAddressesApi = await _addressesServises.AddressesModelMap(registerofemergencybuilding.AddressesApiId.Value);
+                var itemBool = await _addressingApiServices.GetExistingItem(registerofemergencybuilding.AddressesApiId.Value);
+
+                if (itemBool)
+                {
+                    await _addressingApiServices.CreateAddressingApi(resultGetAddressesApi);
+                }
+
                 var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
-               
+
                 registerofemergencybuilding.DateUpdate = DateTime.Now;
                 registerofemergencybuilding.UserNameUpdate = userId;
 
@@ -253,9 +278,12 @@ namespace Reestr.Blazor.Component.Destructions
 
                 UploadSaveModel.UploadList.Clear();
                 DialogService.Close(registerofemergencybuilding);
+
+                NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Інформація", Detail = "Все добре", Duration = 5000 });
             }
             catch (System.Exception reestrDbUpdateRegisterOfEmergencyBuildingException)
             {
+                UploadSaveModel.UploadList.Clear();
                 NotificationService.Notify(new NotificationMessage() { Severity = NotificationSeverity.Error, Summary = $"Error", Detail = $"Unable to update RegisterOfEmergencyBuilding" });
             }
         }

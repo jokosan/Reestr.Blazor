@@ -1,0 +1,46 @@
+﻿@page "/photographic-fixation"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.Photographic.PhotographicFixationComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Reestr.Database.Model
+
+<style>
+    img:hover {
+        transform: scale(1.3);
+    }
+</style>
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <RadzenHeading Size="H1" Text="PhotographicFixation">
+        </RadzenHeading>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="Radzen.FilterMode.Advanced" PageSize="5" AllowPaging="true" AllowSorting="true" Data="@getPhotographicFixationsResult" TItem="Database.Model.PhotographicFixation">
+                    <Columns>
+                        <RadzenDataGridColumn TItem="Database.Model.PhotographicFixation" Property="RegisterOfEmergencyBuildingsId" SortProperty="RegisterOfEmergencyBuildings.AddressingApi.NameUkr" GroupProperty="RegisterOfEmergencyBuildings.AddressingApi.NameUkr" FilterProperty="RegisterOfEmergencyBuildings.AddressingApi.NameUkr" Title="Register Of Emergency Building">
+                            <Template Context="data">
+                                @(data.RegisterOfEmergencyBuildings.AddressingApi?.TypeUkr) @data.RegisterOfEmergencyBuildings.AddressingApi?.NameUkr @data.RegisterOfEmergencyBuildings.AddressingApi?.Number
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Database.Model.PhotographicFixation" Property="Url" Title="Url">
+                            <Template Context="data">
+                                <RadzenImage Path="@data.Url" style="width: 120px;" />
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Database.Model.PhotographicFixation" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                            <Template Context="imgDemoModelsReestrDbDgaPhotographicFixation">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, imgDemoModelsReestrDbDgaPhotographicFixation))" @onclick:stopPropagation="true">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </RadzenDataGrid>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>
+
+

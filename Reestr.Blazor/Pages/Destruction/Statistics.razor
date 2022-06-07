@@ -76,7 +76,7 @@
     {
         // BuildingType
 
-        var resultRegisterOfEmergencyBuilding = await dbContext.GetInclude("BuildingType", "Addressing");
+        var resultRegisterOfEmergencyBuilding = await dbContext.GetInclude("BuildingType", "AddressingApi");
 
         amountElements = resultRegisterOfEmergencyBuilding
                         .Count();
@@ -84,20 +84,26 @@
         items.Add(new DataItem { Name = "Житлове", AmountElements = resultRegisterOfEmergencyBuilding.Where(x => x.BuildingTypeId == 1).Count() });
         items.Add(new DataItem { Name = "Нежитлове", AmountElements = resultRegisterOfEmergencyBuilding.Where(x => x.BuildingTypeId == 2).Count() });
 
-
         // Districts
 
-        var notNullAddressingRegisterOfEmergencyBuilding = resultRegisterOfEmergencyBuilding.Where(x => x.AddressingId != null);
-        notAddressing = resultRegisterOfEmergencyBuilding.Where(x => x.AddressingId == null).Count();
+        var notNullAddressingRegisterOfEmergencyBuilding = resultRegisterOfEmergencyBuilding.Where(x => x.AddressingApi != null);
+        notAddressing = resultRegisterOfEmergencyBuilding.Where(x => x.AddressingApi == null).Count();
 
-        dataItemDistricts.Add(new DataItemDistricts { Name = "Київський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 1).Count() });
-        dataItemDistricts.Add(new DataItemDistricts { Name = "Московський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 2).Count() });
-        dataItemDistricts.Add(new DataItemDistricts { Name = "Немишлянський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 3).Count() });
-        dataItemDistricts.Add(new DataItemDistricts { Name = "Новобаварський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 4).Count() });
-        dataItemDistricts.Add(new DataItemDistricts { Name = "Індустріальний", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 5).Count() });
-        dataItemDistricts.Add(new DataItemDistricts { Name = "Основ'янський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 6).Count() });
-        dataItemDistricts.Add(new DataItemDistricts { Name = "Слобідський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 7).Count() });
-        dataItemDistricts.Add(new DataItemDistricts { Name = "Холодногірський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 8).Count() });
-        dataItemDistricts.Add(new DataItemDistricts { Name = "Шевченківський", DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.Addressing.DistrictsId == 9).Count() });
+        var districtName = notNullAddressingRegisterOfEmergencyBuilding
+            .GroupBy(x => x.AddressingApi.DistrictId)
+            .Select(s => new Districts
+            {
+                IdDistricts = s.First().AddressingApi.DistrictId.Value,
+                NameDistricts = s.First().AddressingApi.DistrictUa
+            });
+
+        foreach (var item in districtName)
+        {
+            dataItemDistricts.Add(new DataItemDistricts 
+            { 
+                Name = districtName.FirstOrDefault(x => x.IdDistricts == item.IdDistricts).NameDistricts,
+                DistrictsCount = notNullAddressingRegisterOfEmergencyBuilding.Where(x => x.AddressingApi.DistrictId == item.IdDistricts).Count()
+            });
+        }
     }
 }

@@ -139,8 +139,19 @@ namespace Reestr.Blazor.Component.InfoUser
         {
             try
             {
-                unitOfWork.InfoUserUnitOfWork.Update(IdInfoUser, infouser);
+                var itemToUpdate = await unitOfWork.InfoUserUnitOfWork.GetById(IdInfoUser);
+
+                if (itemToUpdate == null)
+                {
+                    throw new Exception("Item no longer available");
+                }
+
+                infouser.DateOfRegistration = DateTime.Now;
+                unitOfWork.InfoUserUnitOfWork.Update(infouser);
+
                 await unitOfWork.Save();
+
+                NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Інформація", Detail = "Все добре", Duration = 5000 });
             }
             catch (System.Exception reestrUpdateInfoUserException)
             {
@@ -153,6 +164,8 @@ namespace Reestr.Blazor.Component.InfoUser
                     canEdit = false;
                 }
             }
+
+            DialogService.Close(null);
         }
 
         protected async System.Threading.Tasks.Task Button4Click(MouseEventArgs args)

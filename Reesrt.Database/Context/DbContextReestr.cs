@@ -15,44 +15,21 @@ namespace Reestr.Database.Context
             this.ChangeTracker.LazyLoadingEnabled = false;
         }
 
-        public DbSet<Addressing> Addressings { get; set; }
-        public DbSet<AddressType> AddressTypes { get; set; }
         public DbSet<ConstructionPassport> ConstructionPassports { get; set; }
         public DbSet<Districts> Districts { get; set; }
         public DbSet<Land> Lands { get; set; }
         public DbSet<PlotAssignment> PlotAssignments { get; set; }
-        public DbSet<Postcode> Postcodes { get; set; }
         public DbSet<ProjectArchive> ProjectArchives { get; set; }
         public DbSet<RegisterOfEmergencyBuildings> RegisterOfEmergencyBuildings { get; set; }
         public DbSet<Solution> Solutions { get; set; }
         public DbSet<StreetCategory> StreetCategories { get; set; }
-        public DbSet<Streets> Streets { get; set; }
         public DbSet<TargetLand> targetLands { get; set; }
         public DbSet<UrbanPlanningConditions> UrbanPlanningConditions { get; set; }
+        public DbSet<AddressingApi> AddressingApi { get; set; }
+        public DbSet<PhotographicFixation> PhotographicFixations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Streets>(entity =>
-            {
-                entity.HasKey(h => h.IdStreets);
-                entity.Property(p => p.NameStreetsRu).HasMaxLength(100);
-                entity.Property(p => p.NameStreetsUa).HasMaxLength(100);
-            });
-
-            modelBuilder.Entity<Addressing>(entity =>
-            {
-                entity.HasKey(h => h.IdAddressing);
-                entity.Property(p => p.Number).HasMaxLength(50);
-                entity.Property(p => p.Frame).HasMaxLength(10);
-                entity.Property(p => p.Letter).HasMaxLength(200);
-            });
-
-            modelBuilder.Entity<AddressType>(entity =>
-            {
-                entity.HasKey(h => h.IdAddressType);
-                entity.Property(p => p.NameAddressType).HasMaxLength(200);
-            });
-
             modelBuilder.Entity<Districts>(entity =>
             {
                 entity.HasKey(h => h.IdDistricts);
@@ -121,11 +98,6 @@ namespace Reestr.Database.Context
                 entiti.Property(p => p.Name).HasMaxLength(200);
             });
 
-            modelBuilder.Entity<Postcode>(entiti =>
-            {
-                entiti.HasKey(h => h.IdPostcode);
-            });
-
             modelBuilder.Entity<RegisterOfEmergencyBuildings>(entiti => 
             {
                 entiti.HasKey(h => h.IdRegisterOfEmergencyBuildings);
@@ -136,6 +108,16 @@ namespace Reestr.Database.Context
                 entiti.Property(p => p.Note).HasMaxLength(2000);
                 entiti.Property(p => p.UserNameInsert).HasMaxLength(200);
                 entiti.Property(p => p.UserNameUpdate).HasMaxLength(200);
+                entiti.HasOne(s => s.AddressingApi)
+                        .WithMany(c => c.RegisterOfEmergencyBuildings)
+                        .HasForeignKey(s => s.AddressesApiId)
+                        .HasPrincipalKey(c => c.IdAddressingApi);
+            });
+
+            modelBuilder.Entity<PhotographicFixation>(entiti =>
+            {
+                entiti.HasKey(h => h.IdPhotographicFixation);
+                entiti.Property(h => h.Url).HasMaxLength(500);
             });
 
             modelBuilder.Entity<Solution>(entiti => 
@@ -162,14 +144,6 @@ namespace Reestr.Database.Context
             {
                 entiti.HasKey(h => h.IdBuildingType);
                 entiti.Property(h => h.NameBuildingType).HasMaxLength(200);
-
-            });
-
-            modelBuilder.Entity<PhotographicFixation>(entiti =>
-            {
-                entiti.HasKey(h => h.IdPhotographicFixation);
-                entiti.Property(h => h.Url).HasMaxLength(500);
-
             });
 
             modelBuilder.Entity<PossibilityOfReconstruction>(entiti =>
@@ -189,7 +163,24 @@ namespace Reestr.Database.Context
                 entiti.Property(h => h.Email).HasMaxLength(100);
                 entiti.Property(h => h.Position).HasMaxLength(300);
                 entiti.Property(h => h.PlaceOfWork).HasMaxLength(500);
-                entiti.Property(h => h.Note).HasMaxLength(500);
+                entiti.Property(h => h.Note).HasMaxLength(500);          
+            });
+
+            modelBuilder.Entity<AddressingApi>(entiti =>
+            {
+                entiti.HasKey(h => h.IdApiBuildings);
+                entiti.Property(h => h.NameUkr).HasMaxLength(500);
+                entiti.Property(h => h.Number).HasMaxLength(50);
+                entiti.Property(h => h.SameAddrComm).HasMaxLength(200);
+                entiti.Property(h => h.Suffix).HasMaxLength(200);
+                entiti.Property(h => h.TypeUkr).HasMaxLength(50);
+                entiti.Property(h => h.Detail).HasMaxLength(300);
+                entiti.Property(h => h.Block).HasMaxLength(300);
+                entiti.Property(h => h.DetailNumber).HasMaxLength(100);
+                entiti.Property(h => h.DetailUa).HasMaxLength(200);
+                entiti.Property(h => h.DistrictUa).HasMaxLength(200);
+                entiti.Property(h => h.Lat).HasColumnType("decimal(18,10)");
+                entiti.Property(h => h.Longi).HasColumnType("decimal(18,10)");
             });
         }
     }

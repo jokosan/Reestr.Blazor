@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
 using Radzen;
 using Reestr.Database.Context;
 using Reestr.Database.Model;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace Reestr.Logics.Service
@@ -16,12 +18,15 @@ namespace Reestr.Logics.Service
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly DbContextReestr _dbContextReestr;
+        private readonly NavigationManager _navigationManager;
 
-        public RegisterOfEmergencyBuildingsServices(IUnitOfWork unitOfWork, DbContextReestr dbContextReestr)
+        public RegisterOfEmergencyBuildingsServices(IUnitOfWork unitOfWork, DbContextReestr dbContextReestr, NavigationManager navigationManager)
         {
             _unitOfWork = unitOfWork;
             _dbContextReestr = dbContextReestr;
+            _navigationManager = navigationManager;
         }
+
         public async Task<IQueryable<RegisterOfEmergencyBuildings>> GetRegisterOfEmergencyBuildings(Query query = null)
         {
             var items = _dbContextReestr.RegisterOfEmergencyBuildings.AsQueryable();
@@ -32,10 +37,11 @@ namespace Reestr.Logics.Service
 
             items = items.Include(i => i.TypeOfOwnership);
 
-            items = items.Include(i => i.Addressing);
-
             items = items.Include(i => i.PossibilityOfReconstruction);
+
             items = items.Include(i => i.PhotographicFixation);
+
+            items = items.Include(i => i.AddressingApi);
 
             if (query != null)
             {
@@ -90,10 +96,9 @@ namespace Reestr.Logics.Service
 
             items = items.Include(i => i.TypeOfOwnership);
 
-            items = items.Include(i => i.Addressing);
-            items = items.Include(i => i.Addressing.Streets);
-
             items = items.Include(i => i.PossibilityOfReconstruction);
+
+            items = items.Include(i => i.AddressingApi);
 
             var itemToReturn = items.FirstOrDefault();
 
@@ -118,8 +123,6 @@ namespace Reestr.Logics.Service
             {
                 throw new Exception($"Update Error {e.Message}");
             }
-    
-         
 
             return registerOfEmergencyBuilding;
         }
@@ -146,5 +149,22 @@ namespace Reestr.Logics.Service
             return registerOfEmergencyBuilding;
         }
 
+        public async Task<bool> CheckingForMatches(int id)
+        {
+            var checkingId = await _unitOfWork.RegisterOfEmergencyBuildingsUnitOfWork.QueryObjectGraph(x => x.AddressesApiId == id);
+            var result = checkingId.Any(x => x.AddressesApiId == id);
+
+            return result;
+        }
+
+        //public async Task ExportRegisterOfEmergencyBuildingsToExcel(Query query = null, string fileName = null)
+        //{
+        //    _navigationManager.NavigateTo(query != null ? query.ToUrl($"export/reestrdbdga/registerofemergencybuildings/excel(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')") : $"export/reestrdbdga/registerofemergencybuildings/excel(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')", true);
+        //}
+
+        //public async Task ExportRegisterOfEmergencyBuildingsToCSV(Query query = null, string fileName = null)
+        //{
+        //    _navigationManager.NavigateTo(query != null ? query.ToUrl($"export/reestrdbdga/registerofemergencybuildings/csv(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')") : $"export/reestrdbdga/registerofemergencybuildings/csv(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')", true);
+        //}
     }
 }

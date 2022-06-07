@@ -16,6 +16,9 @@ using Reestr.Blazor.Areas.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using System.Linq.Dynamic.Core;
+using Reestr.Api.GeoPortal.Services;
+using Reestr.Api.GeoPortal.ModelView;
 
 namespace Reestr.Blazor.Component.Destructions
 {
@@ -62,7 +65,6 @@ namespace Reestr.Blazor.Component.Destructions
         [Inject]
         protected RegisterOfEmergencyBuildingsServices RegisterOfEmergencyBuildingsSer { get; set; }
 
-
         IEnumerable<RegisterOfEmergencyBuildings> _getRegisterOfEmergencyBuildingsResult;
 
         protected int countRegisterOfEmergencyBuildings { get; set; }
@@ -91,10 +93,9 @@ namespace Reestr.Blazor.Component.Destructions
 
         protected async Task Load()
         {
-            var reestrDbGetRegisterOfEmergencyBuildingsResult = await RegisterOfEmergencyBuildingsSer.GetRegisterOfEmergencyBuildings(new Query() { Expand = "Microdistrict,BuildingType,TypeOfOwnership,Addressing,Addressing.Streets,Addressing.Streets.StreetCategory,PossibilityOfReconstruction,PhotographicFixation" });
+            var reestrDbGetRegisterOfEmergencyBuildingsResult = await RegisterOfEmergencyBuildingsSer.GetRegisterOfEmergencyBuildings(new Query() { Expand = "Microdistrict,BuildingType,TypeOfOwnership,PossibilityOfReconstruction,PhotographicFixation,AddressingApi" });
             getRegisterOfEmergencyBuildingsResult = reestrDbGetRegisterOfEmergencyBuildingsResult;
 
-            countRegisterOfEmergencyBuildings = getRegisterOfEmergencyBuildingsResult.Count();
         }
 
         protected async Task Button0Click(MouseEventArgs args)
@@ -107,14 +108,9 @@ namespace Reestr.Blazor.Component.Destructions
 
         protected async Task Grid0RowSelect(DataGridRowMouseEventArgs<RegisterOfEmergencyBuildings> args)
         {
-            var dialogResult = await DialogService.OpenAsync<EditRegisterOfEmergencyBuilding>("Редагувати реєстр аварійних будівель та споруд", new Dictionary<string, object>() { { "IdRegisterOfEmergencyBuildings", args.Data.IdRegisterOfEmergencyBuildings } });
+            var dialogResult = await DialogService.OpenAsync<EditRegisterOfEmergencyBuilding>($"Редагувати | Поточна адреса {args.Data.AddressingApi?.TypeUkr} {args.Data.AddressingApi?.NameUkr} {args.Data.AddressingApi?.Number}", new Dictionary<string, object>() { { "IdRegisterOfEmergencyBuildings", args.Data.IdRegisterOfEmergencyBuildings } });
             await InvokeAsync(() => { StateHasChanged(); });
         }
-
-        //protected async Task ButtonClickImgPage( int data)
-        //{
-        //    UriHelper.NavigateTo($"/destruction/photographic-fixation/{data}");
-        //}
 
         protected async Task ButtonClickImgPage(int data)
         {
@@ -132,23 +128,19 @@ namespace Reestr.Blazor.Component.Destructions
             await InvokeAsync(() => { StateHasChanged(); });
         }
 
-        protected async Task GridDeleteButtonClick(MouseEventArgs args, dynamic data)
-        {
-            //try
-            //{
-            //    if (await DialogService.Confirm("Are you sure you want to delete this record?") == true)
-            //    {
-            //        var reestrDbDeleteRegisterOfEmergencyBuildingResult = await ReestrDb.DeleteRegisterOfEmergencyBuilding(data.IdRegisterOfEmergencyBuildings);
-            //        if (reestrDbDeleteRegisterOfEmergencyBuildingResult != null)
-            //        {
-            //            await grid0.Reload();
-            //        }
-            //    }
-            //}
-            //catch (System.Exception reestrDbDeleteRegisterOfEmergencyBuildingException)
-            //{
-            //    NotificationService.Notify(new NotificationMessage() { Severity = NotificationSeverity.Error, Summary = $"Error", Detail = $"Unable to delete RegisterOfEmergencyBuilding" });
-            //}
-        }
+        //protected async System.Threading.Tasks.Task Splitbutton0Click(RadzenSplitButtonItem args)
+        //{
+        //    if (args?.Value == "csv")
+        //    {
+        //        await RegisterOfEmergencyBuildingsSer.ExportRegisterOfEmergencyBuildingsToCSV(new Query() { Filter = $@"{(string.IsNullOrEmpty(grid0.Query.Filter) ? "true" : grid0.Query.Filter)}", OrderBy = $"{grid0.Query.OrderBy}", Expand = "BuildingType,Microdistrict,TypeOfOwnership,AddressingApi,PhotographicFixation,PossibilityOfReconstruction", Select = "IdRegisterOfEmergencyBuildings,SectorNumber,BuildingType.NameBuildingType as BuildingTypeNameBuildingType,Microdistrict.NameMicrodistrict as MicrodistrictNameMicrodistrict,TypeOfOwnership.NameTypeOfOwnership as TypeOfOwnershipNameTypeOfOwnership,AddressingApi.Number as AddressingNumber,TypeOfDestruction,TypeBuildings,Description,JobDescription,PhotographicFixation.Url as PhotographicFixationUrl,PossibilityOfReconstruction.ScanDoc as PossibilityOfReconstructionScanDoc,Note" }, $"Register Of Emergency Buildings");
+
+        //    }
+
+        //    if (args == null || args.Value == "xlsx")
+        //    {
+        //        await RegisterOfEmergencyBuildingsSer.ExportRegisterOfEmergencyBuildingsToExcel(new Query() { Filter = $@"{(string.IsNullOrEmpty(grid0.Query.Filter) ? "true" : grid0.Query.Filter)}", OrderBy = $"{grid0.Query.OrderBy}", Expand = "BuildingType,Microdistrict,TypeOfOwnership,AddressingApi,PhotographicFixation,PossibilityOfReconstruction", Select = "IdRegisterOfEmergencyBuildings,SectorNumber,BuildingType.NameBuildingType as BuildingTypeNameBuildingType,Microdistrict.NameMicrodistrict as MicrodistrictNameMicrodistrict,TypeOfOwnership.NameTypeOfOwnership as TypeOfOwnershipNameTypeOfOwnership,AddressingApi.Number as AddressingNumber,TypeOfDestruction,TypeBuildings,Description,JobDescription,PhotographicFixation.Url as PhotographicFixationUrl,PossibilityOfReconstruction.ScanDoc as PossibilityOfReconstructionScanDoc,Note" }, $"Register Of Emergency Buildings");
+
+        //    }
+        //}
     }
 }

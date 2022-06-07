@@ -25,7 +25,6 @@ namespace Reestr.Database.Model
         public string CancellationDescription { get; set; } // Скасування
         public string Url { get; set; } // Посилання
 
-        public virtual Addressing Addressing { get; set; }
         public virtual Land Land { get; set; }
     }
 }

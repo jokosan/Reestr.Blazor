@@ -56,6 +56,12 @@ namespace Reestr.Blazor.Controller
 
         public async Task UploadFile(IFormFile file, string folderName)
         {
+
+            if (UploadSaveModel.UploadList.Count == 0)
+            {
+                UploadSaveModel.UploadList.Clear();
+            }
+
             if (file != null && file.Length > 0)
             {
                 var imagePath = @"\" + folderName;

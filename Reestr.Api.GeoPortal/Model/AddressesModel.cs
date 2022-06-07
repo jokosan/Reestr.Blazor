@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Reestr.Api.GeoPortal.ModelView;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Reestr.Api.GeoPortal.Model
 {
-    public class AddressesModel
+    public class AddressesModel 
     {
         public int id { get; set; }
         public decimal lat { get; set; }
@@ -30,7 +31,6 @@ namespace Reestr.Api.GeoPortal.Model
         public string district_ru { get; set; }
         public string district_ua { get; set; }
         public List<int> documents { get; set; }
-
 
     }
 }
