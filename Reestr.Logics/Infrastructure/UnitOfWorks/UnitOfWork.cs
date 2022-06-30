@@ -34,7 +34,11 @@ namespace Reestr.Logics.Infrastructure.UnitOfWorks
         private DbRepository<PossibilityOfReconstruction> PossibilityOfReconstructionUW { get; set; }
         private DbRepository<InfoUser> InfoUserUW { get; set; }
         private DbRepository<AddressingApi> AddressingApiUW { get; set; }
+        private DbRepository<TypeOfConstruction> TypeOfConstructionUW { get; set; }
+        private DbRepository<DocumentStatus> DocumentStatusUW { get; set; }
 
+        public DbRepository<DocumentStatus> DocumentStatusUnitOfWork { get => DocumentStatusUW ?? (DocumentStatusUW = new DbRepository<DocumentStatus>(_dbContextReestr)); set => DocumentStatusUW = value; }
+        public DbRepository<TypeOfConstruction> TypeOfConstructionUnitOfWork { get => TypeOfConstructionUW ?? (TypeOfConstructionUW = new DbRepository<TypeOfConstruction>(_dbContextReestr)); set => TypeOfConstructionUW = value; }
         public DbRepository<AddressingApi> AddressingApiUnitOfWork { get => AddressingApiUW ?? (AddressingApiUW = new DbRepository<AddressingApi>(_dbContextReestr)); set => AddressingApiUW = value; }
         public DbRepository<InfoUser> InfoUserUnitOfWork { get => InfoUserUW ?? (InfoUserUW = new DbRepository<InfoUser>(_dbContextReestr)); set => InfoUserUW = value; }
         public DbRepository<ConstructionPassport> ConstructionPassportUnitOfWork { get => ConstructionPassportUW ?? (ConstructionPassportUW = new DbRepository<ConstructionPassport>(_dbContextReestr)); set => ConstructionPassportUW = value; }

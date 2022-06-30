@@ -40,6 +40,7 @@ namespace Reestr.Database.Model
         public int? AddressesApiId { get; set; }
         public string DataSource { get; set; }
 
+        public virtual ICollection<InformationAboutDestruction> InformationAboutDestruction { get; set; }
         public virtual AddressingApi AddressingApi { get; set; }
         public virtual TypeOfOwnership TypeOfOwnership { get; set; }
         public virtual BuildingType BuildingType { get; set; }

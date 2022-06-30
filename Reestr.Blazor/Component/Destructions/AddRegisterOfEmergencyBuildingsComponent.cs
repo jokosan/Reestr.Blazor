@@ -70,6 +70,9 @@ namespace Reestr.Blazor.Component.Destructions
         protected AddressesServises _addressesServises { get; set; }
 
         [Inject]
+        protected CacheStreetsSService _cachedUserService { get; set; }
+
+        [Inject]
         protected IHttpContextAccessor _httpContextAccessor { get; set; }
 
         IEnumerable<Microdistrict> _getMicrodistrictsForMicrodistrictIdResult;
@@ -222,7 +225,8 @@ namespace Reestr.Blazor.Component.Destructions
             var reestrDbDgaGetMicrodistrictsResult = await ReestrDb.MicrodistrictUnitOfWork.Get();
             getMicrodistrictsForMicrodistrictIdResult = reestrDbDgaGetMicrodistrictsResult;
 
-            getStreetResult = await _streetsServises.GetOnlyValidStreetNames();       
+            //getStreetResult = await _streetsServises.GetOnlyValidStreetNames();       
+            getStreetResult = await _cachedUserService.GetUsersAsync();
 
             var reestrDbDgaGetBuildingTypesResult = await ReestrDb.BuildingTypeUnitOfWork.Get();
             getBuildingTypesForBuildingTypeIdResult = reestrDbDgaGetBuildingTypesResult;

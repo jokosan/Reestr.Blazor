@@ -4,6 +4,7 @@ using Radzen;
 using Reestr.Database.Context;
 using Reestr.Database.Model;
 using Reestr.Logics.Infrastructure.UnitOfWorks;
+using Reestr.Logics.ModelApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +19,11 @@ namespace Reestr.Logics.Service
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly DbContextReestr _dbContextReestr;
-        private readonly NavigationManager _navigationManager;
 
-        public RegisterOfEmergencyBuildingsServices(IUnitOfWork unitOfWork, DbContextReestr dbContextReestr, NavigationManager navigationManager)
+        public RegisterOfEmergencyBuildingsServices(IUnitOfWork unitOfWork, DbContextReestr dbContextReestr)
         {
             _unitOfWork = unitOfWork;
             _dbContextReestr = dbContextReestr;
-            _navigationManager = navigationManager;
         }
 
         public async Task<IQueryable<RegisterOfEmergencyBuildings>> GetRegisterOfEmergencyBuildings(Query query = null)
@@ -157,14 +156,25 @@ namespace Reestr.Logics.Service
             return result;
         }
 
-        //public async Task ExportRegisterOfEmergencyBuildingsToExcel(Query query = null, string fileName = null)
-        //{
-        //    _navigationManager.NavigateTo(query != null ? query.ToUrl($"export/reestrdbdga/registerofemergencybuildings/excel(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')") : $"export/reestrdbdga/registerofemergencybuildings/excel(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')", true);
-        //}
+        public async Task<IEnumerable<RegisterOfEmergencyBuildingsApiModel>> GetQuerie()
+        { 
+            var getRegister = await GetRegisterOfEmergencyBuildings(new Query() { Expand = "Microdistrict,BuildingType,TypeOfOwnership,PossibilityOfReconstruction,PhotographicFixation,AddressingApi" });
+            var resultNotNull = getRegister.Where(x => x.AddressesApiId != null);
 
-        //public async Task ExportRegisterOfEmergencyBuildingsToCSV(Query query = null, string fileName = null)
-        //{
-        //    _navigationManager.NavigateTo(query != null ? query.ToUrl($"export/reestrdbdga/registerofemergencybuildings/csv(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')") : $"export/reestrdbdga/registerofemergencybuildings/csv(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')", true);
-        //}
+            List<RegisterOfEmergencyBuildingsApiModel> resultList = new ();
+
+            foreach (var item in resultNotNull)
+            {
+                resultList.Add(new RegisterOfEmergencyBuildingsApiModel 
+                {
+                    IdRegisterOfEmergencyBuildings = item.IdRegisterOfEmergencyBuildings,
+                    IdApiBuildings = item.AddressesApiId.Value,
+                    Lat = item.AddressingApi.Lat,
+                    Longi = item.AddressingApi.Longi
+                });
+            }
+
+            return resultList;
+         }
     }
 }

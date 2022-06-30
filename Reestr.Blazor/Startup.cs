@@ -74,6 +74,9 @@ namespace Reestr.Blazor
             services.AddScoped<TooltipService>();
             services.AddScoped<ContextMenuService>();
 
+            // добавление кэширования
+            services.AddMemoryCache();
+
             //services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddScoped<AddDistrictComponent>();

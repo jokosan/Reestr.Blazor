@@ -1,0 +1,74 @@
+﻿@page "/urban-planning-condition"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.TownPlanningRegister.UrbanPlanningConditionComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Reestr.Database.Model
+<RadzenContent Container="main">
+    <ChildContent>
+        <RadzenHeading Size="H1" Text="UrbanPlanningCondition">
+        </RadzenHeading>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Додати" Click="@Button0Click">
+                </RadzenButton>
+
+                <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="Radzen.FilterMode.Advanced" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"  AllowColumnPicking="true" AllowColumnResize="true" PageSize="10"
+                                AllowPaging="true" AllowSorting="true" Data="@getUrbanPlanningConditionsResult" TItem="UrbanPlanningConditions" RowSelect="@Grid0RowSelect">
+                    <Columns>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="IdUrbanPlanningConditions" Title="Ідентифікатор" Visible="false">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="OrderNumber" Title="Номер наказу">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="OrderIssued" FormatString="{0:d}" Title="Дата видання наказу">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="AuthorityName" Title="Назва органу" Visible="false">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="ApplicantName" Title="Ім'я або назва замовника">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="ApplicantIdentifier" Title="Ідентифікатор органу" Visible="false">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="AuthoritytIdentifier" Title="Ідентифікатор замовника" Visible="false">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="TypeOfConstructionId" SortProperty="TypeOfConstruction.Name" GroupProperty="TypeOfConstruction.Name" Visible="false" FilterProperty="TypeOfConstruction.Name" Title="Вид будівництва">
+                            <Template Context="data">
+                                @(data.TypeOfConstruction?.Name)
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="Name" Title="Назва об'єкта">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="LandId" SortProperty="Land.CadastralNumber" GroupProperty="Land.CadastralNumber" FilterProperty="Land.CadastralNumber" Title="Кадастровий номер" Visible="false">
+                            <Template Context="data">
+                                @(data.Land?.CadastralNumber)
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="AddressingId" Title="Addressing Id" Visible="false">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="Addressing" Title="Addressing">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="DocumentStatusId" SortProperty="DocumentStatus.Name" GroupProperty="DocumentStatus.Name" Visible="false" FilterProperty="DocumentStatus.Name" Title="Статус">
+                            <Template Context="data">
+                                @(data.DocumentStatus?.Name)
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="ChangesDescription" Visible="false" Title="Зміни">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="CancellationDescription" Visible="false" Title="Скасування">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Property="Url" Title="Посилання" Visible="false">
+                        </RadzenDataGridColumn>
+
+                        <RadzenDataGridColumn TItem="UrbanPlanningConditions" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center" Visible="false">
+                            <Template Context="ugaModelsReestrDbDgaUrbanPlanningCondition">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, ugaModelsReestrDbDgaUrbanPlanningCondition))" @onclick:stopPropagation="true">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenDataGridColumn>
+
+                    </Columns>
+                </RadzenDataGrid>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

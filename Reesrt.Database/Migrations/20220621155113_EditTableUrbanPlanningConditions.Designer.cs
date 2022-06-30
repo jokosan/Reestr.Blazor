@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reestr.Database.Context;
 
 namespace Reestr.Database.Migrations
 {
     [DbContext(typeof(DbContextReestr))]
-    partial class DbContextReestrModelSnapshot : ModelSnapshot
+    [Migration("20220621155113_EditTableUrbanPlanningConditions")]
+    partial class EditTableUrbanPlanningConditions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -253,74 +255,6 @@ namespace Reestr.Database.Migrations
                     b.HasKey("IdInfoUser");
 
                     b.ToTable("InfoUser");
-                });
-
-            modelBuilder.Entity("Reestr.Database.Model.InformationAboutDestruction", b =>
-                {
-                    b.Property<int>("IdInformationAboutDestruction")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("BalconiesDestroyed")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("BalconiesDestroyedQuantity")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("BuildingStructures")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ColdWater")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("CompleteDestructionOfTheBuilding")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("DamageDesign")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("DamagedElevators")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("DestroyedBasement")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("DestroyedEntrances")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Electricity")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Gas")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("GlazingDamage")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("GlazingDamageQuantity")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Heating")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("HotWater")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Quantity")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("RegisterOfEmergencyBuildingsId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("RoofDestruction")
-                        .HasColumnType("bit");
-
-                    b.HasKey("IdInformationAboutDestruction");
-
-                    b.HasIndex("RegisterOfEmergencyBuildingsId");
-
-                    b.ToTable("InformationAboutDestruction");
                 });
 
             modelBuilder.Entity("Reestr.Database.Model.Land", b =>
@@ -684,7 +618,7 @@ namespace Reestr.Database.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("DocumentStatusId")
+                    b.Property<int>("DocumentStatusId")
                         .HasColumnType("int");
 
                     b.Property<int?>("LandId")
@@ -701,7 +635,7 @@ namespace Reestr.Database.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<int?>("TypeOfConstructionId")
+                    b.Property<int>("TypeOfConstructionId")
                         .HasColumnType("int");
 
                     b.Property<string>("Url")
@@ -726,17 +660,6 @@ namespace Reestr.Database.Migrations
                         .HasForeignKey("LandId");
 
                     b.Navigation("Land");
-                });
-
-            modelBuilder.Entity("Reestr.Database.Model.InformationAboutDestruction", b =>
-                {
-                    b.HasOne("Reestr.Database.Model.RegisterOfEmergencyBuildings", "RegisterOfEmergencyBuildings")
-                        .WithMany("InformationAboutDestruction")
-                        .HasForeignKey("RegisterOfEmergencyBuildingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RegisterOfEmergencyBuildings");
                 });
 
             modelBuilder.Entity("Reestr.Database.Model.Land", b =>
@@ -810,7 +733,9 @@ namespace Reestr.Database.Migrations
                 {
                     b.HasOne("Reestr.Database.Model.DocumentStatus", "DocumentStatus")
                         .WithMany("UrbanPlanningConditions")
-                        .HasForeignKey("DocumentStatusId");
+                        .HasForeignKey("DocumentStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Reestr.Database.Model.Land", "Land")
                         .WithMany("UrbanPlanningConditions")
@@ -818,7 +743,9 @@ namespace Reestr.Database.Migrations
 
                     b.HasOne("Reestr.Database.Model.TypeOfConstruction", "TypeOfConstruction")
                         .WithMany("UrbanPlanningConditions")
-                        .HasForeignKey("TypeOfConstructionId");
+                        .HasForeignKey("TypeOfConstructionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("DocumentStatus");
 
@@ -866,8 +793,6 @@ namespace Reestr.Database.Migrations
 
             modelBuilder.Entity("Reestr.Database.Model.RegisterOfEmergencyBuildings", b =>
                 {
-                    b.Navigation("InformationAboutDestruction");
-
                     b.Navigation("PhotographicFixation");
                 });
 

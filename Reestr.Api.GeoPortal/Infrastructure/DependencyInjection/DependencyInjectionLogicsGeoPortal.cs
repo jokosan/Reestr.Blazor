@@ -8,12 +8,13 @@ using Reestr.Api.GeoPortal.Services;
 using Reestr.Api.GeoPortal.Infrastructure.Token;
 using System.Net.Http;
 using Reestr.Api.GeoPortal.Services.Contract;
+using Reestr.Api.GeoPortal.Infrastructure.Cache;
 
 namespace Reestr.Api.GeoPortal.Infrastructure.DependencyInjection
 {
     public class DependencyInjectionLogicsGeoPortal
     {
-        public static void Initialize(IServiceCollection services)
+        public static void Initialize(IServiceCollection services) 
         {
             // services.AddHttpClient("AddressRegistryApi", c => c.BaseAddress = new Uri("https://dev.geo-portal.com.ua/kharkivregister/external/api/"));
             services.AddHttpClient<IAddressRegistryApiService, AddressRegistryApiService>("AddressRegistryApi", c => c.BaseAddress = new Uri("https://dev.geo-portal.com.ua/kharkivregister/external/api/"))
@@ -23,8 +24,10 @@ namespace Reestr.Api.GeoPortal.Infrastructure.DependencyInjection
             services.AddScoped<AuthorizationToken>();       
             services.AddScoped<StreetsServises>();
             services.AddScoped<AddressesServises>();
-           
-           services.AddScoped<IAddressRegistryApiService, AddressRegistryApiService>();
+            services.AddScoped<ICacheProvider, CacheProvider>();
+            services.AddScoped<CacheStreetsSService>();
+
+            services.AddScoped<IAddressRegistryApiService, AddressRegistryApiService>();
         }
     }
 }

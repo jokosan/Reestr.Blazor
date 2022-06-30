@@ -27,9 +27,30 @@ namespace Reestr.Database.Context
         public DbSet<UrbanPlanningConditions> UrbanPlanningConditions { get; set; }
         public DbSet<AddressingApi> AddressingApi { get; set; }
         public DbSet<PhotographicFixation> PhotographicFixations { get; set; }
+        public DbSet<DocumentStatus> DocumentStatus { get; set; }
+        public DbSet<TypeOfConstruction> TypeOfConstruction { get; set; }
+        public DbSet<InformationAboutDestruction> InformationAboutDestruction { get; set; }
 
+      
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<InformationAboutDestruction>(entity =>
+            {
+                entity.HasKey(h => h.IdInformationAboutDestruction);
+            });
+
+            modelBuilder.Entity<TypeOfConstruction>(entity => 
+            {
+                entity.HasKey(h => h.IdTypeOfConstruction);
+                entity.Property(p => p.Name).HasMaxLength(200);
+            });
+
+            modelBuilder.Entity<DocumentStatus>(entity =>
+            {
+                entity.HasKey(h => h.IdDocumentStatus);
+                entity.Property(p => p.Name).HasMaxLength(200);
+            });
+
             modelBuilder.Entity<Districts>(entity =>
             {
                 entity.HasKey(h => h.IdDistricts);
@@ -50,13 +71,12 @@ namespace Reestr.Database.Context
                 entiti.HasKey(h => h.IdUrbanPlanningConditions);
                 entiti.Property(p => p.OrderNumber).HasMaxLength(10);
                 entiti.Property(p => p.AuthorityName).HasMaxLength(250);
-                entiti.Property(p => p.ApplicantName).HasMaxLength(350);
-                entiti.Property(p => p.Type).HasMaxLength(550);
-                entiti.Property(p => p.Name).HasMaxLength(550);
-                entiti.Property(p => p.Status).HasMaxLength(50);
-                entiti.Property(p => p.CancellationDescription).HasMaxLength(550);
-                entiti.Property(p => p.ChangesDescription).HasMaxLength(550);
+                entiti.Property(p => p.ApplicantName).HasMaxLength(400);
+                entiti.Property(p => p.Name).HasMaxLength(1000);
+                entiti.Property(p => p.CancellationDescription).HasMaxLength(1000);
+                entiti.Property(p => p.ChangesDescription).HasMaxLength(1000);
                 entiti.Property(p => p.Url).HasMaxLength(750);
+                entiti.Property(p => p.Addressing).HasMaxLength(350);
             });
 
             modelBuilder.Entity<ConstructionPassport>(entiti =>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using Reestr.Api.GeoPortal.Infrastructure.Token;
 using Reestr.Api.GeoPortal.Model;
@@ -23,7 +24,7 @@ namespace Reestr.Api.GeoPortal.Services
              IAddressRegistryApiService jsonConvertServise)
         {
             _authorizationToken = authorizationToken;
-            _jsonConvertServise = jsonConvertServise;
+            _jsonConvertServise = jsonConvertServise;        
         }
 
         public async Task<IEnumerable<AddressesModel>> AddressesAllByStreetsId(int streetId = 0)

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reestr.Database.Context;
 
 namespace Reestr.Database.Migrations
 {
     [DbContext(typeof(DbContextReestr))]
-    partial class DbContextReestrModelSnapshot : ModelSnapshot
+    [Migration("20220622163037_EditUrbanPlanningConditions")]
+    partial class EditUrbanPlanningConditions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -253,74 +255,6 @@ namespace Reestr.Database.Migrations
                     b.HasKey("IdInfoUser");
 
                     b.ToTable("InfoUser");
-                });
-
-            modelBuilder.Entity("Reestr.Database.Model.InformationAboutDestruction", b =>
-                {
-                    b.Property<int>("IdInformationAboutDestruction")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("BalconiesDestroyed")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("BalconiesDestroyedQuantity")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("BuildingStructures")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ColdWater")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("CompleteDestructionOfTheBuilding")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("DamageDesign")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("DamagedElevators")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("DestroyedBasement")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("DestroyedEntrances")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Electricity")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Gas")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("GlazingDamage")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("GlazingDamageQuantity")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Heating")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("HotWater")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Quantity")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("RegisterOfEmergencyBuildingsId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("RoofDestruction")
-                        .HasColumnType("bit");
-
-                    b.HasKey("IdInformationAboutDestruction");
-
-                    b.HasIndex("RegisterOfEmergencyBuildingsId");
-
-                    b.ToTable("InformationAboutDestruction");
                 });
 
             modelBuilder.Entity("Reestr.Database.Model.Land", b =>
@@ -728,17 +662,6 @@ namespace Reestr.Database.Migrations
                     b.Navigation("Land");
                 });
 
-            modelBuilder.Entity("Reestr.Database.Model.InformationAboutDestruction", b =>
-                {
-                    b.HasOne("Reestr.Database.Model.RegisterOfEmergencyBuildings", "RegisterOfEmergencyBuildings")
-                        .WithMany("InformationAboutDestruction")
-                        .HasForeignKey("RegisterOfEmergencyBuildingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RegisterOfEmergencyBuildings");
-                });
-
             modelBuilder.Entity("Reestr.Database.Model.Land", b =>
                 {
                     b.HasOne("Reestr.Database.Model.PlotAssignment", "PlotAssignment")
@@ -866,8 +789,6 @@ namespace Reestr.Database.Migrations
 
             modelBuilder.Entity("Reestr.Database.Model.RegisterOfEmergencyBuildings", b =>
                 {
-                    b.Navigation("InformationAboutDestruction");
-
                     b.Navigation("PhotographicFixation");
                 });
 

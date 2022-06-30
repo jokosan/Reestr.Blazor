@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using Reestr.Api.GeoPortal.Infrastructure.Token;
 using Reestr.Api.GeoPortal.Model;
 using Reestr.Api.GeoPortal.Services.Contract;

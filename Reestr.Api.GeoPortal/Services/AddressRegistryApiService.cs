@@ -14,16 +14,8 @@ namespace Reestr.Api.GeoPortal.Services
 {
     public class AddressRegistryApiService : IAddressRegistryApiService
     {
-        //private readonly HttpClient _httpClient;
-
-        //public AddressRegistryApiService(IHttpClientFactory clientFactory)
-        //{
-        //    _httpClient = clientFactory.CreateClient("AddressRegistryApi");
-        //}
-
         public async Task<string> GetAddressRegistryData(string url)
         {
-
             using (var client = new HttpClient())
             {
                 var responseTask = client.GetAsync(url);

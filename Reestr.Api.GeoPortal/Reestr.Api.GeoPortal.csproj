@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Reesrt.Database\Reestr.Database.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Cached\" />
+  </ItemGroup>
+
 </Project>

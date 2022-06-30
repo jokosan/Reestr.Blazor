@@ -1,0 +1,178 @@
+﻿@page "/add-urban-planning-condition"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.TownPlanningRegister.AddUrbanPlanningCondition
+
+@using Radzen
+@using Radzen.Blazor
+@using Reestr.Database.Model
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenTemplateForm Data="@urbanplanningcondition" Visible="@(urbanplanningcondition != null)" TItem="UrbanPlanningConditions" Submit="@Form0Submit">
+                    <ChildContent>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Order Number" Component="OrderNumber" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="10" style="width: 100%" @bind-Value="@(urbanplanningcondition.OrderNumber)" Name="OrderNumber">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Order Issued" Component="OrderIssued" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDatePicker style="width: 100%" @bind-Value="@(urbanplanningcondition.OrderIssued)" Name="OrderIssued">
+                                </RadzenDatePicker>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Authority Name" Component="AuthorityName" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="250" style="width: 100%" @bind-Value="@(urbanplanningcondition.AuthorityName)" Name="AuthorityName">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Applicant Name" Component="ApplicantName" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="400" style="width: 100%" @bind-Value="@(urbanplanningcondition.ApplicantName)" Name="ApplicantName">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Applicant Identifier" Component="ApplicantIdentifier" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenNumeric style="width: 100%" @bind-Value="@(urbanplanningcondition.ApplicantIdentifier)" Name="ApplicantIdentifier">
+                                </RadzenNumeric>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Authorityt Identifier" Component="AuthoritytIdentifier" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenNumeric style="width: 100%" @bind-Value="@(urbanplanningcondition.AuthoritytIdentifier)" Name="AuthoritytIdentifier">
+                                </RadzenNumeric>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Name" Component="Name" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="1000" style="width: 100%" @bind-Value="@(urbanplanningcondition.Name)" Name="Name">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Land" Component="LandId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDownDataGrid Data="@getLandsForLandIdResult" TextProperty="CadastralNumber" ValueProperty="IdLand" Placeholder="Choose Land" ShowSearch="false" style="width: 100%" @bind-Value="@(urbanplanningcondition.LandId)" Name="LandId">
+                                </RadzenDropDownDataGrid>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Addressing Id" Component="AddressingId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenNumeric style="width: 100%" @bind-Value="@(urbanplanningcondition.AddressingId)" Name="AddressingId">
+                                </RadzenNumeric>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Changes Description" Component="ChangesDescription" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="1000" style="width: 100%" @bind-Value="@(urbanplanningcondition.ChangesDescription)" Name="ChangesDescription">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Cancellation Description" Component="CancellationDescription" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="1000" style="width: 100%" @bind-Value="@(urbanplanningcondition.CancellationDescription)" Name="CancellationDescription">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Url" Component="Url" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="750" style="width: 100%" @bind-Value="@(urbanplanningcondition.Url)" Name="Url">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Addressing" Component="Addressing" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="350" style="width: 100%" @bind-Value="@(urbanplanningcondition.Addressing)" Name="Addressing">
+                                </RadzenTextBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Document Status" Component="DocumentStatusId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDownDataGrid Data="@getDocumentStatusesForDocumentStatusIdResult" TextProperty="Name" ValueProperty="IdDocumentStatus" Placeholder="Choose DocumentStatus" ShowSearch="false" style="width: 100%" @bind-Value="@(urbanplanningcondition.DocumentStatusId)" Name="DocumentStatusId">
+                                </RadzenDropDownDataGrid>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Type Of Construction" Component="TypeOfConstructionId" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDownDataGrid Data="@getTypeOfConstructionsForTypeOfConstructionIdResult" TextProperty="Name" ValueProperty="IdTypeOfConstruction" Placeholder="Choose TypeOfConstruction" ShowSearch="false" style="width: 100%" @bind-Value="@(urbanplanningcondition.TypeOfConstructionId)" Name="TypeOfConstructionId">
+                                </RadzenDropDownDataGrid>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col offset-sm-3">
+                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Primary">
+                                </RadzenButton>
+                                <RadzenButton ButtonStyle="ButtonStyle.Light" style="margin-left: 1rem" Text="Cancel" Click="@Button2Click">
+                                </RadzenButton>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </RadzenTemplateForm>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

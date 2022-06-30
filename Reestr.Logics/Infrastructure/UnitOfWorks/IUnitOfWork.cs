@@ -27,5 +27,7 @@ namespace Reestr.Logics.Infrastructure.UnitOfWorks
         DbRepository<PossibilityOfReconstruction> PossibilityOfReconstructionUnitOfWork { get; set; }
         DbRepository<InfoUser> InfoUserUnitOfWork { get; set; }
         DbRepository<AddressingApi> AddressingApiUnitOfWork {get; set;}
+        DbRepository<TypeOfConstruction> TypeOfConstructionUnitOfWork { get; set; }
+        DbRepository<DocumentStatus> DocumentStatusUnitOfWork { get; set; }
     }
 }
