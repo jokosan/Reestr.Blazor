@@ -19,6 +19,7 @@ using System.Security.Claims;
 using System.Linq.Dynamic.Core;
 using Reestr.Api.GeoPortal.Services;
 using Reestr.Api.GeoPortal.ModelView;
+using Reestr.Blazor.Pages.InformationAboutDestructionPages;
 
 namespace Reestr.Blazor.Component.Destructions
 {
@@ -59,11 +60,14 @@ namespace Reestr.Blazor.Component.Destructions
 
         [Inject]
         protected ApplicationDbContext dbContext { get; set; }
-
         protected RadzenDataGrid<RegisterOfEmergencyBuildings> grid0;
+        protected RadzenDataGrid<InformationAboutDestruction> grid1;
 
         [Inject]
         protected RegisterOfEmergencyBuildingsServices RegisterOfEmergencyBuildingsSer { get; set; }
+        
+        [Inject]
+        protected InformationAboutDestructionServises InformationAboutDestructionServises { get; set; }
 
         IEnumerable<RegisterOfEmergencyBuildings> _getRegisterOfEmergencyBuildingsResult;
 
@@ -80,6 +84,25 @@ namespace Reestr.Blazor.Component.Destructions
                 {
                     var args = new PropertyChangedEventArgs() { Name = "getRegisterOfEmergencyBuildingsResult", NewValue = value, OldValue = _getRegisterOfEmergencyBuildingsResult };
                     _getRegisterOfEmergencyBuildingsResult = value;
+                    OnPropertyChanged(args);
+                    Reload();
+                }
+            }
+        }
+
+        dynamic _master;
+        protected dynamic master
+        {
+            get
+            {
+                return _master;
+            }
+            set
+            {
+                if (!object.Equals(_master, value))
+                {
+                    var args = new PropertyChangedEventArgs() { Name = "master", NewValue = value, OldValue = _master };
+                    _master = value;
                     OnPropertyChanged(args);
                     Reload();
                 }
@@ -128,19 +151,31 @@ namespace Reestr.Blazor.Component.Destructions
             await InvokeAsync(() => { StateHasChanged(); });
         }
 
-        //protected async System.Threading.Tasks.Task Splitbutton0Click(RadzenSplitButtonItem args)
-        //{
-        //    if (args?.Value == "csv")
-        //    {
-        //        await RegisterOfEmergencyBuildingsSer.ExportRegisterOfEmergencyBuildingsToCSV(new Query() { Filter = $@"{(string.IsNullOrEmpty(grid0.Query.Filter) ? "true" : grid0.Query.Filter)}", OrderBy = $"{grid0.Query.OrderBy}", Expand = "BuildingType,Microdistrict,TypeOfOwnership,AddressingApi,PhotographicFixation,PossibilityOfReconstruction", Select = "IdRegisterOfEmergencyBuildings,SectorNumber,BuildingType.NameBuildingType as BuildingTypeNameBuildingType,Microdistrict.NameMicrodistrict as MicrodistrictNameMicrodistrict,TypeOfOwnership.NameTypeOfOwnership as TypeOfOwnershipNameTypeOfOwnership,AddressingApi.Number as AddressingNumber,TypeOfDestruction,TypeBuildings,Description,JobDescription,PhotographicFixation.Url as PhotographicFixationUrl,PossibilityOfReconstruction.ScanDoc as PossibilityOfReconstructionScanDoc,Note" }, $"Register Of Emergency Buildings");
+        protected async System.Threading.Tasks.Task Grid0RowExpand(RegisterOfEmergencyBuildings args)
+        {
+            master = args;
+             
+            var reestrDbDgaGetInformationAboutDestructionsResult = await InformationAboutDestructionServises.GetInformationAboutDestructions(new Query() { Filter = $@"i => i.RegisterOfEmergencyBuildingsId == {args.IdRegisterOfEmergencyBuildings}" });
+            if (reestrDbDgaGetInformationAboutDestructionsResult != null)
+            {
+                args.InformationAboutDestruction = reestrDbDgaGetInformationAboutDestructionsResult.ToList();
+            }
+        }
 
-        //    }
+        protected async System.Threading.Tasks.Task InformationAboutDestructionAddButtonClick(MouseEventArgs args, dynamic data)
+        {
+            var dialogResult = await DialogService.OpenAsync<AddInformationAboutDestruction>("Add Information About Destruction", new Dictionary<string, object>() { { "RegisterOfEmergencyBuildingsId", data.IdRegisterOfEmergencyBuildings } });
+            await Grid0RowExpand(master);
 
-        //    if (args == null || args.Value == "xlsx")
-        //    {
-        //        await RegisterOfEmergencyBuildingsSer.ExportRegisterOfEmergencyBuildingsToExcel(new Query() { Filter = $@"{(string.IsNullOrEmpty(grid0.Query.Filter) ? "true" : grid0.Query.Filter)}", OrderBy = $"{grid0.Query.OrderBy}", Expand = "BuildingType,Microdistrict,TypeOfOwnership,AddressingApi,PhotographicFixation,PossibilityOfReconstruction", Select = "IdRegisterOfEmergencyBuildings,SectorNumber,BuildingType.NameBuildingType as BuildingTypeNameBuildingType,Microdistrict.NameMicrodistrict as MicrodistrictNameMicrodistrict,TypeOfOwnership.NameTypeOfOwnership as TypeOfOwnershipNameTypeOfOwnership,AddressingApi.Number as AddressingNumber,TypeOfDestruction,TypeBuildings,Description,JobDescription,PhotographicFixation.Url as PhotographicFixationUrl,PossibilityOfReconstruction.ScanDoc as PossibilityOfReconstructionScanDoc,Note" }, $"Register Of Emergency Buildings");
+            await grid1.Reload();
+        }
 
-        //    }
-        //}
+        protected async System.Threading.Tasks.Task Grid1RowSelect(InformationAboutDestruction args, dynamic data)
+        {
+            var dialogResult = await DialogService.OpenAsync<EditInformationAboutDestruction>("Edit Information About Destruction", new Dictionary<string, object>() { { "IdInformationAboutDestruction", args.IdInformationAboutDestruction } });
+            await Grid0RowExpand(master);
+
+            await grid1.Reload();
+        }
     }
 }

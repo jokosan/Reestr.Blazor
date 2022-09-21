@@ -2,17 +2,22 @@
 
 namespace Reestr.Database.Migrations
 {
-    public partial class InformationAboutDestruction : Migration
+    public partial class eInformationAboutDestruction : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<int>(
+                name: "InformationAboutDestructionId",
+                table: "RegisterOfEmergencyBuildings",
+                type: "int",
+                nullable: true);
+
             migrationBuilder.CreateTable(
                 name: "InformationAboutDestruction",
                 columns: table => new
                 {
                     IdInformationAboutDestruction = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RegisterOfEmergencyBuildingsId = table.Column<int>(type: "int", nullable: false),
                     BuildingStructures = table.Column<bool>(type: "bit", nullable: false),
                     CompleteDestructionOfTheBuilding = table.Column<bool>(type: "bit", nullable: false),
                     DamageDesign = table.Column<bool>(type: "bit", nullable: false),
@@ -34,24 +39,38 @@ namespace Reestr.Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InformationAboutDestruction", x => x.IdInformationAboutDestruction);
-                    table.ForeignKey(
-                        name: "FK_InformationAboutDestruction_RegisterOfEmergencyBuildings_RegisterOfEmergencyBuildingsId",
-                        column: x => x.RegisterOfEmergencyBuildingsId,
-                        principalTable: "RegisterOfEmergencyBuildings",
-                        principalColumn: "IdRegisterOfEmergencyBuildings",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_InformationAboutDestruction_RegisterOfEmergencyBuildingsId",
-                table: "InformationAboutDestruction",
-                column: "RegisterOfEmergencyBuildingsId");
+                name: "IX_RegisterOfEmergencyBuildings_InformationAboutDestructionId",
+                table: "RegisterOfEmergencyBuildings",
+                column: "InformationAboutDestructionId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_RegisterOfEmergencyBuildings_InformationAboutDestruction_InformationAboutDestructionId",
+                table: "RegisterOfEmergencyBuildings",
+                column: "InformationAboutDestructionId",
+                principalTable: "InformationAboutDestruction",
+                principalColumn: "IdInformationAboutDestruction",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_RegisterOfEmergencyBuildings_InformationAboutDestruction_InformationAboutDestructionId",
+                table: "RegisterOfEmergencyBuildings");
+
             migrationBuilder.DropTable(
                 name: "InformationAboutDestruction");
+
+            migrationBuilder.DropIndex(
+                name: "IX_RegisterOfEmergencyBuildings_InformationAboutDestructionId",
+                table: "RegisterOfEmergencyBuildings");
+
+            migrationBuilder.DropColumn(
+                name: "InformationAboutDestructionId",
+                table: "RegisterOfEmergencyBuildings");
         }
     }
 }

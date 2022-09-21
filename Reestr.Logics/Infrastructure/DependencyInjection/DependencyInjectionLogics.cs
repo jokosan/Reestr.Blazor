@@ -29,7 +29,8 @@ namespace Reestr.Logics.Infrastructure.DependencyInjection
             services.AddScoped<DbRepository<Solution>>();
             services.AddScoped<DbRepository<PhotographicFixation>>();
             services.AddScoped<DbRepository<UrbanPlanningConditions>>();
-            
+            services.AddScoped<DbRepository<InformationAboutDestructionServises>>();
+
             // Servises
 
             services.AddScoped<DistrictsServises>();
@@ -39,8 +40,7 @@ namespace Reestr.Logics.Infrastructure.DependencyInjection
             services.AddScoped<AddressingApiServices>();
             services.AddScoped<PhotographicFixationServises>();
             services.AddScoped<UrbanPlanningConditionServises>();
-
-     
+            services.AddScoped<InformationAboutDestructionServises>();     
 
             // UnitOFWork
             services.AddScoped<UnitOfWork>();

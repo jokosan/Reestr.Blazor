@@ -1,0 +1,207 @@
+﻿@page "/add-information-about-destruction/{RegisterOfEmergencyBuildingsId}"
+@layout MainLayout
+@inherits Reestr.Blazor.Component.InformationAboutDestructions.AddInformationAboutDestructionComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Reestr.Database.Model;
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenTemplateForm Data="@informationaboutdestruction" Visible="@(informationaboutdestruction != null)" TItem="InformationAboutDestruction" Submit="@Form0Submit">
+                    <ChildContent>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Building Structures" Component="BuildingStructures" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.BuildingStructures)" Name="BuildingStructures">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Complete Destruction Of The Building" Component="CompleteDestructionOfTheBuilding" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.CompleteDestructionOfTheBuilding)" Name="CompleteDestructionOfTheBuilding">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Damage Design" Component="DamageDesign" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.DamageDesign)" Name="DamageDesign">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Destroyed Basement" Component="DestroyedBasement" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.DestroyedBasement)" Name="DestroyedBasement">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Roof Destruction" Component="RoofDestruction" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.RoofDestruction)" Name="RoofDestruction">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Quantity" Component="Quantity" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.Quantity)" Name="Quantity">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Glazing Damage" Component="GlazingDamage" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.GlazingDamage)" Name="GlazingDamage">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Glazing Damage Quantity" Component="GlazingDamageQuantity" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenNumeric style="width: 100%" @bind-Value="@(informationaboutdestruction.GlazingDamageQuantity)" Name="GlazingDamageQuantity">
+                                </RadzenNumeric>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Balconies Destroyed" Component="BalconiesDestroyed" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.BalconiesDestroyed)" Name="BalconiesDestroyed">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Balconies Destroyed Quantity" Component="BalconiesDestroyedQuantity" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenNumeric style="width: 100%" @bind-Value="@(informationaboutdestruction.BalconiesDestroyedQuantity)" Name="BalconiesDestroyedQuantity">
+                                </RadzenNumeric>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Destroyed Entrances" Component="DestroyedEntrances" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.DestroyedEntrances)" Name="DestroyedEntrances">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Damaged Elevators" Component="DamagedElevators" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.DamagedElevators)" Name="DamagedElevators">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Electricity" Component="Electricity" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.Electricity)" Name="Electricity">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Gas" Component="Gas" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.Gas)" Name="Gas">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Cold Water" Component="ColdWater" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.ColdWater)" Name="ColdWater">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Hot Water" Component="HotWater" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.HotWater)" Name="HotWater">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Heating" Component="Heating" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(informationaboutdestruction.Heating)" Name="Heating">
+                                </RadzenCheckBox>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Date" Component="date" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDatePicker style="width: 100%" @bind-Value="@(informationaboutdestruction.date)" Name="Date">
+                                </RadzenDatePicker>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col offset-sm-3">
+                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Primary">
+                                </RadzenButton>
+                                <RadzenButton ButtonStyle="ButtonStyle.Light" style="margin-left: 1rem" Text="Cancel" Click="@Button2Click">
+                                </RadzenButton>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </RadzenTemplateForm>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>

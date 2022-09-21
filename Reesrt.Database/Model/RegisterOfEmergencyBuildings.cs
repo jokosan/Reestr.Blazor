@@ -13,6 +13,7 @@ namespace Reestr.Database.Model
         public RegisterOfEmergencyBuildings()
         {
             this.PhotographicFixation = new HashSet<PhotographicFixation>();
+            this.InformationAboutDestruction = new HashSet<InformationAboutDestruction>();
         }
 
         public int IdRegisterOfEmergencyBuildings { get; set; } // id
@@ -35,7 +36,6 @@ namespace Reestr.Database.Model
         public DateTime? DateInsert { get; set; }
         public string UserNameUpdate { get; set; }
         public DateTime? DateUpdate { get; set; }
-
         // APi Data geo portal
         public int? AddressesApiId { get; set; }
         public string DataSource { get; set; }

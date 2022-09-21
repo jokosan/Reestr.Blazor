@@ -18,19 +18,11 @@
 
                 <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Додати" Click="@Button0Click">
                 </RadzenButton>
-                @*<RadzenSplitButton Icon="get_app" style="margin-left: 10px; margin-bottom: 10px" Text="Export" Click="@Splitbutton0Click">
-                    <ChildContent>
-                        <RadzenSplitButtonItem Text="Excel" Value="xlsx">
-                        </RadzenSplitButtonItem>
-                        <RadzenSplitButtonItem Text="CSV" Value="csv">
-                        </RadzenSplitButtonItem>
-                    </ChildContent>
-                </RadzenSplitButton>*@
                 <RadzenButton Icon="announcement" style="margin-bottom: 10px" Text="Аналітичний звіт" Click="@ButtonSratisticClick" ButtonStyle="ButtonStyle.Info">
                 </RadzenButton>
                 <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="Radzen.FilterMode.Advanced" RowDoubleClick="@Grid0RowSelect"
                                 AllowColumnPicking="true" AllowColumnResize="true" AllowPaging="true" PageSize="10" AllowSorting="true" Data="@getRegisterOfEmergencyBuildingsResult"
-                                TItem="RegisterOfEmergencyBuildings" PagerHorizontalAlign="HorizontalAlign.Center">
+                                TItem="RegisterOfEmergencyBuildings" PagerHorizontalAlign="HorizontalAlign.Center" ExpandMode="DataGridExpandMode.Single"   RowExpand="@Grid0RowExpand">
                     <Columns>
                         <RadzenDataGridColumn TItem="RegisterOfEmergencyBuildings" Visible="false" Property="IdRegisterOfEmergencyBuildings" Title="Id">
                         </RadzenDataGridColumn>
@@ -84,11 +76,64 @@
                             <Template Context="RegisterOfEmergencyBuilding">
                                 @if (RegisterOfEmergencyBuilding.PhotographicFixation.FirstOrDefault() != null)
                                 {
-            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="pageview" Size="ButtonSize.Small" Click="@((args) =>ButtonClickImgPage(RegisterOfEmergencyBuilding.IdRegisterOfEmergencyBuildings))" @onclick:stopPropagation="true">
-            </RadzenButton>}
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="pageview" Size="ButtonSize.Small" Click="@((args) =>ButtonClickImgPage(RegisterOfEmergencyBuilding.IdRegisterOfEmergencyBuildings))" @onclick:stopPropagation="true">
+                </RadzenButton>}
                             </Template>
                         </RadzenDataGridColumn>
                     </Columns>
+                    <Template Context="testWebModelsReestrDbDgaRegisterOfEmergencyBuilding">
+                        <RadzenHeading Size="H5" Text="Інформація про руйнування будівлі">
+                        </RadzenHeading>
+                        <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@((args) =>InformationAboutDestructionAddButtonClick(args, testWebModelsReestrDbDgaRegisterOfEmergencyBuilding))">
+                        </RadzenButton>
+                        <RadzenDataGrid @ref="grid1" Data="@(testWebModelsReestrDbDgaRegisterOfEmergencyBuilding.InformationAboutDestruction)" AllowFiltering="true" AllowPaging="true" AllowSorting="true" TItem="InformationAboutDestruction" FilterMode="Radzen.FilterMode.Advanced" RowSelect="@((args) =>Grid1RowSelect(args, testWebModelsReestrDbDgaRegisterOfEmergencyBuilding))">
+                            <Columns>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Visible="false"  Property="IdInformationAboutDestruction" Title="Id Information About Destruction">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Property="BuildingStructures" Title="Конструкції">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Property="CompleteDestructionOfTheBuilding" Title="Повна руйнація">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Property="DamageDesign" Title="Пошкодження конструкція">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Property="DestroyedBasement" Title="Зруйновано цокольний поверх">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Property="RoofDestruction" Title="Руйнування покрівлі">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Property="Quantity" Title="Руйнування фасаду">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Property="GlazingDamage" Title="Руйнування балконів">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Visible="false"  Property="GlazingDamageQuantity" Title="Glazing Damage Quantity">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Property="BalconiesDestroyed" Title="Ушкодження скління">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Visible="false"  Property="BalconiesDestroyedQuantity" Title="Balconies Destroyed Quantity">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Property="DestroyedEntrances" Title="Зруйновано під'їзди">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Property="DamagedElevators" Title="Пошкоджено ліфтів">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Visible="false"  Property="Electricity" Title="Electricity">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Visible="false" Property="Gas" Title="Gas">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Visible="false"  Property="ColdWater" Title="Cold Water">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Visible="false"  Property="HotWater" Title="Hot Water">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Visible="false"  Property="Heating" Title="Heating">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Visible="false"  Property="RegisterOfEmergencyBuildingsId" SortProperty="RegisterOfEmergencyBuilding.SectorNumber" GroupProperty="RegisterOfEmergencyBuilding.SectorNumber" FilterProperty="RegisterOfEmergencyBuilding.SectorNumber" Title="Register Of Emergency Building">
+                                    <Template Context="data">
+                                        @(data.RegisterOfEmergencyBuildings?.SectorNumber)
+                                    </Template>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InformationAboutDestruction" Property="date" FormatString="{0:d}" Title="Дата руйнування">
+                                </RadzenDataGridColumn>
+                            </Columns>
+                        </RadzenDataGrid>
+                    </Template>
                 </RadzenDataGrid>
 
             </div>

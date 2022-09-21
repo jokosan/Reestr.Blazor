@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reestr.Database.Context;
 
 namespace Reestr.Database.Migrations
 {
     [DbContext(typeof(DbContextReestr))]
-    partial class DbContextReestrModelSnapshot : ModelSnapshot
+    [Migration("20220701160837_eInformationAboutDestruction")]
+    partial class eInformationAboutDestruction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -310,18 +312,10 @@ namespace Reestr.Database.Migrations
                     b.Property<bool>("Quantity")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("RegisterOfEmergencyBuildingsId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("RoofDestruction")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("date")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("IdInformationAboutDestruction");
-
-                    b.HasIndex("RegisterOfEmergencyBuildingsId");
 
                     b.ToTable("InformationAboutDestruction");
                 });
@@ -498,6 +492,9 @@ namespace Reestr.Database.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<int?>("InformationAboutDestructionId")
+                        .HasColumnType("int");
+
                     b.Property<string>("JobDescription")
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
@@ -542,6 +539,8 @@ namespace Reestr.Database.Migrations
                     b.HasIndex("AddressesApiId");
 
                     b.HasIndex("BuildingTypeId");
+
+                    b.HasIndex("InformationAboutDestructionId");
 
                     b.HasIndex("MicrodistrictId");
 
@@ -731,15 +730,6 @@ namespace Reestr.Database.Migrations
                     b.Navigation("Land");
                 });
 
-            modelBuilder.Entity("Reestr.Database.Model.InformationAboutDestruction", b =>
-                {
-                    b.HasOne("Reestr.Database.Model.RegisterOfEmergencyBuildings", "RegisterOfEmergencyBuildings")
-                        .WithMany("InformationAboutDestruction")
-                        .HasForeignKey("RegisterOfEmergencyBuildingsId");
-
-                    b.Navigation("RegisterOfEmergencyBuildings");
-                });
-
             modelBuilder.Entity("Reestr.Database.Model.Land", b =>
                 {
                     b.HasOne("Reestr.Database.Model.PlotAssignment", "PlotAssignment")
@@ -784,6 +774,10 @@ namespace Reestr.Database.Migrations
                         .WithMany("RegisterOfEmergencyBuildings")
                         .HasForeignKey("BuildingTypeId");
 
+                    b.HasOne("Reestr.Database.Model.InformationAboutDestruction", "InformationAboutDestruction")
+                        .WithMany("RegisterOfEmergencyBuildings")
+                        .HasForeignKey("InformationAboutDestructionId");
+
                     b.HasOne("Reestr.Database.Model.Microdistrict", "Microdistrict")
                         .WithMany("RegisterOfEmergencyBuildings")
                         .HasForeignKey("MicrodistrictId");
@@ -799,6 +793,8 @@ namespace Reestr.Database.Migrations
                     b.Navigation("AddressingApi");
 
                     b.Navigation("BuildingType");
+
+                    b.Navigation("InformationAboutDestruction");
 
                     b.Navigation("Microdistrict");
 
@@ -843,6 +839,11 @@ namespace Reestr.Database.Migrations
                     b.Navigation("UrbanPlanningConditions");
                 });
 
+            modelBuilder.Entity("Reestr.Database.Model.InformationAboutDestruction", b =>
+                {
+                    b.Navigation("RegisterOfEmergencyBuildings");
+                });
+
             modelBuilder.Entity("Reestr.Database.Model.Land", b =>
                 {
                     b.Navigation("ConstructionPassport");
@@ -867,8 +868,6 @@ namespace Reestr.Database.Migrations
 
             modelBuilder.Entity("Reestr.Database.Model.RegisterOfEmergencyBuildings", b =>
                 {
-                    b.Navigation("InformationAboutDestruction");
-
                     b.Navigation("PhotographicFixation");
                 });
 

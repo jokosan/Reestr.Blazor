@@ -10,8 +10,8 @@ using Reestr.Database.Context;
 namespace Reestr.Database.Migrations
 {
     [DbContext(typeof(DbContextReestr))]
-    [Migration("20220628172319_InformationAboutDestruction")]
-    partial class InformationAboutDestruction
+    [Migration("20220703115439_InformationAboutDestructionEdit")]
+    partial class InformationAboutDestructionEdit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -312,11 +312,14 @@ namespace Reestr.Database.Migrations
                     b.Property<bool>("Quantity")
                         .HasColumnType("bit");
 
-                    b.Property<int>("RegisterOfEmergencyBuildingsId")
+                    b.Property<int?>("RegisterOfEmergencyBuildingsId")
                         .HasColumnType("int");
 
                     b.Property<bool>("RoofDestruction")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("date")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("IdInformationAboutDestruction");
 
@@ -734,9 +737,7 @@ namespace Reestr.Database.Migrations
                 {
                     b.HasOne("Reestr.Database.Model.RegisterOfEmergencyBuildings", "RegisterOfEmergencyBuildings")
                         .WithMany("InformationAboutDestruction")
-                        .HasForeignKey("RegisterOfEmergencyBuildingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RegisterOfEmergencyBuildingsId");
 
                     b.Navigation("RegisterOfEmergencyBuildings");
                 });

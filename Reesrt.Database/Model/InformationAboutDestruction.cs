@@ -8,8 +8,9 @@ namespace Reestr.Database.Model
 {
     public class InformationAboutDestruction
     {
+
         public int IdInformationAboutDestruction { get; set; }
-        public int RegisterOfEmergencyBuildingsId { get; set; }
+        public int? RegisterOfEmergencyBuildingsId { get; set; }
         // Конструкции здания 
         public bool BuildingStructures { get; set; }
         // Полное разрушение здания
@@ -37,6 +38,7 @@ namespace Reestr.Database.Model
         public bool ColdWater { get; set; }
         public bool HotWater { get; set; }
         public bool Heating { get; set; }
+        public DateTime? date {get; set;}
 
         public virtual RegisterOfEmergencyBuildings RegisterOfEmergencyBuildings { get; set; }
     }
